@@ -7,4 +7,5 @@ public interface UserService {
     String getName(String username);
     boolean isUsername(String usernameValue);
     boolean isPassword(String passwordValue);
+    boolean isEmail(String emailValue);
 }

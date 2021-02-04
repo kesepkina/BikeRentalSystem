@@ -7,6 +7,7 @@ public class PagePath {
     public static final String MAIN = "/jsp/main.jsp";
     public static final String INFO = "/jsp/info.jsp";
     public static final String SIGNUP = "/jsp/signUp.jsp";
+    public static final String ERROR = "/jsp/error.jsp";
 
     private PagePath() {
     }

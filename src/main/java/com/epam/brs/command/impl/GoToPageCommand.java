@@ -6,12 +6,12 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class PageCommand implements Command {
+public class GoToPageCommand implements Command {
 
     private static final Logger log = LogManager.getLogger();
     private final String page;
 
-    public PageCommand(String page) {
+    public GoToPageCommand(String page) {
         this.page = page;
     }
 

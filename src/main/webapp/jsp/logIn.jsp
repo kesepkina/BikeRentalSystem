@@ -9,37 +9,32 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <fmt:setLocale value="${sessionScope.locale}"/>
-<fmt:setBundle basename="property.log_in" var="base"/>
+<fmt:setBundle basename="properties.text" />
 
-<fmt:message bundle="${base}" key="sign_up" var="sign_up" />
-<fmt:message bundle="${base}" key="log_in" var="log_in" />
-<fmt:message bundle="${base}" key="title" var="title" />
-<fmt:message bundle="${base}" key="username" var="username" />
-<fmt:message bundle="${base}" key="password" var="pass" />
 <html>
 <head>
-    <title>${title}</title>
+    <title><fmt:message key="logIn.title" /></title>
 </head>
 <body>
-<jsp:include page="tiles/header.jsp"/>
+    <jsp:include page="tiles/header.jsp"/>
     <form name="loginForm" method="POST" action="controller">
         <input type="hidden" name="command" value="login" />
-        ${username}<br/>
+        <fmt:message key="logIn.username" /><br/>
         <input type="text" name="username" value="" required pattern="[a-zA-Zа-яА-Я0-9._]{5,}"
                title='must include only letters, ciphers, characters ".", "_" and have at least 5 characters'/>
         ${errorUsernameMessage}
-        <br/>${pass}<br/>
+        <br/><fmt:message key="logIn.password" /><br/>
         <input type="password" name="password" value="" required pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&()])(?=\S+$).{8,20}$"
                title='must include at least one letter in upper and in lower case, at least one cipher, at least one special character ("@", "#". "$", "%", "^", "&", "(" or ")", no spaces and have from 8 to 20 characters'/>
         ${errorPasswordMessage}
         <br/><br/>
-        <input type="submit" value="${log_in}">
+        <input type="submit" value="<fmt:message key="logIn.log_in" />">
         <br/>${errorUserMessage}
         ${nullPage}
     </form>
     <form name="loginForm" method="post" action="controller">
-        <input type="hidden" name="command" value="signup_page" />
-        <input type="submit" value="${sign_up}">
+        <input type="hidden" name="command" value="go_to_signup" />
+        <input type="submit" value="<fmt:message key="logIn.sign_up" />">
         <br/>
         ${nullPage}
     </form>

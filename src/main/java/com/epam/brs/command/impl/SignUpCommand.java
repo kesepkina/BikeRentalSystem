@@ -21,7 +21,7 @@ public class SignUpCommand implements Command {
     }
 
     @Override
-    public String execute(HttpServletRequest request){
+    public String execute(HttpServletRequest request) {
         String page;
         String nameValue = request.getParameter(PARAM_NAME);
         String emailValue = request.getParameter(PARAM_EMAIL);
@@ -31,12 +31,14 @@ public class SignUpCommand implements Command {
         if (!service.isUsername(usernameValue)) {
             request.setAttribute("errorUsernameMessage", "Username isn't correct. It must include only letters, ciphers, characters \".\", \"_\" and have at least 5 characters.");
             dataAreCorrect = false;
-        }
-        if (service.checkUsername(usernameValue)) {
+        } else if (service.checkUsername(usernameValue)) {
             request.setAttribute("errorUserMessage", "User with inputted username already exists.");
             dataAreCorrect = false;
         } else if (!service.isPassword(passValue)) {
             request.setAttribute("errorPasswordMessage", "Password isn't correct. It must include at least one letter in upper and in lower case, at least one cipher, at least one special character (\"@\", \"#\". \"$\", \"%\", \"^\", \"&\", \"(\" or \")\", no spaces and have from 8 to 20 characters.");
+            dataAreCorrect = false;
+        } else if (!service.isEmail(emailValue)) {
+            request.setAttribute("errorEmailMessage", "Email isn't correct.");
             dataAreCorrect = false;
         }
         if (dataAreCorrect) {

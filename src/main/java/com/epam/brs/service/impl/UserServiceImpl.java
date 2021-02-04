@@ -59,4 +59,13 @@ public class UserServiceImpl implements UserService {
         }
         return isCorrect;
     }
+
+    @Override
+    public boolean isEmail(String emailValue) {
+        boolean isCorrect = false;
+        if (userDataValidator.isPassword(emailValue)) {
+            isCorrect = true;
+        }
+        return isCorrect;
+    }
 }

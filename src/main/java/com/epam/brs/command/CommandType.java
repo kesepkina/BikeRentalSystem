@@ -8,9 +8,9 @@ public enum CommandType {
     LOGIN(new SignUpCommand(new UserServiceImpl())),
     LOGOUT(new LogoutCommand()),
     SHOW_INFO(new ShowInfoCommand()),
-    MAIN_PAGE(new PageCommand(PagePath.MAIN)),
-    LOGIN_PAGE(new PageCommand(PagePath.LOGIN)),
-    SIGNUP_PAGE(new PageCommand(PagePath.SIGNUP)),
+    GO_TO_MAIN(new GoToPageCommand(PagePath.MAIN)),
+    GO_TO_LOGIN(new GoToPageCommand(PagePath.LOGIN)),
+    GO_TO_SIGNUP(new GoToPageCommand(PagePath.SIGNUP)),
     CHANGE_LOCALE(new ChangeLocaleCommand());
 
     private final Command command;
