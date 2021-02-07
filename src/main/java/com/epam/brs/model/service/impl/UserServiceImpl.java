@@ -1,8 +1,8 @@
-package com.epam.brs.service.impl;
+package com.epam.brs.model.service.impl;
 
 import com.epam.brs.dao.impl.UserDaoImpl;
-import com.epam.brs.entity.User;
-import com.epam.brs.service.UserService;
+import com.epam.brs.model.entity.User;
+import com.epam.brs.model.service.UserService;
 import com.epam.brs.validator.UserDataValidator;
 
 import java.util.Optional;

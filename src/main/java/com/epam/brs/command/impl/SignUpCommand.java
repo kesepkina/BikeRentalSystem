@@ -1,7 +1,7 @@
 package com.epam.brs.command.impl;
 
 import com.epam.brs.command.Command;
-import com.epam.brs.service.impl.UserServiceImpl;
+import com.epam.brs.model.service.impl.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 

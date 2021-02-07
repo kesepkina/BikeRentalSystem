@@ -1,7 +1,7 @@
 package com.epam.brs.command;
 
 import com.epam.brs.command.impl.*;
-import com.epam.brs.service.impl.UserServiceImpl;
+import com.epam.brs.model.service.impl.UserServiceImpl;
 
 public enum CommandType {
     SIGNUP(new LogInCommand(new UserServiceImpl())),

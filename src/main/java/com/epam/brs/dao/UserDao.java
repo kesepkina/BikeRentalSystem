@@ -1,6 +1,6 @@
 package com.epam.brs.dao;
 
-import com.epam.brs.entity.User;
+import com.epam.brs.model.entity.User;
 
 import java.util.Optional;
 

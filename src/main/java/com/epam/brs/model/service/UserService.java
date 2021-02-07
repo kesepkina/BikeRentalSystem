@@ -1,4 +1,4 @@
-package com.epam.brs.service;
+package com.epam.brs.model.service;
 
 public interface UserService {
     boolean checkUser(String username, String password);

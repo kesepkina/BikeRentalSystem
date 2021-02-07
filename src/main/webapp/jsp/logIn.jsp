@@ -11,6 +11,7 @@
 <fmt:setLocale value="${sessionScope.locale}"/>
 <fmt:setBundle basename="properties.text" />
 
+<!DOCTYPE html>
 <html>
 <head>
     <title><fmt:message key="logIn.title" /></title>

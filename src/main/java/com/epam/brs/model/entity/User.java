@@ -1,4 +1,4 @@
-package com.epam.brs.entity;
+package com.epam.brs.model.entity;
 
 public class User {
     private String name;

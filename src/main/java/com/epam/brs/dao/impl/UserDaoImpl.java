@@ -1,7 +1,7 @@
 package com.epam.brs.dao.impl;
 
 import com.epam.brs.dao.UserDao;
-import com.epam.brs.entity.User;
+import com.epam.brs.model.entity.User;
 import com.epam.brs.warehouse.UserWarehouse;
 
 import java.util.Optional;
