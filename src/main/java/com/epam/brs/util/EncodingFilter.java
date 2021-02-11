@@ -1,4 +1,4 @@
-package com.epam.brs.controller;
+package com.epam.brs.util;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;

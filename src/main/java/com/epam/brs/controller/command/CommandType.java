@@ -1,6 +1,6 @@
-package com.epam.brs.command;
+package com.epam.brs.controller.command;
 
-import com.epam.brs.command.impl.*;
+import com.epam.brs.controller.command.impl.*;
 import com.epam.brs.model.service.impl.UserServiceImpl;
 
 public enum CommandType {

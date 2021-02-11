@@ -1,7 +1,7 @@
 package com.epam.brs.controller;
 
-import com.epam.brs.command.Command;
-import com.epam.brs.command.CommandProvider;
+import com.epam.brs.controller.command.Command;
+import com.epam.brs.controller.command.CommandProvider;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
-import static com.epam.brs.command.PagePath.INDEX;
+import static com.epam.brs.controller.command.PagePath.INDEX;
 
 @WebServlet(urlPatterns = {"/controller", "*.do"})
 public class Controller extends HttpServlet {

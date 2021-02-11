@@ -1,17 +1,17 @@
-package com.epam.brs.command.impl;
+package com.epam.brs.controller.command.impl;
 
-import com.epam.brs.command.Command;
+import com.epam.brs.controller.command.Command;
 import com.epam.brs.model.service.impl.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static com.epam.brs.command.PagePath.*;
+import static com.epam.brs.controller.command.PagePath.*;
 
 public class SignUpCommand implements Command {
 
     private static final String PARAM_NAME = "name";
     private static final String PARAM_EMAIL = "email";
-    private static final String PARAM_USERNAME = "username";
+    private static final String PARAM_LOGIN = "login";
     private static final String PARAM_PASSWORD = "password";
 
     private final UserServiceImpl service;
@@ -25,14 +25,14 @@ public class SignUpCommand implements Command {
         String page;
         String nameValue = request.getParameter(PARAM_NAME);
         String emailValue = request.getParameter(PARAM_EMAIL);
-        String usernameValue = request.getParameter(PARAM_USERNAME);
+        String loginValue = request.getParameter(PARAM_LOGIN);
         String passValue = request.getParameter(PARAM_PASSWORD);
         boolean dataAreCorrect = true;
-        if (!service.isUsername(usernameValue)) {
-            request.setAttribute("errorUsernameMessage", "Username isn't correct. It must include only letters, ciphers, characters \".\", \"_\" and have at least 5 characters.");
+        if (!service.isLogin(loginValue)) {
+            request.setAttribute("errorLoginMessage", "Login isn't correct. It must include only letters, ciphers, characters \".\", \"_\" and have at least 5 characters.");
             dataAreCorrect = false;
-        } else if (service.checkUsername(usernameValue)) {
-            request.setAttribute("errorUserMessage", "User with inputted username already exists.");
+        } else if (service.checkLogin(loginValue)) {
+            request.setAttribute("errorUserMessage", "User with inputted login already exists.");
             dataAreCorrect = false;
         } else if (!service.isPassword(passValue)) {
             request.setAttribute("errorPasswordMessage", "Password isn't correct. It must include at least one letter in upper and in lower case, at least one cipher, at least one special character (\"@\", \"#\". \"$\", \"%\", \"^\", \"&\", \"(\" or \")\", no spaces and have from 8 to 20 characters.");
@@ -42,7 +42,7 @@ public class SignUpCommand implements Command {
             dataAreCorrect = false;
         }
         if (dataAreCorrect) {
-            service.addUser(nameValue, emailValue, usernameValue, passValue);
+            service.addUser(nameValue, emailValue, loginValue, passValue);
             page = SIGNUP;
         } else {
             request.setAttribute(PARAM_NAME, nameValue);

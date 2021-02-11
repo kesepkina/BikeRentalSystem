@@ -1,6 +1,6 @@
 package com.epam.brs.model.service.impl;
 
-import com.epam.brs.dao.impl.UserDaoImpl;
+import com.epam.brs.model.dao.impl.UserDaoImpl;
 import com.epam.brs.model.entity.User;
 import com.epam.brs.model.service.UserService;
 import com.epam.brs.validator.UserDataValidator;
@@ -10,29 +10,28 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserDataValidator userDataValidator = new UserDataValidator();
-    private final UserDaoImpl userDao = new UserDaoImpl();
 
     @Override
     public boolean checkUser(String username, String password) {
-        boolean exists = userDao.contains(username, password);
+        boolean exists = UserDaoImpl.getInstance().contains(username, password);
         return exists;
     }
 
     @Override
-    public boolean checkUsername(String username) {
-        boolean exists = userDao.containsUsername(username);
+    public boolean checkLogin(String username) {
+        boolean exists = UserDaoImpl.getInstance().containsUsername(username);
         return exists;
     }
 
     @Override
     public void addUser(String name, String email, String username, String password) {
         User user = new User(name, email, username, password);
-        userDao.addUser(user);
+        UserDaoImpl.getInstance().addUser(user);
     }
 
     @Override
     public String getName(String username) {
-        Optional<User> optionalUser = userDao.getUser(username);
+        Optional<User> optionalUser = UserDaoImpl.getInstance().getUser(username);
         String name;
         if (optionalUser.isPresent()) {
             name = optionalUser.get().getName();
@@ -43,9 +42,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean isUsername(String usernameValue) {
+    public boolean isLogin(String usernameValue) {
         boolean isCorrect = false;
-        if (userDataValidator.isUsername(usernameValue)) {
+        if (userDataValidator.isLogin(usernameValue)) {
             isCorrect = true;
         }
         return isCorrect;

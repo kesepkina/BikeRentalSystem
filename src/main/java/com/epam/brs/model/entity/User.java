@@ -1,16 +1,38 @@
 package com.epam.brs.model.entity;
 
-public class User {
-    private String name;
-    private String email;
-    private String username;
-    private String password;
+import java.util.StringJoiner;
 
-    public User(String name, String email, String username, String password) {
+public class User extends Entity{
+
+    private String login;
+    private String hashedPassword;
+    private String name;
+    private String surname;
+    private String email;
+
+    public User(String login, String hashedPassword, String name, String surname, String email) {
+        this.login = login;
+        this.hashedPassword = hashedPassword;
         this.name = name;
+        this.surname = surname;
         this.email = email;
-        this.username = username;
-        this.password = password;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    //TODO: public passwords?
+    public String getHashedPassword() {
+        return hashedPassword;
+    }
+
+    public void setHashedPassword(String hashedPassword) {
+        this.hashedPassword = hashedPassword;
     }
 
     public String getName() {
@@ -21,6 +43,14 @@ public class User {
         this.name = name;
     }
 
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -29,19 +59,38 @@ public class User {
         this.email = email;
     }
 
-    public String getUsername() {
-        return username;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (login != null ? !login.equals(user.login) : user.login != null) return false;
+        if (hashedPassword != null ? !hashedPassword.equals(user.hashedPassword) : user.hashedPassword != null)
+            return false;
+        if (name != null ? !name.equals(user.name) : user.name != null) return false;
+        if (surname != null ? !surname.equals(user.surname) : user.surname != null) return false;
+        return email != null ? email.equals(user.email) : user.email == null;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    @Override
+    public int hashCode() {
+        int result = login != null ? login.hashCode() : 0;
+        result = 31 * result + (hashedPassword != null ? hashedPassword.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (surname != null ? surname.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        return result;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", User.class.getSimpleName() + "[", "]")
+                .add("login='" + login + "'")
+                .add("name='" + name + "'")
+                .add("surname='" + surname + "'")
+                .add("email='" + email + "'")
+                .toString();
     }
 }

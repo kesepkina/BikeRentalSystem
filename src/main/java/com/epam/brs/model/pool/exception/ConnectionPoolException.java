@@ -1,4 +1,4 @@
-package com.epam.brs.exceptions;
+package com.epam.brs.model.pool.exception;
 
 public class ConnectionPoolException extends Exception {
     public ConnectionPoolException() {

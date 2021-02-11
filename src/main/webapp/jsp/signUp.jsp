@@ -17,7 +17,7 @@
     <title><fmt:message key="signUp.title" /></title>
 </head>
 <body>
-<jsp:include page="tiles/header.jsp"/>
+<%@ include file="tiles/header.jsp"%>
 <form name="signupForm" method="POST" action="controller">
     <input type="hidden" name="command" value="signup" />
     <fmt:message key="signUp.surname" /><br/>
@@ -27,10 +27,10 @@
     <br/><fmt:message key="signUp.email" /><br/>
     <input type="email" name="email" value="" required pattern="^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$"/>
     ${errorEmailMessage}
-    <br/><fmt:message key="signUp.username" /><br/>
-    <input type="text" name="username" value="" required pattern="[a-zA-Z0-9._]{5,20}"
+    <br/><fmt:message key="signUp.login" /><br/>
+    <input type="text" name="login" value="" required pattern="[a-zA-Z0-9._]{5,20}"
            title='must include only letters, ciphers, characters ".", "_" and have from 5 to 20 characters' />
-    ${errorUsernameMessage}
+    ${errorLoginMessage}
     <br/><fmt:message key="signUp.password" /><br/>
     <input type="password" name="password" value="" required pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&()])(?=\S+$).{8,20}$"
            title='must include at least one letter in upper and in lower case, at least one cipher, at least one special character ("@", "#". "$", "%", "^", "&", "(" or ")", no spaces and have from 8 to 20 characters'/>

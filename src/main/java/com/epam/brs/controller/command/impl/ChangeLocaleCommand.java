@@ -1,12 +1,12 @@
-package com.epam.brs.command.impl;
+package com.epam.brs.controller.command.impl;
 
-import com.epam.brs.command.Command;
+import com.epam.brs.controller.command.Command;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.epam.brs.command.PagePath.ERROR;
+import static com.epam.brs.controller.command.PagePath.ERROR;
 
 public class ChangeLocaleCommand implements Command {
 

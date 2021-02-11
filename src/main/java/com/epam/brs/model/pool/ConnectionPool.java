@@ -1,6 +1,6 @@
-package com.epam.brs.pool;
+package com.epam.brs.model.pool;
 
-import com.epam.brs.exceptions.ConnectionPoolException;
+import com.epam.brs.model.pool.exception.ConnectionPoolException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,23 +17,34 @@ public enum ConnectionPool {
 
     INSTANCE;
 
-    private static final Logger logger = LogManager.getLogger();
+    private final Logger logger = LogManager.getLogger();
     private final BlockingQueue<ProxyConnection> freeConnections;
     private final Queue<ProxyConnection> busyConnections;
 
-    private static final int DEFAULT_POOL_SIZE = 32;
-
     ConnectionPool() {
-        freeConnections = new LinkedBlockingDeque<>(ConnectionCreator.getPoolSize());
+        int poolSize = ConnectionCreator.getPoolSize();
+        freeConnections = new LinkedBlockingDeque<>(poolSize);
         busyConnections = new ArrayDeque<>();
+        for (int i = 0; i < poolSize; i++) {
+            Connection connection = null;
+            try {
+                connection = ConnectionCreator.createConnection();
+            } catch (SQLException e) {
+                logger.fatal("Exception by creating new connection", e);
+                throw new RuntimeException("Exception by creating new connection", e);
+            }
+            ProxyConnection proxyConnection = new ProxyConnection(connection);
+            freeConnections.offer(proxyConnection);
+        }
     }
+
     public Optional<Connection> getConnection() throws InterruptedException {
-        ProxyConnection connection = null;
+        ProxyConnection connection;
         try {
             connection = freeConnections.take();
             busyConnections.offer(connection);
         } catch (InterruptedException e) {
-            logger.error("Exception by taking next free connection", e);
+            logger.warn("Thread was interrupted while taking new free connection", e);
             throw e;
         }
         return Optional.ofNullable(connection);
@@ -55,7 +66,7 @@ public enum ConnectionPool {
             } catch (SQLException throwable) {
                 throw new ConnectionPoolException("Exception by closing free connections", throwable);
             } catch (InterruptedException e) {
-                logger.error("Exception by taking next free connection", e);
+                logger.warn("Thread was interrupted while taking a free connection", e);
                 throw e;
             }
         }

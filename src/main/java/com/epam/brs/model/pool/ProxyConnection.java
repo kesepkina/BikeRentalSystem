@@ -1,4 +1,4 @@
-package com.epam.brs.pool;
+package com.epam.brs.model.pool;
 
 import java.sql.*;
 import java.util.Map;
@@ -8,8 +8,9 @@ import java.util.concurrent.Executor;
 public class ProxyConnection implements Connection {
 
     private Connection connection;
-    ProxyConnection(Connection connection) {
 
+    ProxyConnection(Connection connection) {
+        this.connection = connection;
     }
 
     @Override
