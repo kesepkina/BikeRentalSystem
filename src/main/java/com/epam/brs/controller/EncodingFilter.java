@@ -1,4 +1,4 @@
-package com.epam.brs.util;
+package com.epam.brs.controller;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -12,7 +12,8 @@ public class EncodingFilter implements Filter {
 
     private String code;
 
-    public void init(FilterConfig fConfig) throws ServletException {
+    @Override
+    public void init(FilterConfig fConfig) {
         code = fConfig.getInitParameter("encoding");
     }
 

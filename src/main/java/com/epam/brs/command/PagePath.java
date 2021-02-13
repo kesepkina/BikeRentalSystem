@@ -1,4 +1,4 @@
-package com.epam.brs.controller.command;
+package com.epam.brs.command;
 
 public class PagePath {
 

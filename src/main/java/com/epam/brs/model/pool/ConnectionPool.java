@@ -1,10 +1,10 @@
 package com.epam.brs.model.pool;
 
-import com.epam.brs.model.pool.exception.ConnectionPoolException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
+import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayDeque;
@@ -38,14 +38,14 @@ public enum ConnectionPool {
         }
     }
 
-    public Optional<Connection> getConnection() throws InterruptedException {
-        ProxyConnection connection;
+    public Optional<Connection> getConnection(){
+        ProxyConnection connection = null;
         try {
             connection = freeConnections.take();
             busyConnections.offer(connection);
         } catch (InterruptedException e) {
-            logger.warn("Thread was interrupted while taking new free connection", e);
-            throw e;
+            logger.error("Thread was interrupted while taking new free connection", e);
+            Thread.currentThread().interrupt();
         }
         return Optional.ofNullable(connection);
     }
@@ -59,27 +59,29 @@ public enum ConnectionPool {
         freeConnections.offer(proxyConnection);
     }
 
-    public void destroyPool() throws ConnectionPoolException, InterruptedException {
+    public void destroyPool() throws ConnectionPoolException{
         for (int i = 0; i < ConnectionCreator.getPoolSize(); i++) {
             try {
                 freeConnections.take().completelyClose();
             } catch (SQLException throwable) {
                 throw new ConnectionPoolException("Exception by closing free connections", throwable);
             } catch (InterruptedException e) {
-                logger.warn("Thread was interrupted while taking a free connection", e);
-                throw e;
+                logger.error("Thread was interrupted while taking a free connection", e);
+                Thread.currentThread().interrupt();
             }
         }
         deregisterDrivers();
     }
 
-    private void deregisterDrivers() {
-        DriverManager.getDrivers().asIterator().forEachRemaining(driver -> {
-            try {
+    private void deregisterDrivers() throws ConnectionPoolException {
+        try {
+            while (DriverManager.getDrivers().hasMoreElements()) {
+                Driver driver = DriverManager.getDrivers().nextElement();
                 DriverManager.deregisterDriver(driver);
-            } catch (SQLException e) {
-                logger.error("Database access error", e);
             }
-        });
+        } catch (SQLException e) {
+            logger.error("ERROR while deregistering drivers", e);
+            throw new ConnectionPoolException(e);
+        }
     }
 }

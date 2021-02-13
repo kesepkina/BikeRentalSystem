@@ -3,6 +3,7 @@ package com.epam.brs.model.pool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
@@ -10,7 +11,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class ConnectionCreator {
+class ConnectionCreator {
 
     private static final Logger logger = LogManager.getLogger();
     private static final Properties properties = new Properties();
@@ -27,8 +28,14 @@ public class ConnectionCreator {
             properties.load(new FileReader(PROPERTIES_PATH));
             String driverName = (String) properties.get(DB_DRIVER);
             Class.forName(driverName);
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (ClassNotFoundException e) {
             logger.fatal(e);
+            throw new RuntimeException("");
+            //TODO
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         DATABASE_URL = (String) properties.get(DB_URL);
         POOL_SIZE = (Integer) properties.get(DB_POOL_SIZE);
@@ -39,7 +46,7 @@ public class ConnectionCreator {
         return DriverManager.getConnection(DATABASE_URL, properties);
     }
 
-    public static int getPoolSize() {
+    static int getPoolSize() {
         return POOL_SIZE;
     }
 }

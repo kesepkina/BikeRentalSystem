@@ -1,4 +1,4 @@
-package com.epam.brs.controller.command;
+package com.epam.brs.command;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

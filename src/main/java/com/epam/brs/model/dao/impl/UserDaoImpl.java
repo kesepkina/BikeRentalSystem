@@ -1,12 +1,13 @@
 package com.epam.brs.model.dao.impl;
 
-import com.epam.brs.model.dao.AbstractDao;
+import com.epam.brs.model.dao.BaseDao;
 import com.epam.brs.model.dao.UserDao;
-import com.epam.brs.model.dao.exception.DaoException;
+import com.epam.brs.model.dao.DaoException;
 import com.epam.brs.model.entity.User;
 import com.epam.brs.model.pool.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.intellij.lang.annotations.Language;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,27 +16,28 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
+public class UserDaoImpl implements BaseDao<Integer, User>, UserDao {
 
     private static final Logger logger = LogManager.getLogger();
 
-    private static final UserDao instance = new UserDaoImpl();
+    private static final UserDaoImpl instance = new UserDaoImpl();
 
+    @Language("SQL")
     private static final String ADD_USER_SQL_QUERY = "INSERT INTO users(login, password, name, surname, email) VALUES (?, ?, ?, ?, ?)";
-    private static final String CONTAINS_USERNAME_SQL_QUERY = "SELECT 1 FROM users WHERE login=?";
+    private static final String CONTAINS_LOGIN_SQL_QUERY = "SELECT 1 FROM users WHERE login=?";
 
     private UserDaoImpl() {
     }
 
-    public static UserDao getInstance() {
+    public static UserDaoImpl getInstance() {
         return instance;
     }
 
     @Override
-    public boolean containsUsername(String login) throws InterruptedException, DaoException {
+    public boolean containsLogin(String login) throws DaoException {
         boolean contains = false;
         try(Connection connection = ConnectionPool.INSTANCE.getConnection().orElseThrow();
-            PreparedStatement statement = connection.prepareStatement(CONTAINS_USERNAME_SQL_QUERY)) {
+            PreparedStatement statement = connection.prepareStatement(CONTAINS_LOGIN_SQL_QUERY)) {
             statement.setString(1, login);
             ResultSet resultSet = statement.executeQuery();
             if(resultSet.next()) {
@@ -56,6 +58,37 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
     }
 
     @Override
+    public Optional<User> findUser(String login, String password) {
+        return null;
+    }
+
+    @Override
+    public boolean addUser(User user, String hashedPassword) throws DaoException {
+        boolean addedSuccessfully = false;
+        try(Connection connection = ConnectionPool.INSTANCE.getConnection().orElseThrow();
+            PreparedStatement statement = connection.prepareStatement(ADD_USER_SQL_QUERY)) {
+            String login = user.getLogin();
+            String name = user.getName();
+            String surname = user.getSurname();
+            String email = user.getEmail();
+            statement.setString(1, login);
+            statement.setString(2, hashedPassword);
+            statement.setString(3, name);
+            statement.setString(4, surname);
+            statement.setString(5, email);
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.next()) {
+                addedSuccessfully = true;
+                logger.info("User added successfully");
+            }
+        } catch (SQLException e) {
+            logger.error("Exception while adding new user", e);
+            throw new DaoException("Exception while adding new user", e);
+        }
+        return addedSuccessfully;
+    }
+
+    @Override
     public List<User> findAll() {
         return null;
     }
@@ -73,32 +106,6 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
     @Override
     public boolean delete(User entity) {
         return false;
-    }
-
-    @Override
-    public boolean add(User entity) throws DaoException {
-        boolean addedSuccessfully = false;
-        try(Connection connection = ConnectionPool.INSTANCE.getConnection().orElseThrow();
-            PreparedStatement statement = connection.prepareStatement(ADD_USER_SQL_QUERY)) {
-            String login = entity.getLogin();
-            String name = entity.getName();
-            String surname = entity.getSurname();
-            String email = entity.getEmail();
-            String hashedPassword = entity.getHashedPassword();
-            statement.setString(1, login);
-            statement.setString(2, hashedPassword);
-            statement.setString(3, name);
-            statement.setString(4, surname);
-            statement.setString(5, email);
-            addedSuccessfully = statement.execute();
-        } catch (SQLException e) {
-            throw new DaoException("Exception by creating new prepare statement",e);
-        } catch (InterruptedException e) {
-            logger.warn("Thread was interrupted while taking new free connection", e);
-            Thread.currentThread().interrupt();
-            // TODO: how to do correctly?
-        }
-        return addedSuccessfully;
     }
 
     @Override

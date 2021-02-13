@@ -1,4 +1,4 @@
-package com.epam.brs.model.dao.exception;
+package com.epam.brs.model.dao;
 
 public class DaoException extends Exception{
     public DaoException() {

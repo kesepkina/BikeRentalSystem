@@ -1,12 +1,13 @@
-package com.epam.brs.controller.command.impl;
+package com.epam.brs.command.impl;
 
-import com.epam.brs.controller.command.Command;
+import com.epam.brs.command.Command;
+import com.epam.brs.command.SessionAttribute;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.epam.brs.controller.command.PagePath.ERROR;
+import static com.epam.brs.command.PagePath.ERROR;
 
 public class ChangeLocaleCommand implements Command {
 
@@ -14,7 +15,7 @@ public class ChangeLocaleCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-        String newLocale = request.getParameter(LOCALE);
+        String newLocale = request.getParameter(SessionAttribute.LOCALE);
         //TODO: how to do it correctly?
         Pattern pattern = Pattern.compile("/jsp/");
         String fullPagePath = request.getParameter("currentPage");

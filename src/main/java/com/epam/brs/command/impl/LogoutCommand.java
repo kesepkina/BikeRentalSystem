@@ -1,7 +1,7 @@
-package com.epam.brs.controller.command.impl;
+package com.epam.brs.command.impl;
 
-import com.epam.brs.controller.command.Command;
-import com.epam.brs.controller.command.PagePath;
+import com.epam.brs.command.Command;
+import com.epam.brs.command.PagePath;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

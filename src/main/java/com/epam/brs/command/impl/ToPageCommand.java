@@ -1,20 +1,23 @@
-package com.epam.brs.controller.command.impl;
+package com.epam.brs.command.impl;
 
-import com.epam.brs.controller.command.Command;
-import com.epam.brs.controller.command.PagePath;
+import com.epam.brs.command.Command;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class ShowInfoCommand implements Command {
+public class ToPageCommand implements Command {
 
     private static final Logger log = LogManager.getLogger();
+    private final String page;
+
+    public ToPageCommand(String page) {
+        this.page = page;
+    }
 
     @Override
     public String execute(HttpServletRequest request) {
-        String page = PagePath.INFO;
-        log.debug("Info about project showed.");
+        log.debug("Forward to {}", page);
         return page;
     }
 }
