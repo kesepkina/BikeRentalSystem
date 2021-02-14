@@ -34,7 +34,10 @@ public enum ConnectionPool {
                 throw new RuntimeException("Exception by creating new connection", e);
             }
             ProxyConnection proxyConnection = new ProxyConnection(connection);
-            freeConnections.offer(proxyConnection);
+            boolean added = freeConnections.offer(proxyConnection);
+            if (!added) {
+                logger.error("Connection {} wasn't added to the deque of free connections", proxyConnection);
+            }
         }
     }
 
@@ -56,7 +59,10 @@ public enum ConnectionPool {
         }
         ProxyConnection proxyConnection = (ProxyConnection) connection;
         busyConnections.remove(proxyConnection);
-        freeConnections.offer(proxyConnection);
+        boolean added = freeConnections.offer(proxyConnection);
+        if (!added) {
+            logger.error("Connection {} wasn't added to the deque of free connections", proxyConnection);
+        }
     }
 
     public void destroyPool() throws ConnectionPoolException{

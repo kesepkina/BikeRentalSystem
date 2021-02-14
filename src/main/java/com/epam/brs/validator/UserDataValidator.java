@@ -9,7 +9,9 @@ public class UserDataValidator {
     private static final String LOGIN_KEY = "login";
     private static final String EMAIL_KEY = "email";
     private static final String PASSWORD_KEY = "password";
+    private static final String CONFIRMING_PASSWORD_KEY = "confirmingPassword";
     private static final String INCORRECT_VALUE = " INCORRECT";
+    private static final String DOESNT_MATCH = " doesn't match";
     private static final Pattern LOGIN_PATTERN = Pattern.compile("[a-zA-Z0-9._]{5,20}");
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-zA-Z0-9_+&*-]+(?:\\\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\\\.)+[a-zA-Z]{2,7}$");
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&()])(?=\\S+).{8,20}$");
@@ -35,21 +37,26 @@ public class UserDataValidator {
         return matcher.matches();
     }
 
-    public static boolean isValidForm(Map<String, String> form) {
+    public static boolean areValidData(Map<String, String> userData) {
         boolean valid = true;
-        String loginValue = form.get(LOGIN_KEY);
+        String loginValue = userData.get(LOGIN_KEY);
         if (!isLogin(loginValue)) {
-            form.put(LOGIN_KEY, loginValue + INCORRECT_VALUE);
+            userData.put(LOGIN_KEY, loginValue + INCORRECT_VALUE);
             valid = false;
         }
-        String emailValue = form.get(EMAIL_KEY);
+        String emailValue = userData.get(EMAIL_KEY);
         if (!isEmail(emailValue)) {
-            form.put(EMAIL_KEY, emailValue + INCORRECT_VALUE);
+            userData.put(EMAIL_KEY, emailValue + INCORRECT_VALUE);
             valid = false;
         }
-        String passwordValue = form.get(PASSWORD_KEY);
+        String passwordValue = userData.get(PASSWORD_KEY);
         if (!isPassword(passwordValue)) {
-            form.put(PASSWORD_KEY, passwordValue + INCORRECT_VALUE);
+            userData.put(PASSWORD_KEY, passwordValue + INCORRECT_VALUE);
+            valid = false;
+        }
+        String confirmingPasswordValue = userData.get(CONFIRMING_PASSWORD_KEY);
+        if (!passwordValue.equals(confirmingPasswordValue)) {
+            userData.put(CONFIRMING_PASSWORD_KEY, confirmingPasswordValue + DOESNT_MATCH);
             valid = false;
         }
         return valid;

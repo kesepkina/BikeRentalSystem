@@ -2,11 +2,12 @@ package com.epam.brs.model.service;
 
 import com.epam.brs.model.entity.User;
 
+import java.util.Map;
 import java.util.Optional;
 
 public interface UserService {
 
-    Optional<User> login(String login, String password);
+    Optional<User> login(String login, String password) throws ServiceException;
 
-    boolean signUp(String name, String surname, String email, String login, String password, String confirmedPassword) throws ServiceException;
+    boolean signUp(Map<String, String> userData) throws ServiceException;
 }

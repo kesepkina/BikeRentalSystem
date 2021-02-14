@@ -11,6 +11,6 @@
     <title>ERROR</title>
 </head>
 <body>
-
+<br/>${ErrorMessage}
 </body>
 </html>

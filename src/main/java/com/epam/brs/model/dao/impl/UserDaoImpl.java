@@ -4,7 +4,9 @@ import com.epam.brs.model.dao.BaseDao;
 import com.epam.brs.model.dao.UserDao;
 import com.epam.brs.model.dao.DaoException;
 import com.epam.brs.model.entity.User;
+import com.epam.brs.model.entity.UserRole;
 import com.epam.brs.model.pool.ConnectionPool;
+import com.epam.brs.util.Encryptor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.intellij.lang.annotations.Language;
@@ -22,9 +24,12 @@ public class UserDaoImpl implements BaseDao<Integer, User>, UserDao {
 
     private static final UserDaoImpl instance = new UserDaoImpl();
 
-    @Language("SQL")
+    @Language("MySQL")
     private static final String ADD_USER_SQL_QUERY = "INSERT INTO users(login, password, name, surname, email) VALUES (?, ?, ?, ?, ?)";
+    @Language("MySQL")
     private static final String CONTAINS_LOGIN_SQL_QUERY = "SELECT 1 FROM users WHERE login=?";
+    @Language("MySQL")
+    private static final String FIND_USER_SQL_QUERY = "SELECT password, name, surname, email, role FROM users WHERE login=?";
 
     private UserDaoImpl() {
     }
@@ -36,11 +41,11 @@ public class UserDaoImpl implements BaseDao<Integer, User>, UserDao {
     @Override
     public boolean containsLogin(String login) throws DaoException {
         boolean contains = false;
-        try(Connection connection = ConnectionPool.INSTANCE.getConnection().orElseThrow();
-            PreparedStatement statement = connection.prepareStatement(CONTAINS_LOGIN_SQL_QUERY)) {
+        try (Connection connection = ConnectionPool.INSTANCE.getConnection().orElseThrow();
+             PreparedStatement statement = connection.prepareStatement(CONTAINS_LOGIN_SQL_QUERY)) {
             statement.setString(1, login);
             ResultSet resultSet = statement.executeQuery();
-            if(resultSet.next()) {
+            if (resultSet.next()) {
                 contains = true;
             }
         } catch (SQLException e) {
@@ -58,15 +63,40 @@ public class UserDaoImpl implements BaseDao<Integer, User>, UserDao {
     }
 
     @Override
-    public Optional<User> findUser(String login, String password) {
-        return null;
+    public Optional<User> findUser(String login, String password) throws DaoException {
+        Optional<User> optionalUser;
+        try (Connection connection = ConnectionPool.INSTANCE.getConnection().orElseThrow();
+             PreparedStatement statement = connection.prepareStatement(FIND_USER_SQL_QUERY)) {
+            statement.setString(1, login);
+            ResultSet userData = statement.executeQuery();
+            if (userData.next()) {
+                String hashedPassword = userData.getNString(1);
+                if (Encryptor.coincide(password, hashedPassword)) {
+                    String name = userData.getNString(2);
+                    String surname = userData.getNString(3);
+                    String email = userData.getNString(4);
+                    String role = userData.getNString(5);
+                    UserRole userRole = UserRole.valueOf(role);
+                    User user = new User(login, name, surname, email, userRole);
+                    optionalUser = Optional.of(user);
+                } else {
+                    logger.error("Incorrect password inputted for login {}", login);
+                    optionalUser = Optional.empty();
+                }
+            } else {
+                optionalUser = Optional.empty();
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return optionalUser;
     }
 
     @Override
     public boolean addUser(User user, String hashedPassword) throws DaoException {
         boolean addedSuccessfully = false;
-        try(Connection connection = ConnectionPool.INSTANCE.getConnection().orElseThrow();
-            PreparedStatement statement = connection.prepareStatement(ADD_USER_SQL_QUERY)) {
+        try (Connection connection = ConnectionPool.INSTANCE.getConnection().orElseThrow();
+             PreparedStatement statement = connection.prepareStatement(ADD_USER_SQL_QUERY)) {
             String login = user.getLogin();
             String name = user.getName();
             String surname = user.getSurname();
@@ -77,7 +107,7 @@ public class UserDaoImpl implements BaseDao<Integer, User>, UserDao {
             statement.setString(4, surname);
             statement.setString(5, email);
             ResultSet resultSet = statement.executeQuery();
-            if(resultSet.next()) {
+            if (resultSet.next()) {
                 addedSuccessfully = true;
                 logger.info("User added successfully");
             }

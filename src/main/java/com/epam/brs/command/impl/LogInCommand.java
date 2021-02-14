@@ -14,14 +14,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Optional;
-import java.util.Properties;
 
 import static com.epam.brs.command.PagePath.*;
 
 public class LogInCommand implements Command {
 
     private static final Logger logger = LogManager.getLogger();
-    private static final String PARAM_NAME = "user";
     private final UserServiceImpl service;
 
     public LogInCommand(UserServiceImpl service) {
@@ -33,7 +31,13 @@ public class LogInCommand implements Command {
         String page;
         String loginValue = request.getParameter(RequestParameter.LOGIN.getValue());
         String passValue = request.getParameter(RequestParameter.PASSWORD.getValue());
-        Optional<User> optionalUser= service.login(loginValue, passValue);
+        Optional<User> optionalUser = Optional.empty();
+        try {
+            optionalUser = service.login(loginValue, passValue);
+        } catch (ServiceException e) {
+            logger.error("Exception while logging in", e);
+            request.setAttribute("ErrorMessage", "Exception while logging in: " + e.getMessage());
+        }
         User user;
         if(optionalUser.isPresent()) {
             user = optionalUser.get();

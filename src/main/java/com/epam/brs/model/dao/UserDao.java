@@ -10,7 +10,7 @@ public interface UserDao {
 
     boolean contains(String username, String password);
 
-    Optional<User> findUser(String login, String password);
+    Optional<User> findUser(String login, String password) throws DaoException;
 
     boolean addUser(User user, String hashedPassword) throws DaoException;
 }

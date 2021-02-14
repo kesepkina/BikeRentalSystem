@@ -37,7 +37,7 @@
     ${errorPasswordMessage}
     <br/><fmt:message key="signUp.passwordConfirming" /><br/>
     <input type="password" name="passwordConfirming" value="" required pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&()])(?=\S+$).{8,20}$"/>
-    ${errorPasswordConfirmingMessage}
+    <div style="color:red">${errorPasswordConfirmingMessage}
     <br/><br/>
     <input type="submit" value="<fmt:message key="signUp.sign_up" />">
     <br/>${errorUserMessage}

@@ -10,43 +10,50 @@ import com.epam.brs.validator.UserDataValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Map;
 import java.util.Optional;
 
 public class UserServiceImpl implements UserService {
 
     private static final Logger logger = LogManager.getLogger();
+    private static final String LOGIN_KEY = "login";
+    private static final String EMAIL_KEY = "email";
+    private static final String PASSWORD_KEY = "password";
+    private static final String NAME_KEY = "name";
+    private static final String SURNAME_KEY = "surname";
+    private static final String ALREADY_EXISTS = " already exists";
 
     @Override
-    public Optional<User> login(String login, String password) {
-        Optional<User> optionalUser = UserDaoImpl.getInstance().findUser(login, password);
+    public Optional<User> login(String login, String password) throws ServiceException {
+        Optional<User> optionalUser;
+        try {
+            optionalUser = UserDaoImpl.getInstance().findUser(login, password);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
         return optionalUser;
     }
 
     @Override
-    public boolean signUp(String name, String surname, String email, String login, String password, String confirmedPassword) throws ServiceException {
+    public boolean signUp(Map<String, String> userData) throws ServiceException {
         boolean successfullySignedUp = true;
-        if (!UserDataValidator.isLogin(login)) {
-            successfullySignedUp = false;
-        } else {
-            try {
-                if (UserDaoImpl.getInstance().containsLogin(login)) {
-                    successfullySignedUp = false;
-                }
-            } catch (DaoException e) {
-                throw new ServiceException(e);
-            }
-        }
-        if (!UserDataValidator.isPassword(password)) {
-            successfullySignedUp = false;
-        }
-        if (!UserDataValidator.isPassword(email)) {
-            successfullySignedUp = false;
-        }
-        String hashedPassword = Encryptor.encrypt(password);
-        User user = new User(login, name, surname, email);
+        String loginValue = userData.get(LOGIN_KEY);
         try {
-            UserDaoImpl.getInstance().addUser(user, hashedPassword);
+            if (UserDaoImpl.getInstance().containsLogin(loginValue)) {
+                userData.put(LOGIN_KEY, loginValue + ALREADY_EXISTS);
+            } else if (UserDataValidator.areValidData(userData)) {
+                String nameValue = userData.get(NAME_KEY);
+                String surnameValue = userData.get(SURNAME_KEY);
+                String emailValue = userData.get(EMAIL_KEY);
+                User user = new User(loginValue, nameValue, surnameValue, emailValue);
+                String passwordValue = userData.get(PASSWORD_KEY);
+                String hashedPassword = Encryptor.encrypt(passwordValue);
+                successfullySignedUp = UserDaoImpl.getInstance().addUser(user, hashedPassword);
+            } else {
+                successfullySignedUp = false;
+            }
         } catch (DaoException e) {
+            logger.error(e);
             throw new ServiceException(e);
         }
         return successfullySignedUp;
