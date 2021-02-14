@@ -22,11 +22,11 @@
     <input type="hidden" name="command" value="signup" />
     <br/><fmt:message key="signUp.name" /><br/>
     <input type="text" name="name" value="" required/>
-    <fmt:message key="signUp.surname" /><br/>
+    <br/><fmt:message key="signUp.surname" /><br/>
     <input type="text" name="surname" value="" required/>
     <br/><fmt:message key="signUp.email" /><br/>
-    <input type="email" name="email" value="" required pattern="^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$"/>
-    <div style="color:red">${errorEmailMessage}</div>
+    <input type="email" name="email" value="" required pattern="^[a-zA-Z0-9_+&*-]+(?:.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+.)+[a-zA-Z]{2,7}$"/>
+    ${errorEmailMessage}
     <br/><fmt:message key="signUp.login" /><br/>
     <input type="text" name="login" value="" required pattern="[a-zA-Z0-9._]{5,20}"
            title='must include only letters, ciphers, characters ".", "_" and have from 5 to 20 characters' />
@@ -37,7 +37,7 @@
     ${errorPasswordMessage}
     <br/><fmt:message key="signUp.passwordConfirming" /><br/>
     <input type="password" name="passwordConfirming" value="" required pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&()])(?=\S+$).{8,20}$"/>
-    <div style="color:red">${errorPasswordConfirmingMessage}
+    ${errorPasswordConfirmingMessage}
     <br/><br/>
     <input type="submit" value="<fmt:message key="signUp.sign_up" />">
     <br/>${errorUserMessage}

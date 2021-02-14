@@ -41,7 +41,7 @@ public class UserDaoImpl implements BaseDao<Integer, User>, UserDao {
     @Override
     public boolean containsLogin(String login) throws DaoException {
         boolean contains = false;
-        try (Connection connection = ConnectionPool.INSTANCE.getConnection().orElseThrow();
+        try (Connection connection = ConnectionPool.INSTANCE.getConnection();
              PreparedStatement statement = connection.prepareStatement(CONTAINS_LOGIN_SQL_QUERY)) {
             statement.setString(1, login);
             ResultSet resultSet = statement.executeQuery();
@@ -65,7 +65,7 @@ public class UserDaoImpl implements BaseDao<Integer, User>, UserDao {
     @Override
     public Optional<User> findUser(String login, String password) throws DaoException {
         Optional<User> optionalUser;
-        try (Connection connection = ConnectionPool.INSTANCE.getConnection().orElseThrow();
+        try (Connection connection = ConnectionPool.INSTANCE.getConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_USER_SQL_QUERY)) {
             statement.setString(1, login);
             ResultSet userData = statement.executeQuery();
@@ -94,8 +94,8 @@ public class UserDaoImpl implements BaseDao<Integer, User>, UserDao {
 
     @Override
     public boolean addUser(User user, String hashedPassword) throws DaoException {
-        boolean addedSuccessfully = false;
-        try (Connection connection = ConnectionPool.INSTANCE.getConnection().orElseThrow();
+        boolean addedSuccessfully;
+        try (Connection connection = ConnectionPool.INSTANCE.getConnection();
              PreparedStatement statement = connection.prepareStatement(ADD_USER_SQL_QUERY)) {
             String login = user.getLogin();
             String name = user.getName();
@@ -106,10 +106,13 @@ public class UserDaoImpl implements BaseDao<Integer, User>, UserDao {
             statement.setString(3, name);
             statement.setString(4, surname);
             statement.setString(5, email);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
+            int rowCount = statement.executeUpdate();
+            if (rowCount != 0) {
                 addedSuccessfully = true;
                 logger.info("User added successfully");
+            } else {
+                logger.error("User {} wasn't added", user);
+                addedSuccessfully = false;
             }
         } catch (SQLException e) {
             logger.error("Exception while adding new user", e);

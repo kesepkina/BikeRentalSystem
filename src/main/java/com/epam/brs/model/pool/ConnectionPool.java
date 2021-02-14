@@ -8,7 +8,6 @@ import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayDeque;
-import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -29,9 +28,9 @@ public enum ConnectionPool {
             Connection connection = null;
             try {
                 connection = ConnectionCreator.createConnection();
-            } catch (SQLException e) {
-                logger.fatal("Exception by creating new connection", e);
-                throw new RuntimeException("Exception by creating new connection", e);
+            } catch (ConnectionCreatorException e) {
+                logger.fatal("Error while creating new connection", e);
+                throw new RuntimeException("FATAL ERROR while creating new connection", e);
             }
             ProxyConnection proxyConnection = new ProxyConnection(connection);
             boolean added = freeConnections.offer(proxyConnection);
@@ -41,7 +40,7 @@ public enum ConnectionPool {
         }
     }
 
-    public Optional<Connection> getConnection(){
+    public Connection getConnection(){
         ProxyConnection connection = null;
         try {
             connection = freeConnections.take();
@@ -50,7 +49,7 @@ public enum ConnectionPool {
             logger.error("Thread was interrupted while taking new free connection", e);
             Thread.currentThread().interrupt();
         }
-        return Optional.ofNullable(connection);
+        return connection;
     }
 
     public void releaseConnection(Connection connection) {

@@ -59,7 +59,7 @@ public class LogInCommand implements Command {
             }
         } else {
             request.setAttribute("errorUserMessage", "Incorrect login or password");
-            page = SIGNUP;
+            page = LOGIN;
         }
         return page;
     }

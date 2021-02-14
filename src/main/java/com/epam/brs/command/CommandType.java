@@ -4,8 +4,8 @@ import com.epam.brs.command.impl.*;
 import com.epam.brs.model.service.impl.UserServiceImpl;
 
 public enum CommandType {
-    SIGNUP(new LogInCommand(new UserServiceImpl())),
-    LOGIN(new SignUpCommand(new UserServiceImpl())),
+    SIGNUP(new SignUpCommand(new UserServiceImpl())),
+    LOGIN(new LogInCommand(new UserServiceImpl())),
     LOGOUT(new LogoutCommand()),
     SHOW_INFO(new ShowInfoCommand()),
     TO_MAIN(new ToPageCommand(PagePath.MAIN)),

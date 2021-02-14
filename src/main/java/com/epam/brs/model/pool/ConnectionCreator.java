@@ -17,33 +17,43 @@ class ConnectionCreator {
     private static final Properties properties = new Properties();
     private static final String DATABASE_URL;
     private static final int POOL_SIZE;
-
-    private static final String PROPERTIES_PATH = "properties/database.properties";
+    // TODO: change path
+    private static final String PROPERTIES_PATH ="E:\\Workspace\\JavaWebDevelopment_EPAM\\BikeRentalSystem\\src\\main\\resources\\properties\\database.properties";
     private static final String DB_DRIVER = "db.driver";
     private static final String DB_URL = "db.url";
     private static final String DB_POOL_SIZE = "pool.size";
 
     static {
-        try{
+        try {
             properties.load(new FileReader(PROPERTIES_PATH));
+        } catch (FileNotFoundException e) {
+            logger.fatal("Properties file not found", e);
+            throw new RuntimeException("FATAL ERROR Properties file not found", e);
+        } catch (IOException e) {
+            logger.fatal("Reader of properties files not loaded", e);
+            throw new RuntimeException("FATAL ERROR Reader of properties files not loaded", e);
+        }
+        try {
             String driverName = (String) properties.get(DB_DRIVER);
             Class.forName(driverName);
         } catch (ClassNotFoundException e) {
-            logger.fatal(e);
-            throw new RuntimeException("");
-            //TODO
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            logger.fatal("Driver class not found", e);
+            throw new RuntimeException("Driver class not found", e);
         }
         DATABASE_URL = (String) properties.get(DB_URL);
-        POOL_SIZE = (Integer) properties.get(DB_POOL_SIZE);
+        POOL_SIZE = Integer.valueOf((String) properties.get(DB_POOL_SIZE));
     }
 
     private ConnectionCreator(){}
-    public static Connection createConnection() throws SQLException {
-        return DriverManager.getConnection(DATABASE_URL, properties);
+    public static Connection createConnection() throws ConnectionCreatorException {
+        Connection connection = null;
+        try {
+            connection = DriverManager.getConnection(DATABASE_URL, properties);
+        } catch (SQLException e) {
+            logger.error("Exception while getting connection", e);
+            throw new ConnectionCreatorException("Exception while getting connection", e);
+        }
+        return connection;
     }
 
     static int getPoolSize() {
