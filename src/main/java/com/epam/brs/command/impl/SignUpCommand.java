@@ -79,7 +79,6 @@ public class SignUpCommand implements Command {
             }
         } catch (ServiceException e) {
             logger.error("Exception while signing up", e);
-            request.setAttribute("ErrorMessage", "Exception while signing up: " + e.getMessage());
             page = ERROR;
         }
         return page;
