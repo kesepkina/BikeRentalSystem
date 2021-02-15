@@ -48,6 +48,14 @@ nav{
     background-image: url(https://www.countryflags.io/ru/flat/32.png);
 }
 
+.selected-lang:lang(en_US)::before {
+    content: '';
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    background-image: url(https://www.countryflags.io/gb/flat/32.png);
+}
+
 .language-menu ul {
     margin: 0;
     padding: 0;
