@@ -29,7 +29,7 @@
                     <a href="<c:url value="/controller?command=change_locale&locale=en_US&currentPage="/>${pageContext.request.requestURI}" class="en">English</a>
                 </li>
                 <li>
-                    <a href="<c:url value="/controller?command=change_locale&locale=&currentPage="/>${pageContext.request.requestURI}" class="ru">Русский</a>
+                    <a href="<c:url value="/controller?command=change_locale&locale=ru_RU&currentPage="/>${pageContext.request.requestURI}" class="ru">Русский</a>
                 </li>
             </ul>
         </div>

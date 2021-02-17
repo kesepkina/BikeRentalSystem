@@ -12,10 +12,14 @@ import static com.epam.brs.command.PagePath.ERROR;
 public class ChangeLocaleCommand implements Command {
 
     private static final String LOCALE = "locale";
+    private static final String LANGUAGE = "lang";
 
     @Override
     public String execute(HttpServletRequest request) {
         String newLocale = request.getParameter(SessionAttribute.LOCALE);
+        request.getSession().setAttribute(LOCALE, newLocale);
+        String language = newLocale.substring(0,2);
+        request.getSession().setAttribute(LANGUAGE, language);
         //TODO: how to do it correctly?
         Pattern pattern = Pattern.compile("/jsp/");
         String fullPagePath = request.getParameter("currentPage");
@@ -24,7 +28,6 @@ public class ChangeLocaleCommand implements Command {
         if(matcher.find()) {
             page = fullPagePath.substring(matcher.start());
         }
-        request.getSession().setAttribute(LOCALE, newLocale);
         return page;
     }
 }

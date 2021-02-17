@@ -10,4 +10,6 @@ public interface UserService {
     Optional<User> login(String login, String password) throws ServiceException;
 
     boolean signUp(Map<String, String> userData) throws ServiceException;
+
+    void sendMail(String addressee, String topic, String text) throws ServiceException;
 }

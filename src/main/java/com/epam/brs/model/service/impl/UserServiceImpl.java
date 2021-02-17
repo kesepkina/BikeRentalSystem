@@ -5,13 +5,20 @@ import com.epam.brs.model.dao.impl.UserDaoImpl;
 import com.epam.brs.model.entity.User;
 import com.epam.brs.model.service.ServiceException;
 import com.epam.brs.model.service.UserService;
+import com.epam.brs.model.service.mail.MailSender;
 import com.epam.brs.util.Encryptor;
 import com.epam.brs.validator.UserDataValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Properties;
 
 public class UserServiceImpl implements UserService {
 
@@ -22,6 +29,7 @@ public class UserServiceImpl implements UserService {
     private static final String NAME_KEY = "name";
     private static final String SURNAME_KEY = "surname";
     private static final String ALREADY_EXISTS = " already exists";
+    private static final String MAIL_PROPERTIES_PATH = "properties/config/mail.properties";
 
     @Override
     public Optional<User> login(String login, String password) throws ServiceException {
@@ -56,7 +64,36 @@ public class UserServiceImpl implements UserService {
             logger.error(e);
             throw new ServiceException(e);
         }
+        if (successfullySignedUp) {
+            String emailValue = userData.get(EMAIL_KEY);
+            String topic = "Welcome to BRC";
+            String text = "Thank you for registering on our rental service. Wish you a great road!";
+            sendMail(emailValue, topic, text);
+        }
         return successfullySignedUp;
+    }
+
+    @Override
+    public void sendMail(String addressee, String topic, String text) throws ServiceException {
+        Properties properties = new Properties();
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL resource = classLoader.getResource(MAIL_PROPERTIES_PATH);
+        File file;
+        try {
+            assert resource != null;
+            file = new File(resource.toURI());
+        } catch (URISyntaxException e) {
+            throw new ServiceException(e);
+        }
+        try(FileReader reader = new FileReader(file)) {
+            properties.load(reader);
+        } catch (IOException e) {
+            logger.error("File of mail properties not found", e);
+            throw new ServiceException("File of mail properties not found", e);
+        }
+        logger.debug(properties);
+        MailSender sender = new MailSender(addressee, topic, text, properties);
+        sender.send();
     }
 
 }

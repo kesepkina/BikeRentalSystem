@@ -13,7 +13,7 @@
 <body>
 This is a demo-project.
 <form name="infoForm" method="POST" action="controller">
-    <input type="hidden" name="command" value="go_to_main"/>
+    <input type="hidden" name="command" value="to_main"/>
     <br/>
     <input type="submit" value="Main page">
 </form>
