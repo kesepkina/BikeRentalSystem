@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Map;
@@ -77,16 +78,9 @@ public class UserServiceImpl implements UserService {
     public void sendMail(String addressee, String topic, String text) throws ServiceException {
         Properties properties = new Properties();
         ClassLoader classLoader = getClass().getClassLoader();
-        URL resource = classLoader.getResource(MAIL_PROPERTIES_PATH);
-        File file;
+        InputStream resourceAsStream = classLoader.getResourceAsStream(MAIL_PROPERTIES_PATH);
         try {
-            assert resource != null;
-            file = new File(resource.toURI());
-        } catch (URISyntaxException e) {
-            throw new ServiceException(e);
-        }
-        try(FileReader reader = new FileReader(file)) {
-            properties.load(reader);
+            properties.load(resourceAsStream);
         } catch (IOException e) {
             logger.error("File of mail properties not found", e);
             throw new ServiceException("File of mail properties not found", e);

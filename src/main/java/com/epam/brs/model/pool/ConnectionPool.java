@@ -52,19 +52,20 @@ public enum ConnectionPool {
         return connection;
     }
 
-    public void releaseConnection(Connection connection) {
+    void releaseConnection(Connection connection) {
         if (connection.getClass() != ProxyConnection.class) {
             logger.error("Unreleasable connection {}", connection);
-        }
-        ProxyConnection proxyConnection = (ProxyConnection) connection;
-        busyConnections.remove(proxyConnection);
-        boolean added = freeConnections.offer(proxyConnection);
-        if (!added) {
-            logger.error("Connection {} wasn't added to the deque of free connections", proxyConnection);
+        } else {
+            ProxyConnection proxyConnection = (ProxyConnection) connection;
+            busyConnections.remove(proxyConnection);
+            boolean added = freeConnections.offer(proxyConnection);
+            if (!added) {
+                logger.error("Connection {} wasn't added to the deque of free connections", proxyConnection);
+            }
         }
     }
 
-    public void destroyPool() throws ConnectionPoolException{
+    void destroyPool() throws ConnectionPoolException{
         for (int i = 0; i < ConnectionCreator.getPoolSize(); i++) {
             try {
                 freeConnections.take().completelyClose();

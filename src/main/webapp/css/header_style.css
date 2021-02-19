@@ -2,10 +2,11 @@
 
 body {
     font-family: 'Noto Sans', sans-serif;
-    color: #3a3a3a;
+    color: #aeaeae;
     box-sizing: border-box;
     height: 110px;
-    padding: 10px 0;
+    padding: 0;
+    z-index: 2;
 }
 
 * {
@@ -21,14 +22,15 @@ a {
 }
 
 nav{
-    width: 960px;
+    width: 100%;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
+    background-color: #000000;
 }
 
 .language-menu {
-    margin-top: 25px;
+    margin-top: 10px;
     position: relative;
 }
 
@@ -38,6 +40,7 @@ nav{
     justify-content: space-between;
     line-height: 2;
     width: 100px;
+    margin-right: 40px;
 }
 
 .selected-lang:before {
@@ -59,14 +62,15 @@ nav{
 .language-menu ul {
     margin: 0;
     padding: 0;
-    background-color: #ffffff;
-    border:1px solid #ffffff;
+    background-color: #000000;
+    border:1px solid #000000;
     box-shadow: 0px 1px 10px rgba(0,0,0, 0.2);
     border-radius: 5px;
     display: none;
     position: absolute;
     top: 30px;
     left: -15px;
+    z-index: 3;
 }
 
 .language-menu ul li {
@@ -91,7 +95,7 @@ nav{
 }
 
 .language-menu ul li a:hover {
-    background-color: #ffe7e7;
+    background-color: #453e3e;
 }
 
 .en:before{

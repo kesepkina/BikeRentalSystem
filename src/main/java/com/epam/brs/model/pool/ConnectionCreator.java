@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -17,15 +18,15 @@ class ConnectionCreator {
     private static final Properties properties = new Properties();
     private static final String DATABASE_URL;
     private static final int POOL_SIZE;
-    // TODO: change path
-    private static final String PROPERTIES_PATH ="E:\\Workspace\\JavaWebDevelopment_EPAM\\BikeRentalSystem\\src\\main\\resources\\properties\\database.properties";
+    private static final String PROPERTIES_PATH ="properties/database.properties";
     private static final String DB_DRIVER = "db.driver";
     private static final String DB_URL = "db.url";
     private static final String DB_POOL_SIZE = "pool.size";
 
     static {
         try {
-            properties.load(new FileReader(PROPERTIES_PATH));
+            InputStream inputStream = ConnectionCreator.class.getClassLoader().getResourceAsStream(PROPERTIES_PATH);
+            properties.load(inputStream);
         } catch (FileNotFoundException e) {
             logger.fatal("Properties file not found", e);
             throw new RuntimeException("FATAL ERROR Properties file not found", e);
