@@ -1,2 +1,3 @@
-# BikeRentalSystem
-EPAM Java Web | Web Project
+# Bike Rental System "GO!"
+## Project Overview
+The website provides an opportunity to rent bicycles of various types. 
