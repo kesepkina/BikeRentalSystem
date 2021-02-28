@@ -13,4 +13,4 @@ The website provides an opportunity to rent bicycles of various types. It works 
   - Responding to user requests for bike rental.
 - Admin
   - Blocking users and rental points;
-  - Adding new admins;
+  - Adding new admins.
