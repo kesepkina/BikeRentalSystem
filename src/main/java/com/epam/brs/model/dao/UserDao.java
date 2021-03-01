@@ -4,9 +4,9 @@ import com.epam.brs.model.entity.User;
 
 import java.util.Optional;
 
-public interface UserDao {
+public interface UserDao extends BaseDao<Integer, User> {
 
-    boolean containsLogin(String username) throws InterruptedException, DaoException;
+    boolean containsLogin(String username) throws DaoException;
 
     boolean contains(String username, String password);
 

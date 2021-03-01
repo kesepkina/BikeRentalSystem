@@ -4,7 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -24,8 +23,7 @@ class ConnectionCreator {
     private static final String DB_POOL_SIZE = "pool.size";
 
     static {
-        try {
-            InputStream inputStream = ConnectionCreator.class.getClassLoader().getResourceAsStream(PROPERTIES_PATH);
+        try (InputStream inputStream = ConnectionCreator.class.getClassLoader().getResourceAsStream(PROPERTIES_PATH);){
             properties.load(inputStream);
         } catch (FileNotFoundException e) {
             logger.fatal("Properties file not found", e);
@@ -33,6 +31,8 @@ class ConnectionCreator {
         } catch (IOException e) {
             logger.fatal("Reader of properties files not loaded", e);
             throw new RuntimeException("FATAL ERROR Reader of properties files not loaded", e);
+        } finally {
+
         }
         try {
             String driverName = (String) properties.get(DB_DRIVER);

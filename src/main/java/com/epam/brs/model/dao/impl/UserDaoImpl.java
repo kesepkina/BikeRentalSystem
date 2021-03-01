@@ -1,6 +1,5 @@
 package com.epam.brs.model.dao.impl;
 
-import com.epam.brs.model.dao.BaseDao;
 import com.epam.brs.model.dao.UserDao;
 import com.epam.brs.model.dao.DaoException;
 import com.epam.brs.model.entity.User;
@@ -18,11 +17,11 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public class UserDaoImpl implements BaseDao<Integer, User>, UserDao {
+public class UserDaoImpl implements UserDao {
 
     private static final Logger logger = LogManager.getLogger();
 
-    private static final UserDaoImpl instance = new UserDaoImpl();
+    private static final UserDao instance = new UserDaoImpl();
 
     @Language("MySQL")
     private static final String ADD_USER_SQL_QUERY = "INSERT INTO users(login, password, name, surname, email) VALUES (?, ?, ?, ?, ?)";
@@ -34,7 +33,7 @@ public class UserDaoImpl implements BaseDao<Integer, User>, UserDao {
     private UserDaoImpl() {
     }
 
-    public static UserDaoImpl getInstance() {
+    public static UserDao getInstance() {
         return instance;
     }
 

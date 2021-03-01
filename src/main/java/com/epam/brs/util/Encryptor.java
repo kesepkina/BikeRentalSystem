@@ -4,6 +4,8 @@ import org.mindrot.jbcrypt.BCrypt;
 
 public class Encryptor {
 
+    private Encryptor(){}
+
     public static String encrypt(String data) {
         String salt = BCrypt.gensalt();
         String hashedData = BCrypt.hashpw(data, salt);
