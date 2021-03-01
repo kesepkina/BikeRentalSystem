@@ -5,21 +5,18 @@ The website provides an opportunity to rent bicycles of various types. It works 
 - Guest
   - Viewing information about available bicycles and rental points;
   - Searching for bike rental for specific dates by filters;
-  - Authentication;
+  - Authentication and authorization;
 - Client
-  - Authorization;
   - Editing personal information in the profile;
   - Viewing information about available bicycles and rental points;
   - Searching by filters and applying for bike rental for specific dates;
   - Leaving feedback for rented bicycles and rental points;
   - Rent payment.
 - Landlord
-  - Authorization;
   - Editing personal information in the profile;
   - Managing own rental points and bicycles lists;
   - Responding to user requests for bike rental.
 - Admin
-  - Authorization;
-  - Blocking users and rental points;
+  - Managing users and rental points;
   - Managing feedbacks;
   - Adding new admins.
