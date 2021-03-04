@@ -6,7 +6,7 @@ The websystem provides an opportunity to rent bicycles of various types. It work
   - Registration;
   - Authentication and authorization;
   - Viewing information about available bicycles and rental points;
-  - Searching for bike rental for specific dates by filters;
+  - Searching for bike rental for specific dates by filters.
 - Client
   - Editing personal information in the profile;
   - Viewing information about available bicycles and rental points;
