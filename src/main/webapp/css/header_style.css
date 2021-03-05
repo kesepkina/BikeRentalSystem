@@ -4,8 +4,9 @@ body {
     font-family: 'Noto Sans', sans-serif;
     color: #aeaeae;
     box-sizing: border-box;
-    height: 110px;
-    padding: 50;
+    height: 50px;
+    padding: 0;
+    margin: auto;
     z-index: 2;
 }
 
@@ -61,7 +62,7 @@ nav{
 }
 
 .language-menu ul {
-    margin: 0;
+    margin: 3px;
     padding: 0;
     background-color: #000000;
     border:1px solid #000000;
@@ -70,7 +71,7 @@ nav{
     display: none;
     position: absolute;
     top: 30px;
-    left: -15px;
+    left: -10px;
     z-index: 3;
 }
 
@@ -84,6 +85,7 @@ nav{
     width: 140px;
     display:block;
     padding: 5px 10px;
+    color: #aeaeae;
 }
 
 .language-menu ul li a:before {

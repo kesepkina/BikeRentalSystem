@@ -1,21 +1,15 @@
 package com.epam.brs.command;
 
-public enum RequestParameter {
+public class RequestParameter {
 
-    NAME ("name"),
-    SURNAME ("surname"),
-    EMAIL ("email"),
-    LOGIN ("login"),
-    PASSWORD("password"),
-    PASSWORD_CONFIRMING ("passwordConfirming");
+    public static final String NAME = "name";
+    public static final String SURNAME = "surname";
+    public static final String LOGIN = "login";
+    public static final String EMAIL = "email";
+    public static final String PASSWORD = "password";
+    public static final String PASSWORD_CONFIRMING = "passwordConfirming";
+    public static final String LOCALE = "locale";
 
-    private final String value;
+    private RequestParameter() { }
 
-    RequestParameter(String value) {
-        this.value = value;
-    }
-
-    public String getValue() {
-        return value;
-    }
 }

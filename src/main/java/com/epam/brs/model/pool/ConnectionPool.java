@@ -65,7 +65,7 @@ public enum ConnectionPool {
         }
     }
 
-    void destroyPool() throws ConnectionPoolException{
+    public void destroyPool() throws ConnectionPoolException{
         for (int i = 0; i < ConnectionCreator.getPoolSize(); i++) {
             try {
                 freeConnections.take().completelyClose();

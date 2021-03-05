@@ -24,11 +24,11 @@ public class UserDaoImpl implements UserDao {
     private static final UserDao instance = new UserDaoImpl();
 
     @Language("MySQL")
-    private static final String ADD_USER_SQL_QUERY = "INSERT INTO users(login, password, name, surname, email) VALUES (?, ?, ?, ?, ?)";
+    private static final String ADD_USER_SQL_QUERY = "INSERT INTO users(login, passwordHash, name, surname, email) VALUES (?, ?, ?, ?, ?)";
     @Language("MySQL")
     private static final String CONTAINS_LOGIN_SQL_QUERY = "SELECT 1 FROM users WHERE login=?";
     @Language("MySQL")
-    private static final String FIND_USER_SQL_QUERY = "SELECT password, name, surname, email, role FROM users WHERE login=?";
+    private static final String FIND_USER_SQL_QUERY = "SELECT passwordHash, name, surname, email, role FROM users WHERE login=?";
 
     private UserDaoImpl() {
     }

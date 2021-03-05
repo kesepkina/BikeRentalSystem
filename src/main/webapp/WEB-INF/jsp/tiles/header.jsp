@@ -21,9 +21,7 @@
         <div class="logo">
         </div>
         <div class="language-menu">
-            <div class="selected-lang"/>
-                <fmt:message key="language" />
-            </div>
+            <div class="selected-lang"><fmt:message key="language" /></div>
             <ul>
                 <li>
                     <a href="<c:url value="/controller?command=change_locale&locale=en_US&currentPage="/>${pageContext.request.requestURI}" class="en">English</a>

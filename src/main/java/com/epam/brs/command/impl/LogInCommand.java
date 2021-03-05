@@ -29,8 +29,8 @@ public class LogInCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
         String page;
-        String loginValue = request.getParameter(RequestParameter.LOGIN.getValue());
-        String passValue = request.getParameter(RequestParameter.PASSWORD.getValue());
+        String loginValue = request.getParameter(RequestParameter.LOGIN);
+        String passValue = request.getParameter(RequestParameter.PASSWORD);
         Optional<User> optionalUser = Optional.empty();
         try {
             optionalUser = service.login(loginValue, passValue);

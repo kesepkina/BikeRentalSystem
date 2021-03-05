@@ -36,12 +36,12 @@ public class SignUpCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
         String page;
-        String nameValue = request.getParameter(RequestParameter.NAME.getValue());
-        String surnameValue = request.getParameter(RequestParameter.SURNAME.getValue());
-        String emailValue = request.getParameter(RequestParameter.EMAIL.getValue());
-        String loginValue = request.getParameter(RequestParameter.LOGIN.getValue());
-        String passValue = request.getParameter(RequestParameter.PASSWORD.getValue());
-        String passConfirmValue = request.getParameter(RequestParameter.PASSWORD_CONFIRMING.getValue());
+        String nameValue = request.getParameter(RequestParameter.NAME);
+        String surnameValue = request.getParameter(RequestParameter.SURNAME);
+        String emailValue = request.getParameter(RequestParameter.EMAIL);
+        String loginValue = request.getParameter(RequestParameter.LOGIN);
+        String passValue = request.getParameter(RequestParameter.PASSWORD);
+        String passConfirmValue = request.getParameter(RequestParameter.PASSWORD_CONFIRMING);
         Map<String, String> userData = new HashMap<>();
         userData.put(NAME_KEY, nameValue);
         userData.put(SURNAME_KEY, surnameValue);
@@ -79,7 +79,7 @@ public class SignUpCommand implements Command {
             }
         } catch (ServiceException e) {
             logger.error("Exception while signing up", e);
-            page = ERROR;
+            page = ERROR500;
         }
         return page;
     }
