@@ -25,11 +25,11 @@
     <div class="w3-display-container w3-content w3-wide" style="max-width:1500px;" id="home">
         <img src="${pageContext.request.contextPath}/images/home_background.jpg" alt="Background" width=100% >
         <div class="w3-display-topmiddle w3-margin-top w3-center">
-            <h1 class="w3-xxlarge w3-text-white"><span class="w3-padding w3-black w3-opacity-min"><b><fmt:message key="main.welcome"/></b></span></h1>
-            </br>
+            <h1 class="w3-xxxlarge w3-text-white"><b><fmt:message key="main.welcome"/></b></h1>
+            <br>
             <form name="infoForm" method="POST" action="controller">
-                <input type="hidden" name="command" value="show_Info"/>
-                <input class="w3-button w3-yellow w3-round-large" type="submit" value="info about project">
+                <input type="hidden" name="command" value="display_bicycles"/>
+                <input class="w3-button w3-yellow w3-round-large" type="submit" value="find">
             </form>
         </div>
     </div>

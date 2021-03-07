@@ -1,10 +1,10 @@
-package com.epam.brs.model.service.mail;
+package com.epam.brs.util.mail;
 
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import java.util.Properties;
 
-public class SessionFactory {
+public class MailSessionFactory {
     private static final String EMAIL_KEY = "mail.user.email";
     private static final String PASSWORD_KEY = "mail.user.password";
 

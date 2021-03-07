@@ -54,14 +54,6 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean contains(String username, String password) {
-        //TODO
-        boolean contains = false;
-
-        return contains;
-    }
-
-    @Override
     public Optional<User> findUser(String login, String password) throws DaoException {
         Optional<User> optionalUser;
         try (Connection connection = ConnectionPool.INSTANCE.getConnection();

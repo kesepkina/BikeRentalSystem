@@ -22,19 +22,16 @@
     <form name="loginForm" method="POST" action="controller">
         <input type="hidden" name="command" value="login" />
         <fmt:message key="logIn.login" /><br/>
-        <input type="text" name="login" value=""/>
+        <input type="text" name="login" value="" required/>
         <br/><fmt:message key="logIn.password" /><br/>
-        <input type="password" name="password" value=""/>
+        <input type="password" name="password" value="" required/>
         <br/><br/>
         ${errorUserMessage}<br/>
         <input type="submit" value="<fmt:message key="logIn.log_in" />">
-        ${nullPage}
     </form>
-    <form name="loginForm" method="post" action="controller">
+    <form name="signUpForm" method="post" action="controller">
         <input type="hidden" name="command" value="to_signup" />
         <input type="submit" value="<fmt:message key="logIn.sign_up" />">
-        <br/>
-        ${nullPage}
     </form>
 </body>
 </html>

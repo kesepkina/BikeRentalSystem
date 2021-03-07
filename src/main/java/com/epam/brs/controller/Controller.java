@@ -1,6 +1,7 @@
 package com.epam.brs.controller;
 
 import com.epam.brs.command.Command;
+import com.epam.brs.command.CommandException;
 import com.epam.brs.command.CommandProvider;
 import com.epam.brs.model.pool.ConnectionPool;
 import com.epam.brs.model.pool.ConnectionPoolException;
@@ -37,7 +38,13 @@ public class Controller extends HttpServlet {
     private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Optional<Command> optionalCommand = CommandProvider.defineCommand(req.getParameter(COMMAND));
         Command command = optionalCommand.orElseThrow(IllegalArgumentException::new);
-        String page = command.execute(req);
+        String page = null;
+        try {
+            page = command.execute(req);
+        } catch (CommandException e) {
+            logger.error("Exception by executing the command", e);
+            throw new ServletException("Exception by executing the command", e);
+        }
 
         if (page != null) {
             RequestDispatcher dispatcher = req.getRequestDispatcher(page);
@@ -53,8 +60,9 @@ public class Controller extends HttpServlet {
         try {
             ConnectionPool.INSTANCE.destroyPool();
         } catch (ConnectionPoolException e) {
-            logger.error(e);
-            // todo: throw exception
+            logger.error("Exception while destroying the connection pool",e);
+            // todo: how to handle with this exception?
         }
+        logger.debug("Connection pool destroyed successfully.");
     }
 }

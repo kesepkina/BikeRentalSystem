@@ -10,11 +10,10 @@
 <html>
     <title>Error 500</title>
 <body>
+    <h2>ERROR 500</h2>
     Request from ${pageContext.errorData.requestURI} is failed
     <br/>
     Servlet name: ${pageContext.errorData.servletName}
-    <br/>
-    Status code: ${pageContext.errorData.statusCode}
     <br/>
     Exception: ${pageContext.exception}
     <br/>

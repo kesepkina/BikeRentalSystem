@@ -11,14 +11,7 @@
     <title>Error 404</title>
 </head>
 <body>
-Request from ${pageContext.errorData.requestURI} is failed
-<br/>
-Servlet name: ${pageContext.errorData.servletName}
-<br/>
-Status code: ${pageContext.errorData.statusCode}
-<br/>
-Exception: ${pageContext.exception}
-<br/>
-Message from exception: ${pageContext.exception.message}
+<h2>ERROR 404</h2>
+Ooops. The page you are looking for doesn't exist.
 </body>
 </html>

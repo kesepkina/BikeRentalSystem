@@ -2,8 +2,9 @@ package com.epam.brs.model.entity;
 
 import java.util.StringJoiner;
 
-public class Bicycle extends Entity{
+public class Bicycle extends Entity {
 
+    private int bicycleId;
     private String brand;
     private String model;
     private int releaseYear;
@@ -15,7 +16,8 @@ public class Bicycle extends Entity{
     private int rentalPointId;
     private int priceListId;
 
-    public Bicycle(String brand, String model, int releaseYear, int purchaseYear, int speedAmount, String description, BicycleType type, String imagePath, int rentalPointId, int priceListId) {
+    public Bicycle(int bicycleId, String brand, String model, int releaseYear, int purchaseYear, int speedAmount, String description, BicycleType type, String imagePath, int rentalPointId, int priceListId) {
+        this.bicycleId = bicycleId;
         this.brand = brand;
         this.model = model;
         this.releaseYear = releaseYear;
@@ -28,13 +30,22 @@ public class Bicycle extends Entity{
         this.priceListId = priceListId;
     }
 
-    public Bicycle(String brand, String model, BicycleType type, String imagePath, int rentalPointId, int priceListId) {
+    public Bicycle(int bicycleId, String brand, String model, BicycleType type, String imagePath, int rentalPointId, int priceListId) {
+        this.bicycleId = bicycleId;
         this.brand = brand;
         this.model = model;
         this.type = type;
         this.imagePath = imagePath;
         this.rentalPointId = rentalPointId;
         this.priceListId = priceListId;
+    }
+
+    public int getBicycleId() {
+        return bicycleId;
+    }
+
+    public void setBicycleId(int bicycleId) {
+        this.bicycleId = bicycleId;
     }
 
     public String getBrand() {
@@ -85,8 +96,8 @@ public class Bicycle extends Entity{
         this.description = description;
     }
 
-    public BicycleType getType() {
-        return type;
+    public String getType() {
+        return type.getValue();
     }
 
     public void setType(BicycleType type) {
@@ -124,6 +135,7 @@ public class Bicycle extends Entity{
 
         Bicycle bicycle = (Bicycle) o;
 
+        if (bicycleId != bicycle.bicycleId) return false;
         if (releaseYear != bicycle.releaseYear) return false;
         if (purchaseYear != bicycle.purchaseYear) return false;
         if (speedAmount != bicycle.speedAmount) return false;
@@ -138,7 +150,8 @@ public class Bicycle extends Entity{
 
     @Override
     public int hashCode() {
-        int result = brand != null ? brand.hashCode() : 0;
+        int result = bicycleId;
+        result = 31 * result + (brand != null ? brand.hashCode() : 0);
         result = 31 * result + (model != null ? model.hashCode() : 0);
         result = 31 * result + releaseYear;
         result = 31 * result + purchaseYear;
@@ -154,6 +167,7 @@ public class Bicycle extends Entity{
     @Override
     public String toString() {
         return new StringJoiner(", ", Bicycle.class.getSimpleName() + "[", "]")
+                .add("bicycleId=" + bicycleId)
                 .add("brand='" + brand + "'")
                 .add("model='" + model + "'")
                 .add("releaseYear=" + releaseYear)
@@ -167,3 +181,4 @@ public class Bicycle extends Entity{
                 .toString();
     }
 }
+

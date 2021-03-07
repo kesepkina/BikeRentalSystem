@@ -5,7 +5,7 @@ import com.epam.brs.model.dao.impl.UserDaoImpl;
 import com.epam.brs.model.entity.User;
 import com.epam.brs.model.service.ServiceException;
 import com.epam.brs.model.service.UserService;
-import com.epam.brs.model.service.mail.MailSender;
+import com.epam.brs.util.mail.MailSender;
 import com.epam.brs.util.Encryptor;
 import com.epam.brs.validator.UserDataValidator;
 import org.apache.logging.log4j.LogManager;
@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
         }
         if (successfullySignedUp) {
             String emailValue = userData.get(EMAIL_KEY);
-            String topic = "Welcome to BRC";
+            String topic = "Welcome to GO!";
             String text = "Thank you for registering on our rental service. Wish you a great road!";
             sendMail(emailValue, topic, text);
         }

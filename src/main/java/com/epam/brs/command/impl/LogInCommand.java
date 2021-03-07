@@ -1,8 +1,6 @@
 package com.epam.brs.command.impl;
 
-import com.epam.brs.command.Command;
-import com.epam.brs.command.RequestParameter;
-import com.epam.brs.command.SessionAttribute;
+import com.epam.brs.command.*;
 import com.epam.brs.model.entity.User;
 import com.epam.brs.model.entity.UserRole;
 import com.epam.brs.model.service.ServiceException;
@@ -27,7 +25,7 @@ public class LogInCommand implements Command {
     }
 
     @Override
-    public String execute(HttpServletRequest request) {
+    public String execute(HttpServletRequest request) throws CommandException {
         String page;
         String loginValue = request.getParameter(RequestParameter.LOGIN);
         String passValue = request.getParameter(RequestParameter.PASSWORD);

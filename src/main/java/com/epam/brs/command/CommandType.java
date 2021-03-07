@@ -1,6 +1,7 @@
 package com.epam.brs.command;
 
 import com.epam.brs.command.impl.*;
+import com.epam.brs.model.service.impl.BicycleServiceImpl;
 import com.epam.brs.model.service.impl.UserServiceImpl;
 
 public enum CommandType {
@@ -11,7 +12,8 @@ public enum CommandType {
     TO_MAIN(new ToPageCommand(PagePath.MAIN)),
     TO_LOGIN(new ToPageCommand(PagePath.LOGIN)),
     TO_SIGNUP(new ToPageCommand(PagePath.SIGNUP)),
-    CHANGE_LOCALE(new ChangeLocaleCommand());
+    CHANGE_LOCALE(new ChangeLocaleCommand()),
+    DISPLAY_BICYCLES(new DisplayBicyclesListCommand(new BicycleServiceImpl()));
 
     private final Command command;
 

@@ -1,4 +1,4 @@
-package com.epam.brs.model.service.mail;
+package com.epam.brs.util.mail;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,7 +40,7 @@ public class MailSender {
     }
 
     private void initMessage() throws MessagingException {
-        Session mailSession = SessionFactory.createSession(properties);
+        Session mailSession = MailSessionFactory.createSession(properties);
         mailSession.setDebug(true);
         message = new MimeMessage(mailSession);
         message.setSubject(topic);

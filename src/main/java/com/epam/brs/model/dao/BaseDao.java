@@ -13,7 +13,7 @@ public interface BaseDao<K, T extends Entity> {
 
     Logger logger = LogManager.getLogger();
 
-    List<T> findAll();
+    List<T> findAll() throws DaoException;
 
     T find(K id);
 
