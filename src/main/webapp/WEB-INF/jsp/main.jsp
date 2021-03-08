@@ -19,13 +19,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <style>
+        h1 {
+           letter-spacing: normal;
+            font-size: 60px;
+            color: antiquewhite;
+            font-family: 'Noto Sans', sans-serif;
+            text-shadow: 3px 2px 3px #31251c;
+            width: max-content;
+        }
+    </style>
 </head>
 <body>
     <%@ include file="tiles/header.jsp"%>
-    <div class="w3-display-container w3-content w3-wide" style="max-width:1500px;" id="home">
+    <div class="w3-display-container w3-content" style="max-width:100%;" id="home">
         <img src="${pageContext.request.contextPath}/images/home_background.jpg" alt="Background" width=100% >
         <div class="w3-display-topmiddle w3-margin-top w3-center">
-            <h1 class="w3-xxxlarge w3-text-white"><b><fmt:message key="main.welcome"/></b></h1>
+            <h1><fmt:message key="main.welcome"/></h1>
             <br>
             <form name="infoForm" method="POST" action="controller">
                 <input type="hidden" name="command" value="display_bicycles"/>

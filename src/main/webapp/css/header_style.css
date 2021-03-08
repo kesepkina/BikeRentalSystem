@@ -19,7 +19,8 @@ a {
 }
 
 .logo {
-    width: 100px;
+    margin: 5px 5px 5px 20px;
+    opacity: .8;
 }
 
 nav{
@@ -32,7 +33,7 @@ nav{
 }
 
 .language-menu {
-    margin-top: 10px;
+    margin-top: 9px;
     position: relative;
 }
 
@@ -40,9 +41,10 @@ nav{
     cursor: pointer;
     display: flex;
     justify-content: space-between;
-    width: 100px;
+    width: 60px;
     margin-right: 40px;
     align-items: center;
+    font-size: medium;
 }
 
 .selected-lang:before {
@@ -82,7 +84,7 @@ nav{
 }
 
 .language-menu ul li a {
-    width: 140px;
+    width: 90px;
     display:block;
     padding: 5px 10px;
     color: #aeaeae;

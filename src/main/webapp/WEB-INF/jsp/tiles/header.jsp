@@ -18,17 +18,24 @@
 </head>
 <body>
     <nav>
-        <div class="logo">
-        </div>
+        <a href="<c:url value="/controller?command=to_main"/>" class="logo">
+            <img src="${pageContext.request.contextPath}/images/logo.png" alt="Logo" height="40px" >
+        </a>
         <div class="language-menu">
-            <div class="selected-lang"><fmt:message key="language" /></div>
+            <div class="selected-lang"><fmt:message key="language"/></div>
             <ul>
-                <li>
-                    <a href="<c:url value="/controller?command=change_locale&locale=en_US&currentPage="/>${pageContext.request.requestURI}" class="en">English</a>
-                </li>
-                <li>
-                    <a href="<c:url value="/controller?command=change_locale&locale=ru_RU&currentPage="/>${pageContext.request.requestURI}" class="ru">Русский</a>
-                </li>
+                <c:choose>
+                    <c:when test="${sessionScope.locale == 'en_US'}" >
+                        <li>
+                            <a href="<c:url value="/controller?command=change_locale&locale=ru_RU&currentPage="/>${pageContext.request.requestURI}" class="ru">RU</a>
+                        </li>
+                    </c:when>
+                    <c:otherwise>
+                        <li>
+                            <a href="<c:url value="/controller?command=change_locale&locale=en_US&currentPage="/>${pageContext.request.requestURI}" class="en">EN</a>
+                        </li>
+                    </c:otherwise>
+                </c:choose>
             </ul>
         </div>
     </nav>
