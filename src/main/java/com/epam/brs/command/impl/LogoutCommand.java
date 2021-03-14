@@ -16,6 +16,7 @@ public class LogoutCommand implements Command {
     public String execute(HttpServletRequest request) {
         String page = PagePath.LOGIN;
         request.getSession().invalidate();
+        request.getSession().setAttribute("user_role", "GUEST");
         log.debug("Logged out");
         return page;
     }

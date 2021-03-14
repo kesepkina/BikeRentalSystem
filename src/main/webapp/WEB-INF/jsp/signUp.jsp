@@ -28,9 +28,9 @@
 <form name="signupForm" method="POST" action="controller">
     <input type="hidden" name="command" value="signup" />
     <br/><span class="required-field"><fmt:message key="signUp.name" /></span><br/>
-    <input type="text" name="name" value="" required/>
+    <input type="text" name="name" value="" required pattern="[\p{Alpha}\s-]{0,30}"/>
     <br/><span class="required-field"><fmt:message key="signUp.surname" /></span><br/>
-    <input type="text" name="surname" value="" required/>
+    <input type="text" name="surname" value="" required pattern="[\p{Alpha}\s-]{0,30}"/>
     <br/><span class="required-field"><fmt:message key="signUp.email" /></span><br/>
     <input type="email" name="email" value="" required pattern="^[a-zA-Z0-9_+&*-]+(?:.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+.)+[a-zA-Z]{2,7}$"/>
     ${errorEmailMessage}

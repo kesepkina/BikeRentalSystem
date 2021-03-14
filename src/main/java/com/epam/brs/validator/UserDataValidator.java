@@ -4,19 +4,22 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.epam.brs.command.UserDataMapKeyword.*;
+
 public class UserDataValidator {
 
-    private static final String LOGIN_KEY = "login";
-    private static final String EMAIL_KEY = "email";
-    private static final String PASSWORD_KEY = "password";
-    private static final String CONFIRMING_PASSWORD_KEY = "confirmingPassword";
-    private static final String INCORRECT_VALUE = " INCORRECT";
-    private static final String DOESNT_MATCH = " doesn't match";
-    private static final Pattern LOGIN_PATTERN = Pattern.compile("[a-zA-Z0-9._]{5,20}");
-    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-zA-Z0-9_+&*-]+(?:.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+.)+[a-zA-Z]{2,7}$");
-    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&()])(?=\\S+).{8,20}$");
+    private static final Pattern NAME_PATTERN = Pattern.compile("[\\p{Alpha}\\s-]{0,30}");
+    private static final Pattern LOGIN_PATTERN = Pattern.compile("[.\\w]{5,20}");
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[\\w+&*-]+(?:\\.[\\w+&*-]+)*@(?:[\\p{Alnum}-]+.)+[\\p{Alpha}]{2,7}$");
+    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[\\d])(?=.*[\\p{Lower}])(?=.*[\\p{Upper}])(?=.*[@#$%^&()])(?=\\S+).{8,20}$");
 
     private UserDataValidator() {
+    }
+
+    public static boolean isNameOrSurname(String inputtedData) {
+        if(inputtedData == null || inputtedData.isBlank()) return false;
+        Matcher matcher = NAME_PATTERN.matcher(inputtedData);
+        return matcher.matches();
     }
 
     public static boolean isLogin(String inputtedData) {
@@ -39,6 +42,16 @@ public class UserDataValidator {
 
     public static boolean areValidData(Map<String, String> userData) {
         boolean valid = true;
+        String nameValue = userData.get(NAME_KEY);
+        if (!isNameOrSurname(nameValue)) {
+            userData.put(NAME_KEY, nameValue + INCORRECT_VALUE);
+            valid = false;
+        }
+        String surnameValue = userData.get(SURNAME_KEY);
+        if (!isNameOrSurname(surnameValue)) {
+            userData.put(SURNAME_KEY, surnameValue + INCORRECT_VALUE);
+            valid = false;
+        }
         String loginValue = userData.get(LOGIN_KEY);
         if (!isLogin(loginValue)) {
             userData.put(LOGIN_KEY, loginValue + INCORRECT_VALUE);

@@ -2,6 +2,7 @@ package com.epam.brs.command.impl;
 
 import com.epam.brs.command.Command;
 import com.epam.brs.command.RequestParameter;
+import com.epam.brs.command.UserDataMapKeyword;
 import com.epam.brs.model.service.ServiceException;
 import com.epam.brs.model.service.impl.UserServiceImpl;
 import org.apache.logging.log4j.LogManager;
@@ -13,19 +14,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.epam.brs.command.PagePath.*;
+import static com.epam.brs.command.UserDataMapKeyword.*;
 
 public class SignUpCommand implements Command {
 
     private static final Logger logger = LogManager.getLogger();
-
-    private static final String LOGIN_KEY = "login";
-    private static final String EMAIL_KEY = "email";
-    private static final String PASSWORD_KEY = "password";
-    private static final String NAME_KEY = "name";
-    private static final String SURNAME_KEY = "surname";
-    private static final String CONFIRMING_PASSWORD_KEY = "confirmingPassword";
-    private static final String INCORRECT_VALUE = " INCORRECT";
-    private static final String DOESNT_MATCH = " doesn't match";
 
     private final UserServiceImpl service;
 
@@ -66,6 +59,8 @@ public class SignUpCommand implements Command {
                 if (loginValue.contains(INCORRECT_VALUE)) {
                     // TODO: include properties
                     request.setAttribute("errorLoginMessage", "Incorrect login. It must include only letters, ciphers, characters \".\", \"_\" and have from 5 to 20 characters");
+                } else if (loginValue.contains(UserDataMapKeyword.ALREADY_EXISTS)) {
+                    request.setAttribute("errorLoginMessage", "This login already exists.");
                 }
                 if (passValue.contains(INCORRECT_VALUE)) {
                     // TODO: include properties

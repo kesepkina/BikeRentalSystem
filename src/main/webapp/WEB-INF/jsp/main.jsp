@@ -39,7 +39,7 @@
             <br>
             <form name="infoForm" method="POST" action="controller">
                 <input type="hidden" name="command" value="display_bicycles"/>
-                <input class="w3-button w3-yellow w3-round-large" type="submit" value="find">
+                <input class="w3-button w3-yellow w3-round-large" type="submit" value="<fmt:message key="main.find"/>">
             </form>
         </div>
     </div>

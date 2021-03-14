@@ -17,15 +17,12 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 
+import static com.epam.brs.command.UserDataMapKeyword.*;
+
 public class UserServiceImpl implements UserService {
 
     private static final Logger logger = LogManager.getLogger();
-    private static final String LOGIN_KEY = "login";
-    private static final String EMAIL_KEY = "email";
-    private static final String PASSWORD_KEY = "password";
-    private static final String NAME_KEY = "name";
-    private static final String SURNAME_KEY = "surname";
-    private static final String ALREADY_EXISTS = " already exists";
+
     private static final String MAIL_PROPERTIES_PATH = "properties/config/mail.properties";
 
     @Override

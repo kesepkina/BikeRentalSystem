@@ -32,9 +32,60 @@ nav{
     background-color: #000000;
 }
 
+.profile-menu {
+    position: relative;
+    margin-left: auto;
+}
+
+.profile {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    width: 60px;
+    height: 50px;
+    margin-right: 40px;
+    align-items: center;
+    font-size: medium;
+}
+
 .language-menu {
     margin-top: 9px;
     position: relative;
+}
+
+.profile-menu ul {
+    margin: 3px;
+    padding: 0;
+    background-color: #000000;
+    border:1px solid #000000;
+    box-shadow: 0 1px 10px rgba(0,0,0, 0.2);
+    border-radius: 5px;
+    display: none;
+    position: absolute;
+    top: 40px;
+    left: -15px;
+    z-index: 3;
+}
+
+.profile-menu ul li {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+}
+
+.profile-menu ul li a {
+    width: 105px;
+    display:inline-flex;
+    padding: 5px 10px;
+    color: #aeaeae;
+}
+
+.profile-menu ul li a:hover {
+    background-color: #453e3e;
+}
+
+.profile-menu:hover ul {
+    display: block;
 }
 
 .selected-lang {
