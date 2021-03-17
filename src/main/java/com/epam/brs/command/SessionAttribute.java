@@ -9,6 +9,7 @@ public class SessionAttribute {
     public static final String EMAIL = "email";
     public static final String USER_ROLE = "user_role";
     public static final String LANGUAGE = "lang";
+    public static final String PROFILE_PHOTO = "profile_photo";
 
     private SessionAttribute() {
     }

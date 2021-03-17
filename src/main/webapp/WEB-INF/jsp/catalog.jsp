@@ -20,12 +20,13 @@
 <div class="flex-container">
     <jsp:useBean id="bicyclesList" scope="request" type="java.util.List"/>
     <c:forEach items="${bicyclesList}" var="bicycle">
-        <a href="catalog.jsp" class="cell"><div class="img_place"><img class="bicycle_photo" src="${pageContext.request.contextPath}/images/uploaded/${bicycle.imagePath}" alt="bicycle_photo"></div>
+        <a href="catalog.jsp" class="cell"><div class="img_place"><img class="bicycle_photo" src="${pageContext.request.contextPath}/images/uploaded/bicycles/${bicycle.imagePath}" alt="bicycle_photo"></div>
             <br><div class="brand">${bicycle.brand}</div>
             <br><div class="model">${bicycle.model}</div>
             <br><div class="type">${bicycle.type}</div>
         </a>
     </c:forEach>
 </div>
+<%@ include file="tiles/footer.jsp"%>
 </body>
 </html>

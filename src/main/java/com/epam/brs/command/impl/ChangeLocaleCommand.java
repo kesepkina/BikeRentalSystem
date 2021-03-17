@@ -22,9 +22,9 @@ public class ChangeLocaleCommand implements Command {
         logger.debug("Locale changed to {}", newLocale);
         request.getSession().setAttribute(SessionAttribute.LANGUAGE, language);
         logger.debug("Set language = {}", language);
-        //TODO: how to do it correctly?
         Pattern pattern = Pattern.compile("/WEB-INF/jsp/.*\\.jsp");
-        String fullPagePath = request.getParameter("currentPage");
+        String fullPagePath = (String) request.getSession().getAttribute("currentPage");
+        logger.debug("Current page = {}", fullPagePath);
         Matcher matcher = pattern.matcher(fullPagePath);
         String page = null;
         if (matcher.find()) {

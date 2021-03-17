@@ -53,5 +53,6 @@
     <input type="hidden" name="command" value="to_login"/>
     <input type="submit" value="<fmt:message key="signUp.log_in" />">
 </form>
+<%@ include file="tiles/footer.jsp"%>
 </body>
 </html>

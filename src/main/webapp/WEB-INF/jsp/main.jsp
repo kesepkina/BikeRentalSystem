@@ -11,13 +11,12 @@
 <fmt:setLocale value="${sessionScope.locale}"/>
 <fmt:setBundle basename="properties.text" />
 
-
 <!DOCTYPE html>
 <html>
 <head>
     <title><fmt:message key="main.title" /></title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1 height=device-height">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <style>
         h1 {
@@ -43,9 +42,6 @@
             </form>
         </div>
     </div>
-    <form name="logoutForm" method="POST" action="controller">
-        <input type="hidden" name="command" value="logout" />
-        <input type="submit" value="log out">
-    </form>
+    <%@ include file="tiles/footer.jsp"%>
 </body>
 </html>

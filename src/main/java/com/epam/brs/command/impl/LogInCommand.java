@@ -10,7 +10,6 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Optional;
 
 import static com.epam.brs.command.PagePath.*;
@@ -49,12 +48,6 @@ public class LogInCommand implements Command {
             UserRole role = user.getRole();
             request.getSession().setAttribute(SessionAttribute.USER_ROLE, role.toString());
             page = MAIN;
-            try {
-                // TODO: delete if useless
-                request.setCharacterEncoding("utf8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
         } else {
             request.setAttribute("errorUserMessage", "Incorrect login or password");
             page = LOGIN;

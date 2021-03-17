@@ -27,7 +27,7 @@
                 <c:choose>
                     <c:when test="${sessionScope.user_role == 'GUEST'}" >
                         <li>
-                            <a href="<c:url value="/controller?command=to_login"/>"><fmt:message key="header.log_in"/></a>
+                            <a href="<c:url value="/controller?command=to_login" />"><fmt:message key="header.log_in"/></a>
                         </li>
                         <li>
                             <a href="<c:url value="/controller?command=to_signup"/>"><fmt:message key="header.sign_up"/></a>
@@ -47,15 +47,16 @@
         <div class="language-menu">
             <div class="selected-lang"><fmt:message key="header.language"/></div>
             <ul>
+                <c:set var="currentPage" value="${pageContext.request.requestURI}" scope="session" />
                 <c:choose>
                     <c:when test="${sessionScope.locale == 'en_US'}" >
                         <li>
-                            <a href="<c:url value="/controller?command=change_locale&locale=ru_RU&currentPage="/>${pageContext.request.requestURI}" class="ru">RU</a>
+                            <a href="<c:url value="/controller?command=change_locale&locale=ru_RU"/>" class="ru">RU</a>
                         </li>
                     </c:when>
                     <c:otherwise>
                         <li>
-                            <a href="<c:url value="/controller?command=change_locale&locale=en_US&currentPage="/>${pageContext.request.requestURI}" class="en">EN</a>
+                            <a href="<c:url value="/controller?command=change_locale&locale=en_US"/>" class="en">EN</a>
                         </li>
                     </c:otherwise>
                 </c:choose>

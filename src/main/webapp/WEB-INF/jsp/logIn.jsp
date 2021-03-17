@@ -15,7 +15,7 @@
 <html>
 <head>
     <title><fmt:message key="logIn.title" /></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1 height=device-height">
 </head>
 <body>
     <%@ include file="tiles/header.jsp"%>
@@ -33,5 +33,6 @@
         <input type="hidden" name="command" value="to_signup" />
         <input type="submit" value="<fmt:message key="logIn.sign_up" />">
     </form>
+    <%@ include file="tiles/footer.jsp"%>
 </body>
 </html>
