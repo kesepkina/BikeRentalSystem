@@ -28,7 +28,9 @@ public class UserDaoImpl implements UserDao {
     @Language("MySQL")
     private static final String CONTAINS_LOGIN_SQL_QUERY = "SELECT 1 FROM users WHERE login=?";
     @Language("MySQL")
-    private static final String FIND_USER_SQL_QUERY = "SELECT passwordHash, name, surname, email, role FROM users WHERE login=?";
+    private static final String FIND_USER_SQL_QUERY = "SELECT passwordHash, name, surname, email, role, photo_path FROM users WHERE login=?";
+    @Language("MySQL")
+    private static final String UPDATE_PHOTO_SQL_QUERY = "UPDATE users SET photo_path=? WHERE login=?";
 
     private UserDaoImpl() {
     }
@@ -69,6 +71,10 @@ public class UserDaoImpl implements UserDao {
                     String role = userData.getNString(5);
                     UserRole userRole = UserRole.valueOf(role);
                     User user = new User(login, name, surname, email, userRole);
+                    String photoName = userData.getNString(6);
+                    if (photoName != null) {
+                        user.setPhotoName(photoName);
+                    }
                     optionalUser = Optional.of(user);
                 } else {
                     logger.error("Incorrect password inputted for login {}", login);
@@ -110,6 +116,28 @@ public class UserDaoImpl implements UserDao {
             throw new DaoException("Exception while adding new user", e);
         }
         return addedSuccessfully;
+    }
+
+    @Override
+    public boolean updateUserPhoto(String login, String photoName) throws DaoException {
+        boolean updatedSuccessfully;
+        try (Connection connection = ConnectionPool.INSTANCE.getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_PHOTO_SQL_QUERY)) {
+            statement.setString(1, photoName);
+            statement.setString(2, login);
+            int rowCount = statement.executeUpdate();
+            if (rowCount != 0) {
+                updatedSuccessfully = true;
+                logger.info("User's photo name updated successfully");
+            } else {
+                logger.error("Photo name of user {} wasn't updated", login);
+                updatedSuccessfully = false;
+            }
+        } catch (SQLException e) {
+            logger.error("Exception while updating user's photo name", e);
+            throw new DaoException("Exception while updating user's photo name", e);
+        }
+        return updatedSuccessfully;
     }
 
     @Override

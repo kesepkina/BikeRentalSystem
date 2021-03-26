@@ -12,4 +12,6 @@ public interface UserService {
     boolean signUp(Map<String, String> userData) throws ServiceException;
 
     void sendMail(String addressee, String topic, String text) throws ServiceException;
+
+    boolean updatePhotoName(String photoName, String login) throws ServiceException;
 }

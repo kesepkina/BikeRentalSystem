@@ -45,7 +45,6 @@ public class Controller extends HttpServlet {
             logger.error("Exception by executing the command", e);
             throw new ServletException("Exception by executing the command", e);
         }
-
         if (page != null) {
             RequestDispatcher dispatcher = req.getRequestDispatcher(page);
             dispatcher.forward(req, resp);
@@ -61,7 +60,6 @@ public class Controller extends HttpServlet {
             ConnectionPool.INSTANCE.destroyPool();
         } catch (ConnectionPoolException e) {
             logger.error("Exception while destroying the connection pool",e);
-            // todo: how to handle with this exception?
         }
         logger.debug("Connection pool destroyed successfully.");
     }

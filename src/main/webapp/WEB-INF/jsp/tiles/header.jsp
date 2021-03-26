@@ -24,21 +24,22 @@
         <div class="profile-menu">
             <div class="profile"><fmt:message key="header.profile"/></div>
             <ul>
+                <c:set var="current_page" value="${pageContext.request.requestURI}" scope="session" />
                 <c:choose>
-                    <c:when test="${sessionScope.user_role == 'GUEST'}" >
-                        <li>
-                            <a href="<c:url value="/controller?command=to_login" />"><fmt:message key="header.log_in"/></a>
-                        </li>
-                        <li>
-                            <a href="<c:url value="/controller?command=to_signup"/>"><fmt:message key="header.sign_up"/></a>
-                        </li>
-                    </c:when>
-                    <c:otherwise>
+                    <c:when test="${sessionScope.user.role == 'CLIENT'}" >
                         <li>
                             <a href="<c:url value="/controller?command=to_profile"/>" ><fmt:message key="header.profile"/></a>
                         </li>
                         <li>
                             <a href="<c:url value="/controller?command=logout"/>" ><fmt:message key="header.log_out"/></a>
+                        </li>
+                    </c:when>
+                    <c:otherwise>
+                        <li>
+                            <a href="<c:url value="/controller?command=to_login" />"><fmt:message key="header.log_in"/></a>
+                        </li>
+                        <li>
+                            <a href="<c:url value="/controller?command=to_signup"/>"><fmt:message key="header.sign_up"/></a>
                         </li>
                     </c:otherwise>
                 </c:choose>
@@ -47,7 +48,7 @@
         <div class="language-menu">
             <div class="selected-lang"><fmt:message key="header.language"/></div>
             <ul>
-                <c:set var="currentPage" value="${pageContext.request.requestURI}" scope="session" />
+                <c:set var="current_page" value="${pageContext.request.requestURI}" scope="session" />
                 <c:choose>
                     <c:when test="${sessionScope.locale == 'en_US'}" >
                         <li>

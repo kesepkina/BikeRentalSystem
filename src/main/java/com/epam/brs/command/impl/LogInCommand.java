@@ -38,15 +38,7 @@ public class LogInCommand implements Command {
         User user;
         if(optionalUser.isPresent()) {
             user = optionalUser.get();
-            request.getSession().setAttribute(SessionAttribute.LOGIN, loginValue);
-            String name = user.getName();
-            request.getSession().setAttribute(SessionAttribute.NAME, name);
-            String surname = user.getSurname();
-            request.getSession().setAttribute(SessionAttribute.SURNAME, surname);
-            String email = user.getEmail();
-            request.getSession().setAttribute(SessionAttribute.EMAIL, email);
-            UserRole role = user.getRole();
-            request.getSession().setAttribute(SessionAttribute.USER_ROLE, role.toString());
+            request.getSession().setAttribute(SessionAttribute.USER, user);
             page = MAIN;
         } else {
             request.setAttribute("errorUserMessage", "Incorrect login or password");

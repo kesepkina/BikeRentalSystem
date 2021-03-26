@@ -12,6 +12,7 @@ public enum CommandType {
     TO_MAIN(new ToPageCommand(PagePath.MAIN)),
     TO_LOGIN(new ToPageCommand(PagePath.LOGIN)),
     TO_SIGNUP(new ToPageCommand(PagePath.SIGNUP)),
+    TO_PROFILE(new ToPageCommand(PagePath.PROFILE)),
     CHANGE_LOCALE(new ChangeLocaleCommand()),
     DISPLAY_BICYCLES(new DisplayBicyclesListCommand(new BicycleServiceImpl()));
 

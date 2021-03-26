@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 public class ChangeLocaleCommand implements Command {
 
     private static final Logger logger = LogManager.getLogger();
+    private static final Pattern JSP_PATTERN = Pattern.compile("/WEB-INF/jsp/.*\\.jsp");
 
     @Override
     public String execute(HttpServletRequest request) {
@@ -22,10 +23,9 @@ public class ChangeLocaleCommand implements Command {
         logger.debug("Locale changed to {}", newLocale);
         request.getSession().setAttribute(SessionAttribute.LANGUAGE, language);
         logger.debug("Set language = {}", language);
-        Pattern pattern = Pattern.compile("/WEB-INF/jsp/.*\\.jsp");
-        String fullPagePath = (String) request.getSession().getAttribute("currentPage");
+        String fullPagePath = (String) request.getSession().getAttribute(SessionAttribute.CURRENT_PAGE);
         logger.debug("Current page = {}", fullPagePath);
-        Matcher matcher = pattern.matcher(fullPagePath);
+        Matcher matcher = JSP_PATTERN.matcher(fullPagePath);
         String page = null;
         if (matcher.find()) {
             page = matcher.group();

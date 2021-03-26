@@ -8,10 +8,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<fmt:setLocale value="${sessionScope.locale}"/>
+<fmt:setBundle basename="properties.text" />
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Catalog</title>
+    <title><fmt:message key="catalog.title"/></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/catalog_style.css">
 </head>

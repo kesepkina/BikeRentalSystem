@@ -9,6 +9,7 @@ public class User extends Entity{
     private String surname;
     private String email;
     private UserRole role;
+    private String photoName;
 
     public User(String login, String name, String surname, String email) {
         this.login = login;
@@ -23,6 +24,14 @@ public class User extends Entity{
         this.surname = surname;
         this.email = email;
         this.role = role;
+    }
+
+    public String getPhotoName() {
+        return photoName;
+    }
+
+    public void setPhotoName(String photoName) {
+        this.photoName = photoName;
     }
 
     public UserRole getRole() {

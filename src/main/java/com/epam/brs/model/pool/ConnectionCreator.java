@@ -31,8 +31,6 @@ class ConnectionCreator {
         } catch (IOException e) {
             logger.fatal("Reader of properties files not loaded", e);
             throw new RuntimeException("FATAL ERROR Reader of properties files not loaded", e);
-        } finally {
-
         }
         try {
             String driverName = (String) properties.get(DB_DRIVER);

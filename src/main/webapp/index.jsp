@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
     <body>
-        <c:set var="user_role" value="GUEST" scope="session" />
+        <c:set var="user.role" value="GUEST" scope="session" />
         <jsp:forward page="/WEB-INF/jsp/main.jsp" />
     </body>
 </html>

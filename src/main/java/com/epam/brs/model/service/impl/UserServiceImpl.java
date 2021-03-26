@@ -83,4 +83,16 @@ public class UserServiceImpl implements UserService {
         sender.send();
     }
 
+    @Override
+    public boolean updatePhotoName(String photoName, String login) throws ServiceException {
+        boolean updatedSuccessfully;
+        try {
+            updatedSuccessfully = UserDaoImpl.getInstance().updateUserPhoto(login, photoName);
+        } catch (DaoException e) {
+            logger.error(e);
+            throw new ServiceException(e);
+        }
+        return updatedSuccessfully;
+    }
+
 }
