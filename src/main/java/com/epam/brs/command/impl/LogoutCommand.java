@@ -17,7 +17,6 @@ public class LogoutCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-        log.debug("Logged out");
         String fullPagePath = (String) request.getSession().getAttribute(SessionAttribute.CURRENT_PAGE);
         Matcher matcher = JSP_PATTERN.matcher(fullPagePath);
         String page = null;
@@ -25,6 +24,7 @@ public class LogoutCommand implements Command {
             page = matcher.group();
         }
         request.getSession().invalidate();
+        log.debug("Logged out");
         request.getSession().setAttribute("user.role", "GUEST");
         return page;
     }

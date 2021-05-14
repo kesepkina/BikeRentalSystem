@@ -35,9 +35,8 @@ public class LogInCommand implements Command {
             logger.error("Exception while logging in", e);
             request.setAttribute("ErrorMessage", "Exception while logging in: " + e.getMessage());
         }
-        User user;
         if(optionalUser.isPresent()) {
-            user = optionalUser.get();
+            User user = optionalUser.get();
             request.getSession().setAttribute(SessionAttribute.USER, user);
             page = MAIN;
         } else {

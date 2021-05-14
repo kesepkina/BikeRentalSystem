@@ -3,6 +3,7 @@ package com.epam.brs.command.impl;
 import com.epam.brs.command.Command;
 import com.epam.brs.command.CommandException;
 import com.epam.brs.command.PagePath;
+import com.epam.brs.command.RequestParameter;
 import com.epam.brs.model.entity.Bicycle;
 import com.epam.brs.model.service.BicycleService;
 import com.epam.brs.model.service.ServiceException;
@@ -24,14 +25,15 @@ public class DisplayBicyclesListCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
         String page = PagePath.CATALOG;
+        String bikeType = request.getParameter(RequestParameter.BIKE_TYPE);
         List<Bicycle> bicycleList = null;
         try {
-            bicycleList = service.findAll();
+            bicycleList = service.findAll(bikeType);
         } catch (ServiceException e) {
             logger.error("Exception by getting list of bicycles", e);
             throw new CommandException("Exception by getting list of bicycles", e);
         }
-        request.setAttribute("bicyclesList", bicycleList);
+        request.getSession().setAttribute("bicyclesList", bicycleList);
         return page;
     }
 }

@@ -8,11 +8,11 @@ public enum CommandType {
     SIGNUP(new SignUpCommand(new UserServiceImpl())),
     LOGIN(new LogInCommand(new UserServiceImpl())),
     LOGOUT(new LogoutCommand()),
-    SHOW_INFO(new ShowInfoCommand()),
     TO_MAIN(new ToPageCommand(PagePath.MAIN)),
     TO_LOGIN(new ToPageCommand(PagePath.LOGIN)),
     TO_SIGNUP(new ToPageCommand(PagePath.SIGNUP)),
     TO_PROFILE(new ToPageCommand(PagePath.PROFILE)),
+    TO_BICYCLE(new ToBicycleInfoCommand(new BicycleServiceImpl())),
     CHANGE_LOCALE(new ChangeLocaleCommand()),
     DISPLAY_BICYCLES(new DisplayBicyclesListCommand(new BicycleServiceImpl()));
 

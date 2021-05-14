@@ -22,7 +22,7 @@ import static com.epam.brs.command.PagePath.INDEX;
 @WebServlet(urlPatterns = {"/controller", "*.do"})
 public class Controller extends HttpServlet {
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger(Controller.class);
     private static final String COMMAND = "command";
 
     @Override

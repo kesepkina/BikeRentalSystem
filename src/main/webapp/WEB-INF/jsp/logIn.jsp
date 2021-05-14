@@ -16,23 +16,56 @@
 <head>
     <title><fmt:message key="logIn.title" /></title>
     <meta name="viewport" content="width=device-width, initial-scale=1 height=device-height">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <style>
+        form {
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            padding-right: 54%;
+        }
+
+        .asButton {
+            background-color: antiquewhite;
+            color: #655142;
+            border-radius: 10px;
+            border-color: #655142;
+            height: 30px;
+            cursor: pointer;
+            padding-inline: 15px;
+        }
+        .main-content {
+            background-image: url("${pageContext.request.contextPath}/images/login_background.png");
+            padding-block: 96px;
+        }
+
+        .text {
+            font-size: large;
+        }
+    </style>
 </head>
 <body>
-    <%@ include file="tiles/header.jsp"%>
-    <form name="loginForm" method="POST" action="controller">
-        <input type="hidden" name="command" value="login" />
-        <fmt:message key="logIn.login" /><br/>
-        <input type="text" name="login" value="" required/>
-        <br/><fmt:message key="logIn.password" /><br/>
-        <input type="password" name="password" value="" required/>
-        <br/><br/>
-        ${errorUserMessage}<br/>
-        <input type="submit" value="<fmt:message key="logIn.log_in" />">
-    </form>
-    <form name="signUpForm" method="post" action="controller">
-        <input type="hidden" name="command" value="to_signup" />
-        <input type="submit" value="<fmt:message key="logIn.sign_up" />">
-    </form>
-    <%@ include file="tiles/footer.jsp"%>
+<%@ include file="tiles/header.jsp"%>
+    <div class="main-content">
+        <form name="loginForm" method="POST" action="controller">
+            <input type="hidden" name="command" value="login" />
+            <div class="text"><fmt:message key="logIn.login" /></div>
+            <input type="text" name="login" value="" required/>
+            <br/><div class="text"><fmt:message key="logIn.password" /></div>
+            <input type="password" name="password" value="" required/>
+            <br/>
+            ${errorUserMessage}
+            <input class="asButton" type="submit" value="<fmt:message key="logIn.log_in" />">
+        </form>
+        <form class="onlyInput" name="signUpForm" method="post" action="controller">
+            <input type="hidden" name="command" value="to_signup" />
+            <input class="asButton" type="submit" value="<fmt:message key="logIn.sign_up" />">
+        </form>
+    </div>
+<%@ include file="tiles/footer.jsp"%>
 </body>
 </html>

@@ -27,6 +27,39 @@
             text-shadow: 3px 2px 3px #31251c;
             width: max-content;
         }
+         select {
+             width: max-content;
+             padding: 16px 20px;
+             border: none;
+             background-color: #655142;
+             color: antiquewhite;
+             margin: 5px;
+             border-radius: 10px;
+         }
+        .form-inline {
+            display: flex;
+            flex-flow: row wrap;
+            align-items: center;
+            flex-wrap: nowrap;
+            align-content: space-between;
+            width: fit-content;
+            margin: auto;
+            background-color: #65514275;
+            padding: 5px 10px;
+            border-radius: 10px;
+        }
+        .find-button {
+            background-color: antiquewhite;
+            color: #655142;
+            border-radius: 10px;
+            margin: 0px 10px;
+            height: 40px;
+            border-color: #655142;
+        }
+
+        .find-button:hover {
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -36,9 +69,20 @@
         <div class="w3-display-topmiddle w3-margin-top w3-center">
             <h1><fmt:message key="main.welcome"/></h1>
             <br>
-            <form name="infoForm" method="POST" action="controller">
+            <form class="form-inline" name="infoForm" method="POST" action="controller">
                 <input type="hidden" name="command" value="display_bicycles"/>
-                <input class="w3-button w3-yellow w3-round-large" type="submit" value="<fmt:message key="main.find"/>">
+                <div>
+                    <select id="bike-type" name="bike-type">
+                        <option value="all"><fmt:message key="main.bike-types.all"/></option>
+                        <option value="MOUNTAIN_BIKE"><fmt:message key="main.bike-types.mtb"/></option>
+                        <option value="CITY_BIKE"><fmt:message key="main.bike-types.city"/></option>
+                        <option value="EBIKE"><fmt:message key="main.bike-types.ebike"/></option>
+                        <option value="CHILDREN_BIKE"><fmt:message key="main.bike-types.children"/></option>
+                        <option value="RACING_BIKE"><fmt:message key="main.bike-types.racing"/></option>
+                        <option value="BMX"><fmt:message key="main.bike-types.bmx"/></option>
+                    </select>
+                </div>
+                <input class="find-button" type="submit" value="<fmt:message key="main.find"/>">
             </form>
         </div>
     </div>

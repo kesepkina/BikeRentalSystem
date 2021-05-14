@@ -14,11 +14,6 @@
 <html>
 <head>
     <title><fmt:message key="profile.title"/></title>
-    <script type="text/javascript">
-        function testAlertDialog()  {
-            alert("Oops! Something went wrong, your photo wasn't uploaded.");
-        }
-    </script>
 </head>
 <body>
 <%@ include file="tiles/header.jsp"%>
@@ -29,8 +24,9 @@
 </c:if>
 <c:choose>
     <c:when test="${not empty sessionScope.user.photoName}" >
-        <img alt="Profile photo" src="${pageContext.request.contextPath}/image/${sessionScope.user.photoName}" width="200px">
+        <img alt="Profile photo" src="${pageContext.request.contextPath}/image/profiles/${sessionScope.user.photoName}" width="200px">
         <form method="post" action="fileuploadservlet" enctype="multipart/form-data">
+            <input type="hidden" name="folder" value="profiles">
             <input type="file" name="file" />
             <input type="submit" value="Change" />
         </form>
@@ -38,6 +34,7 @@
     <c:otherwise>
         <img alt="Default profile photo" src="${pageContext.request.contextPath}/images/avatar.png">
         <form method="post" action="fileuploadservlet" enctype="multipart/form-data">
+            <input type="hidden" name="folder" value="profiles">
             <input type="file" name="file" />
             <input type="submit" value="Upload" />
         </form>

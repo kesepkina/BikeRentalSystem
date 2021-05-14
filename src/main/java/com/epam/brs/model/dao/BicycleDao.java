@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface BicycleDao extends BaseDao<Integer, Bicycle> {
 
-    List<Bicycle> findByFilters(BicycleType type);
+    List<Bicycle> findByFilters(BicycleType type) throws DaoException;
 
 }

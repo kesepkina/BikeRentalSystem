@@ -13,6 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Properties;
 
@@ -29,28 +30,23 @@ public class ImageServlet extends HttpServlet {
         try (InputStream inputStream = ImageServlet.class.getClassLoader().getResourceAsStream(CONFIG_PATH);) {
             properties.load(inputStream);
         } catch (FileNotFoundException e) {
-            logger.fatal("Properties file not found", e);
+            logger.error("Properties file not found", e);
         } catch (IOException e) {
-            logger.fatal("Reader of properties files not loaded", e);
+            logger.error("Reader of properties files not loaded", e);
         }
         IMAGES_PATH = (String) properties.get(IMAGES_PATH_KEY);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        // Get requested image by path info.
         String requestedImage = request.getPathInfo();
 
-        // Check if file name is actually supplied to the request URI.
         if (requestedImage == null) {
-            // Do your thing if the image is not supplied to the request URI.
-            // Throw an exception, or send 404, or show default/warning image, or just ignore it.
             response.sendError(HttpServletResponse.SC_NOT_FOUND); // 404.
             return;
         }
 
-        // Decode the file name (might contain spaces and on) and prepare file object.
-        File image = new File(IMAGES_PATH, URLDecoder.decode(requestedImage, "UTF-8"));
+        File image = new File(IMAGES_PATH, URLDecoder.decode(requestedImage, StandardCharsets.UTF_8));
 
         // Check if file actually exists in filesystem.
         if (!image.exists()) {

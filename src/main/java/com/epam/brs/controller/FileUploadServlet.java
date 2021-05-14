@@ -31,14 +31,16 @@ public class FileUploadServlet extends HttpServlet {
 
     private static final UserServiceImpl service = new UserServiceImpl();
     private static final String DASH = "-";
+    private static final String SLASH = "/";
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Part filePart = request.getPart("file");
-        User user = (User) request.getSession().getAttribute(SessionAttribute.USER);
         String fileName = filePart.getSubmittedFileName();
+        User user = (User) request.getSession().getAttribute(SessionAttribute.USER);
         String newFileName = user.getLogin() + DASH + UUID.randomUUID() + fileName.substring(fileName.lastIndexOf("."));
-        String path = "E:/Workspace/BRC_Warehouse/images/" + newFileName;
+        String folder = request.getParameter("folder");
+        String path = "E:/Workspace/BRC_Warehouse/images/" + folder + SLASH + newFileName;
         logger.debug("Path: {}", path);
         for (Part part : request.getParts()) {
             part.write(path);

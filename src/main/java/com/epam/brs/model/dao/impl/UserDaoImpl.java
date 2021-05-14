@@ -146,7 +146,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User find(Integer id) {
+    public Optional<User> find(Integer id) {
         return null;
     }
 

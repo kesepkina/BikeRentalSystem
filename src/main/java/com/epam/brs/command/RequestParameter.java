@@ -9,6 +9,7 @@ public class RequestParameter {
     public static final String PASSWORD = "password";
     public static final String PASSWORD_CONFIRMING = "passwordConfirming";
     public static final String LOCALE = "locale";
+    public static final String BIKE_TYPE = "bike-type";
 
     private RequestParameter() { }
 

@@ -11,7 +11,7 @@
     <title>Footer</title>
     <style>
         .footer {
-            position: inherit;
+            position: relative;
             left: 0;
             bottom: 0;
             width: 100%;

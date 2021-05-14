@@ -30,6 +30,19 @@ public class Bicycle extends Entity {
         this.priceListId = priceListId;
     }
 
+    public Bicycle(int bicycleId, String brand, String model, int releaseYear, int purchaseYear, String description, BicycleType type, String imagePath, int rentalPointId, int priceListId) {
+        this.bicycleId = bicycleId;
+        this.brand = brand;
+        this.model = model;
+        this.releaseYear = releaseYear;
+        this.purchaseYear = purchaseYear;
+        this.description = description;
+        this.type = type;
+        this.imagePath = imagePath;
+        this.rentalPointId = rentalPointId;
+        this.priceListId = priceListId;
+    }
+
     public Bicycle(int bicycleId, String brand, String model, BicycleType type, String imagePath, int rentalPointId, int priceListId) {
         this.bicycleId = bicycleId;
         this.brand = brand;
