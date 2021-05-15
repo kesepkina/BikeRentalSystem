@@ -13,10 +13,9 @@ public class Bicycle extends Entity {
     private String description;
     private BicycleType type;
     private String imagePath;
-    private int rentalPointId;
     private int priceListId;
 
-    public Bicycle(int bicycleId, String brand, String model, int releaseYear, int purchaseYear, int speedAmount, String description, BicycleType type, String imagePath, int rentalPointId, int priceListId) {
+    public Bicycle(int bicycleId, String brand, String model, int releaseYear, int purchaseYear, int speedAmount, String description, BicycleType type, String imagePath, int priceListId) {
         this.bicycleId = bicycleId;
         this.brand = brand;
         this.model = model;
@@ -26,11 +25,10 @@ public class Bicycle extends Entity {
         this.description = description;
         this.type = type;
         this.imagePath = imagePath;
-        this.rentalPointId = rentalPointId;
         this.priceListId = priceListId;
     }
 
-    public Bicycle(int bicycleId, String brand, String model, int releaseYear, int purchaseYear, String description, BicycleType type, String imagePath, int rentalPointId, int priceListId) {
+    public Bicycle(int bicycleId, String brand, String model, int releaseYear, int purchaseYear, String description, BicycleType type, String imagePath, int priceListId) {
         this.bicycleId = bicycleId;
         this.brand = brand;
         this.model = model;
@@ -39,17 +37,15 @@ public class Bicycle extends Entity {
         this.description = description;
         this.type = type;
         this.imagePath = imagePath;
-        this.rentalPointId = rentalPointId;
         this.priceListId = priceListId;
     }
 
-    public Bicycle(int bicycleId, String brand, String model, BicycleType type, String imagePath, int rentalPointId, int priceListId) {
+    public Bicycle(int bicycleId, String brand, String model, BicycleType type, String imagePath, int priceListId) {
         this.bicycleId = bicycleId;
         this.brand = brand;
         this.model = model;
         this.type = type;
         this.imagePath = imagePath;
-        this.rentalPointId = rentalPointId;
         this.priceListId = priceListId;
     }
 
@@ -125,14 +121,6 @@ public class Bicycle extends Entity {
         this.imagePath = imagePath;
     }
 
-    public int getRentalPointId() {
-        return rentalPointId;
-    }
-
-    public void setRentalPointId(int rentalPointId) {
-        this.rentalPointId = rentalPointId;
-    }
-
     public int getPriceListId() {
         return priceListId;
     }
@@ -152,7 +140,6 @@ public class Bicycle extends Entity {
         if (releaseYear != bicycle.releaseYear) return false;
         if (purchaseYear != bicycle.purchaseYear) return false;
         if (speedAmount != bicycle.speedAmount) return false;
-        if (rentalPointId != bicycle.rentalPointId) return false;
         if (priceListId != bicycle.priceListId) return false;
         if (brand != null ? !brand.equals(bicycle.brand) : bicycle.brand != null) return false;
         if (model != null ? !model.equals(bicycle.model) : bicycle.model != null) return false;
@@ -172,7 +159,6 @@ public class Bicycle extends Entity {
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + (imagePath != null ? imagePath.hashCode() : 0);
-        result = 31 * result + rentalPointId;
         result = 31 * result + priceListId;
         return result;
     }
@@ -189,7 +175,6 @@ public class Bicycle extends Entity {
                 .add("description='" + description + "'")
                 .add("type=" + type)
                 .add("imagePath='" + imagePath + "'")
-                .add("rentalPointId=" + rentalPointId)
                 .add("priceListId=" + priceListId)
                 .toString();
     }

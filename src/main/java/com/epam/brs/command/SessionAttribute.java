@@ -12,6 +12,7 @@ public class SessionAttribute {
     public static final String PROFILE_PHOTO = "profile_photo";
     public static final String USER = "user";
     public static final String CURRENT_PAGE = "current_page";
+    public static final String CHOSEN_BICYCLE = "chosen_bicycle";
 
     private SessionAttribute() {
     }

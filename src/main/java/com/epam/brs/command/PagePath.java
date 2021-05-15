@@ -9,6 +9,10 @@ public class PagePath {
     public static final String CATALOG = "/WEB-INF/jsp/catalog.jsp";
     public static final String PROFILE = "/WEB-INF/jsp/profile.jsp";
     public static final String BICYCLE_INFO = "/WEB-INF/jsp/bicycleInfo.jsp";
+    public static final String ORDERS = "/WEB-INF/jsp/admin/orders.jsp";
+    public static final String BICYCLES = "/WEB-INF/jsp/admin/bicycles.jsp";
+    public static final String USERS = "/WEB-INF/jsp/admin/users.jsp";
+    public static final String ADMIN_MAIN = "/WEB-INF/jsp/admin/adminMain.jsp";
     public static final String ERROR500 = "/WEB-INF/jsp/errors/error500.jsp";
     public static final String BICYCLE_NOT_FOUND = "/WEB-INF/jsp/errors/bicycleError.jsp";
 

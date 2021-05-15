@@ -26,11 +26,9 @@
     </Appenders>
     <Loggers>
         <Root level="DEBUG">
-            <AppenderRef ref="LogRollingFile"/>
-            <AppenderRef ref="Console"/>
-        </Root>
-        <Root level="ERROR">
-            <AppenderRef ref="LogFile"/>
+            <AppenderRef ref="LogRollingFile" level="debug"/>
+            <AppenderRef ref="Console" level="debug"/>
+            <AppenderRef ref="LogFile" level="error"/>
         </Root>
     </Loggers>
 </Configuration>

@@ -18,7 +18,7 @@
     <style>
         .required-field::after {
             content: "*";
-            color: red;
+            color: #9b3030;
             margin-left:2px
         }
         form {
@@ -42,6 +42,12 @@
         }
         .main-content {
             background-image: url("${pageContext.request.contextPath}/images/login_background.png");
+        }
+        .a1 {
+            padding-top: 5px;
+            padding-bottom: 10px;
+            color: #655142;
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -70,13 +76,10 @@
     ${errorPasswordConfirmingMessage}
     <br/><br/>
     <input class="asButton" type="submit" value="<fmt:message key="signUp.sign_up" />">
-    <br/>${errorUserMessage}
+    ${errorUserMessage}
+    <a class="a1" href="<c:url value="/controller?command=to_login" />"><fmt:message key="signUp.log_in"/></a>
 </form>
-<form name="infoForm" method="POST" action="controller">
-    <input type="hidden" name="command" value="to_login"/>
-    <input class="asButton" type="submit" value="<fmt:message key="signUp.log_in" />">
-</form>
-</div>
+    </div>
 <%@ include file="tiles/footer.jsp"%>
 </body>
 </html>

@@ -38,7 +38,11 @@ public class LogInCommand implements Command {
         if(optionalUser.isPresent()) {
             User user = optionalUser.get();
             request.getSession().setAttribute(SessionAttribute.USER, user);
-            page = MAIN;
+            if (user.getRole().equals(UserRole.ADMIN)) {
+                page = ADMIN_MAIN;
+            } else {
+                page = MAIN;
+            }
         } else {
             request.setAttribute("errorUserMessage", "Incorrect login or password");
             page = LOGIN;

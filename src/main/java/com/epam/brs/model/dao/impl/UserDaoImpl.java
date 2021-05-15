@@ -2,6 +2,8 @@ package com.epam.brs.model.dao.impl;
 
 import com.epam.brs.model.dao.UserDao;
 import com.epam.brs.model.dao.DaoException;
+import com.epam.brs.model.entity.Reservation;
+import com.epam.brs.model.entity.ReservationStatus;
 import com.epam.brs.model.entity.User;
 import com.epam.brs.model.entity.UserRole;
 import com.epam.brs.model.pool.ConnectionPool;
@@ -10,10 +12,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.intellij.lang.annotations.Language;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.math.BigDecimal;
+import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,9 +31,13 @@ public class UserDaoImpl implements UserDao {
     @Language("MySQL")
     private static final String CONTAINS_LOGIN_SQL_QUERY = "SELECT 1 FROM users WHERE login=?";
     @Language("MySQL")
-    private static final String FIND_USER_SQL_QUERY = "SELECT passwordHash, name, surname, email, role, photo_path FROM users WHERE login=?";
+    private static final String FIND_USER_SQL_QUERY = "SELECT id_user, passwordHash, name, surname, email, role, photo_path FROM users WHERE login=?";
+    @Language("MySQL")
+    private static final String FIND_USER_EMAIL_SQL_QUERY = "SELECT email FROM users WHERE id_user=?";
     @Language("MySQL")
     private static final String UPDATE_PHOTO_SQL_QUERY = "UPDATE users SET photo_path=? WHERE login=?";
+    @Language("MySQL")
+    private static final String FIND_ALL_SQL_QUERY = "SELECT id_user, login, name, surname, email, role, is_blocked, registered_at FROM users";
 
     private UserDaoImpl() {
     }
@@ -63,15 +70,16 @@ public class UserDaoImpl implements UserDao {
             statement.setString(1, login);
             ResultSet userData = statement.executeQuery();
             if (userData.next()) {
-                String hashedPassword = userData.getNString(1);
+                String hashedPassword = userData.getNString(2);
                 if (Encryptor.coincide(password, hashedPassword)) {
-                    String name = userData.getNString(2);
-                    String surname = userData.getNString(3);
-                    String email = userData.getNString(4);
-                    String role = userData.getNString(5);
+                    int userId = userData.getInt(1);
+                    String name = userData.getNString(3);
+                    String surname = userData.getNString(4);
+                    String email = userData.getNString(5);
+                    String role = userData.getNString(6);
                     UserRole userRole = UserRole.valueOf(role);
-                    User user = new User(login, name, surname, email, userRole);
-                    String photoName = userData.getNString(6);
+                    User user = new User(userId, login, name, surname, email, userRole);
+                    String photoName = userData.getNString(7);
                     if (photoName != null) {
                         user.setPhotoName(photoName);
                     }
@@ -87,6 +95,25 @@ public class UserDaoImpl implements UserDao {
             throw new DaoException(e);
         }
         return optionalUser;
+    }
+
+    @Override
+    public Optional<String> findUserEmail(int userId) throws DaoException {
+        Optional<String> optEmail;
+        try (Connection connection = ConnectionPool.INSTANCE.getConnection();
+             PreparedStatement statement = connection.prepareStatement(FIND_USER_EMAIL_SQL_QUERY)) {
+            statement.setInt(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                String email = resultSet.getNString(1);
+                optEmail = Optional.of(email);
+            } else {
+                optEmail = Optional.empty();
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return optEmail;
     }
 
     @Override
@@ -141,8 +168,33 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<User> findAll() {
-        return null;
+    public List<User> findAll() throws DaoException {
+        List<User> userList;
+        try (Connection connection = ConnectionPool.INSTANCE.getConnection();
+             Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(FIND_ALL_SQL_QUERY);
+            userList = completeList(resultSet);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return userList;
+    }
+
+    private List<User> completeList(ResultSet users) throws SQLException {
+        List<User> userList = new ArrayList<>();
+        while(users.next()) {
+            int userId = users.getInt(1);
+            String login = users.getString(2);
+            String name = users.getString(3);
+            String surname = users.getString(4);
+            String email = users.getString(5);
+            UserRole role = UserRole.valueOf(users.getString(6));
+            boolean isBlocked = users.getBoolean(7);
+            LocalDateTime registeredAt = (LocalDateTime) users.getObject(8);
+            User user = new User(userId, login, name, surname, email, role, registeredAt, isBlocked);
+            userList.add(user);
+        }
+        return userList;
     }
 
     @Override

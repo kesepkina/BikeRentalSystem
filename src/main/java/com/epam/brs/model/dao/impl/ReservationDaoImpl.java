@@ -25,7 +25,7 @@ public class ReservationDaoImpl implements ReservationDao {
     @Language("MySQL")
     private static final String FIND_BY_ID_SQL_QUERY = "SELECT id_reservation, id_user, id_bicycle, reserved_at, pick_up_time, return_time, counted_price, status FROM reservations WHERE id_reservation=?";
     @Language("MySQL")
-    private static final String ADD_RESERVATION_SQL_QUERY = "INSERT INTO reservations(id_user, id_bicycle, reservated_at, pick_up_time, return_time, counted_price, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private static final String ADD_RESERVATION_SQL_QUERY = "INSERT INTO reservations(id_user, id_bicycle, reserved_at, pick_up_time, return_time, counted_price, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     private ReservationDaoImpl() {}
 
@@ -112,9 +112,9 @@ public class ReservationDaoImpl implements ReservationDao {
             ReservationStatus status = reservation.getStatus();
             statement.setInt(1, userId);
             statement.setInt(2, bicycleId);
-            statement.setObject(3, reservedAt);
-            statement.setObject(4, pickUpTime);
-            statement.setObject(5, returnTime);
+            statement.setObject(3, reservedAt.toString().replace('T', ' '));
+            statement.setObject(4, pickUpTime.toString().replace('T', ' '));
+            statement.setObject(5, returnTime.toString().replace('T', ' '));
             statement.setBigDecimal(6, countedPrice);
             statement.setString(7, status.toString());
             int rowCount = statement.executeUpdate();

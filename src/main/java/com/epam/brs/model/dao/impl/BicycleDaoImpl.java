@@ -17,11 +17,11 @@ public class BicycleDaoImpl implements BicycleDao {
     private static final BicycleDao instance = new BicycleDaoImpl();
 
     @Language("MySQL")
-    private static final String FIND_ALL_SQL_QUERY = "SELECT id_bicycle, brand, model, type, image_path, id_point, id_price_list FROM bicycles";
+    private static final String FIND_ALL_SQL_QUERY = "SELECT id_bicycle, brand, model, type, image_path, id_price_list FROM bicycles";
     @Language("MySQL")
-    private static final String FIND_BY_TYPE_SQL_QUERY = "SELECT id_bicycle, brand, model, type, image_path, id_point, id_price_list FROM bicycles WHERE type=?";
+    private static final String FIND_BY_TYPE_SQL_QUERY = "SELECT id_bicycle, brand, model, type, image_path, id_price_list FROM bicycles WHERE type=?";
     @Language("MySQL")
-    private static final String FIND_BY_ID_SQL_QUERY = "SELECT brand, model, release_year, purchase_year, description, type, image_path, id_point, id_price_list FROM bicycles WHERE id_bicycle=?";
+    private static final String FIND_BY_ID_SQL_QUERY = "SELECT brand, model, release_year, purchase_year, description, type, image_path, id_price_list FROM bicycles WHERE id_bicycle=?";
 
 
     private BicycleDaoImpl() {
@@ -66,9 +66,8 @@ public class BicycleDaoImpl implements BicycleDao {
             String model = bicycles.getNString(3);
             BicycleType bicycleType = BicycleType.valueOf(bicycles.getNString(4));
             String imagePath = bicycles.getNString(5);
-            int rentalPointId = bicycles.getInt(6);
-            int priceListId = bicycles.getInt(7);
-            Bicycle bicycle = new Bicycle(bicycleId, brand, model, bicycleType, imagePath, rentalPointId, priceListId);
+            int priceListId = bicycles.getInt(6);
+            Bicycle bicycle = new Bicycle(bicycleId, brand, model, bicycleType, imagePath, priceListId);
             bicycleList.add(bicycle);
         }
         return bicycleList;
@@ -89,9 +88,8 @@ public class BicycleDaoImpl implements BicycleDao {
                 String description = bicycleData.getNString(5);
                 BicycleType type = BicycleType.valueOf(bicycleData.getNString(6));
                 String imagePath = bicycleData.getNString(7);
-                int rentalPointId = bicycleData.getInt(8);
-                int priceListId = bicycleData.getInt(9);
-                Bicycle bicycle = new Bicycle(id, brand, model, releaseYear, purchaseYear, description, type, imagePath, rentalPointId, priceListId);
+                int priceListId = bicycleData.getInt(8);
+                Bicycle bicycle = new Bicycle(id, brand, model, releaseYear, purchaseYear, description, type, imagePath, priceListId);
                 optionalBicycle = Optional.of(bicycle);
             } else {
                 optionalBicycle = Optional.empty();

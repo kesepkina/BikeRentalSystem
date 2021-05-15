@@ -1,6 +1,5 @@
 package com.epam.brs.command;
 
-import com.epam.brs.model.service.ServiceException;
 
 import javax.servlet.http.HttpServletRequest;
 

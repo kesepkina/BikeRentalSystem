@@ -21,6 +21,7 @@
         <a href="<c:url value="/controller?command=to_main"/>" class="logo">
             <img src="${pageContext.request.contextPath}/images/logo.png" alt="Logo" height="40px" >
         </a>
+        <a href="<c:url value="/controller?command=to_main"/>" class="home"><fmt:message key="header.home" /></a>
         <div class="profile-menu">
             <div class="profile"><fmt:message key="header.profile"/></div>
             <ul>

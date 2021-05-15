@@ -47,6 +47,7 @@
             background-color: #65514275;
             padding: 5px 10px;
             border-radius: 10px;
+            font-size: medium;
         }
         .find-button {
             background-color: antiquewhite;

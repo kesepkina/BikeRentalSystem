@@ -3,6 +3,7 @@ package com.epam.brs.command.impl;
 import com.epam.brs.command.Command;
 import com.epam.brs.command.CommandException;
 import com.epam.brs.command.PagePath;
+import com.epam.brs.command.SessionAttribute;
 import com.epam.brs.model.entity.Bicycle;
 import com.epam.brs.model.service.ServiceException;
 import com.epam.brs.model.service.impl.BicycleServiceImpl;
@@ -34,7 +35,7 @@ public class ToBicycleInfoCommand implements Command {
         String page;
         if (optionalBicycle.isPresent()) {
             Bicycle bicycle = optionalBicycle.get();
-            request.getSession().setAttribute("chosenBicycle", bicycle);
+            request.getSession().setAttribute(SessionAttribute.CHOSEN_BICYCLE, bicycle);
             page = PagePath.BICYCLE_INFO;
         } else {
             logger.error("Bicycle with id {} wasn't found in database", id);

@@ -14,6 +14,7 @@ public class Reservation extends Entity{
     private LocalDateTime returnTime;
     private BigDecimal countedPrice;
     private ReservationStatus status;
+    private String userEmail;
 
     public Reservation(int reservationId, int userId, int bicycleId, LocalDateTime reservedAt, LocalDateTime pickUpTime, LocalDateTime returnTime, BigDecimal countedPrice, ReservationStatus status) {
         this.reservationId = reservationId;
@@ -34,6 +35,14 @@ public class Reservation extends Entity{
         this.returnTime = returnTime;
         this.countedPrice = countedPrice;
         this.status = status;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public int getReservationId() {

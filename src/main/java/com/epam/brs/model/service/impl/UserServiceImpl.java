@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
@@ -24,6 +25,17 @@ public class UserServiceImpl implements UserService {
     private static final Logger logger = LogManager.getLogger();
 
     private static final String MAIL_PROPERTIES_PATH = "properties/config/mail.properties";
+
+    @Override
+    public List<User> findAll() throws ServiceException {
+        List<User> userList;
+        try {
+            userList = UserDaoImpl.getInstance().findAll();
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+        return userList;
+    }
 
     @Override
     public Optional<User> login(String login, String password) throws ServiceException {

@@ -25,7 +25,7 @@
             justify-content: center;
             align-items: center;
             flex-wrap: wrap;
-            margin-bottom: 20px;
+            margin-bottom: 20.4px;
             padding-right: 54%;
         }
 
@@ -40,11 +40,16 @@
         }
         .main-content {
             background-image: url("${pageContext.request.contextPath}/images/login_background.png");
-            padding-block: 96px;
+            padding-block: 112px;
         }
-
         .text {
             font-size: large;
+        }
+        .a1 {
+            padding-top: 5px;
+            padding-bottom: 10px;
+            color: #655142;
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -60,10 +65,7 @@
             <br/>
             ${errorUserMessage}
             <input class="asButton" type="submit" value="<fmt:message key="logIn.log_in" />">
-        </form>
-        <form class="onlyInput" name="signUpForm" method="post" action="controller">
-            <input type="hidden" name="command" value="to_signup" />
-            <input class="asButton" type="submit" value="<fmt:message key="logIn.sign_up" />">
+            <a class="a1" href="<c:url value="/controller?command=to_signup"/>"><fmt:message key="logIn.sign_up"/></a>
         </form>
     </div>
 <%@ include file="tiles/footer.jsp"%>

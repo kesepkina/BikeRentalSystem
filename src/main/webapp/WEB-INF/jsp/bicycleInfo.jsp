@@ -83,8 +83,8 @@
 <body>
 <%@ include file="tiles/header.jsp"%>
 <c:choose>
-    <c:when test="${not empty sessionScope.chosenBicycle.imagePath}" >
-    <img alt="Bicycle photo" src="${pageContext.request.contextPath}/image/bicycles/${sessionScope.chosenBicycle.imagePath}" width="200px">
+    <c:when test="${not empty sessionScope.chosen_bicycle.imagePath}" >
+    <img alt="Bicycle photo" src="${pageContext.request.contextPath}/image/bicycles/${sessionScope.chosen_bicycle.imagePath}" width="200px">
     </c:when>
     <c:otherwise>
     <img alt="Default profile photo" src="${pageContext.request.contextPath}/images/bicycle.png">
@@ -94,59 +94,95 @@
 <table>
     <tr>
         <td><fmt:message key="bicycleInfo.brand"/></td>
-        <td>${sessionScope.chosenBicycle.brand}</td>
+        <td>${sessionScope.chosen_bicycle.brand}</td>
     </tr>
     <tr>
         <td><fmt:message key="bicycleInfo.model"/></td>
-        <td>${sessionScope.chosenBicycle.model}</td>
+        <td>${sessionScope.chosen_bicycle.model}</td>
     </tr>
     <tr>
         <td><fmt:message key="bicycleInfo.type"/></td>
-        <td>${sessionScope.chosenBicycle.type}</td>
+        <td>${sessionScope.chosen_bicycle.type}</td>
     </tr>
     <tr>
         <td><fmt:message key="bicycleInfo.description"/></td>
-        <td><c:choose><c:when test="${not empty sessionScope.chosenBicycle.description}">${sessionScope.chosenBicycle.description}</c:when>
+        <td><c:choose><c:when test="${not empty sessionScope.chosen_bicycle.description}">${sessionScope.chosenBicycle.description}</c:when>
         <c:otherwise> - </c:otherwise></c:choose></td>
     </tr>
 </table>
-<button id="openRentForm"><fmt:message key="bicycleInfo.rent"/></button>
+<c:choose>
+    <c:when test="${sessionScope.user.role == 'CLIENT'}" >
+        <button id="openRentForm"><fmt:message key="bicycleInfo.rent"/></button>
+    </c:when>
+    <c:otherwise>
+        <a href="<c:url value="/controller?command=to_login" />"><fmt:message key="bicycleInfo.log_in"/></a>
+        <fmt:message key="bicycleInfo.or"/>
+        <a href="<c:url value="/controller?command=to_signup"/>"><fmt:message key="bicycleInfo.sign_up"/></a>
+        <fmt:message key="bicycleInfo.to_rent"/>
+    </c:otherwise>
+</c:choose>
 
 <div id="rentForm" class="modal">
 
     <div class="modal-content">
         <span class="close">&times;</span>
         <br/>
-        <form name="rentForm" method="POST" action="controller">
+        <form name="rentForm" method="POST" action="controller" >
             <input type="hidden" name="command" value="rent" />
             <fmt:message key="bicycleInfo.rentform.from" /><br/>
-            <input type="datetime-local" name="from" value="" required/>
+            <input id="from" type="datetime-local" name="from" value="" min="2021-14-05T12:30" max="2021-31-12T23:59" step="1800" required/>
             <br/>
-            <br/><fmt:message key="bicycleInfo.rentform.to" /><br/>
-            <input type="datetime-local" name="to" value="" required/>
+            <br/><fmt:message key="bicycleInfo.rentform.duration" /><br/>
+            <input id="amount" type="number" name="amount" value="1" max="23" required/>
+            <select id="time-format" name="time-format">
+                <option value="hours" ><fmt:message key="bicycleInfo.rentform.hours"/></option>
+                <option value="days" ><fmt:message key="bicycleInfo.rentform.days"/></option>
+                <option value="weeks" ><fmt:message key="bicycleInfo.rentform.weeks"/></option>
+            </select>
             <br/><br/>
             <div class="formButton">
-            <input class="rentInput" type="submit" value="<fmt:message key="bicycleInfo.rent" />">
+                <input class="rentInput" type="submit" value="<fmt:message key="bicycleInfo.rent" />">
             </div>
         </form>
     </div>
 
 </div>
 <script>
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth()+1;
+    var yyyy = today.getFullYear();
+    if(dd<10){
+        dd='0'+dd
+    }
+    if(mm<10){
+        mm='0'+mm
+    }
+    var HH = today.getHours();
+    var MM = today.getMinutes();
+    if(MM>=0 && MM<30){
+        MM=30
+    } else {
+        MM='00'
+        HH+=1
+    }
+    if(HH<10){
+        HH='0'+HH
+    }
+    today = yyyy+'-'+mm+'-'+dd+'T'+HH+':'+MM;
+    document.getElementById("from").setAttribute("min", today);
+    document.getElementById("from").setAttribute("value", today);
+
     var modal = document.getElementById("rentForm");
-
     var btn = document.getElementById("openRentForm");
-
     var span = document.getElementsByClassName("close")[0];
 
     btn.onclick = function() {
         modal.style.display = "block";
     }
-
     span.onclick = function() {
         modal.style.display = "none";
     }
-
     window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = "none";

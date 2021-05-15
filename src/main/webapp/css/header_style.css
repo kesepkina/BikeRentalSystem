@@ -19,7 +19,7 @@ a {
 }
 
 .logo {
-    margin: 5px 5px 5px 20px;
+    margin: 5px 5px 5px 60px;
     opacity: .8;
 }
 
@@ -37,6 +37,18 @@ nav{
     background-color: #655142;
 }
 
+.home {
+    display: flex;
+    justify-content: space-between;
+    width: 60px;
+    height: 50px;
+    align-items: center;
+    font-size: large;
+    color: antiquewhite;
+    cursor: pointer;
+    padding-inline: 25px;
+}
+
 .profile-menu {
     position: relative;
     margin-left: auto;
@@ -48,9 +60,9 @@ nav{
     justify-content: space-between;
     width: 60px;
     height: 50px;
-    margin-right: 40px;
+    margin-right: 55px;
     align-items: center;
-    font-size: medium;
+    font-size: large;
 }
 
 .language-menu {
@@ -98,7 +110,7 @@ nav{
     display: flex;
     justify-content: space-between;
     width: 60px;
-    margin-right: 40px;
+    margin-right: 60px;
     align-items: center;
     font-size: medium;
 }
