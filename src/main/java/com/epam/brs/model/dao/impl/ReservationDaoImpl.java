@@ -40,12 +40,12 @@ public class ReservationDaoImpl implements ReservationDao {
             "           GROUP_CONCAT(\n" +
             "                   CONCAT(\"{id_reservation:'\",id_reservation,\"'\"),\n" +
             "                   CONCAT(\",id_user:'\",id_user,\"'\"),\n" +
-            "                   CONCAT(\",id_bicycle:'\",id_bicycle,\"'}\"),\n" +
+            "                   CONCAT(\",id_bicycle:'\",id_bicycle,\"'\"),\n" +
             "                   CONCAT(\",reserved_at:'\",reserved_at,\"'\"),\n" +
             "                   CONCAT(\",pick_up_time:'\",pick_up_time,\"'\"),\n" +
             "                   CONCAT(\",return_time:'\",return_time,\"'\"),\n" +
             "                   CONCAT(\",counted_price:'\",counted_price,\"'\"),\n" +
-            "                   CONCAT(\",status:'\",status,\"'\")\n" +
+            "                   CONCAT(\",status:'\",status,\"'}\")\n" +
             "               )\n" +
             "        ,\"]\")\n" +
             "        " +

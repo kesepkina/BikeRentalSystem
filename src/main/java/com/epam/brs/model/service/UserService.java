@@ -8,6 +8,8 @@ import java.util.Optional;
 
 public interface UserService {
 
+    boolean downloadTableAsJSON() throws ServiceException;
+
     List<User> findAll() throws ServiceException;
 
     Optional<User> login(String login, String password) throws ServiceException;

@@ -26,6 +26,8 @@ public enum CommandType {
     CHANGE_ORDER_STATUS(new ChangeReservationStatusCommand(new ReservationServiceImpl())),
     TO_ADMINSIGNUP(new ToPageCommand(PagePath.ADMIN_SIGNUP)),
     DOWNLOAD_ORDERS(new DownloadOrdersInJsonCommand(new ReservationServiceImpl())),
+    DOWNLOAD_USERS(new DownloadUsersInJsonCommand(new UserServiceImpl())),
+    DOWNLOAD_BICYCLES(new DownloadBicyclesInJsonCommand(new BicycleServiceImpl())),
     TO_ADDING_BICYCLE(new ToPageCommand(PagePath.ADDING_BICYCLE)),
     ADD_BICYCLE(new AddBicycleCommand(new BicycleServiceImpl()));
 

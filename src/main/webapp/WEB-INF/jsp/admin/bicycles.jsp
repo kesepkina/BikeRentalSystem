@@ -33,9 +33,28 @@
             margin: 20px;
             width: 96%;
         }
+        .asButton {
+            background-color: antiquewhite;
+            color: #655142;
+            border-radius: 10px;
+            border-color: #655142;
+            height: 30px;
+            cursor: pointer;
+            padding-inline: 15px;
+        }
     </style>
 </head>
 <body>
+<c:if test='${successDownload.equals("yes!")}'>
+    <script type="text/javascript">
+        alert("File was downloaded successfully.");
+    </script>
+</c:if>
+<c:if test='${successDownload.equals("no")}'>
+    <script type="text/javascript">
+        alert("Something went wrong, file wasn't downloaded.");
+    </script>
+</c:if>
 <%@ include file="../tiles/adminHeader.jsp"%>
 <table>
     <tr>
@@ -104,6 +123,10 @@
         </tr>
     </c:forEach>
 </table>
+<form style="display: flex; justify-content: center; margin: 20px;" name="downloadTable" method="POST" action="controller">
+    <input type="hidden" name="command" value="download_bicycles" />
+    <input class="asButton" type="submit" value="<fmt:message key="orders.download"/>">
+</form>
 <%@ include file="../tiles/footer.jsp"%>
 </body>
 </html>

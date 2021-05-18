@@ -6,6 +6,8 @@ import java.util.Optional;
 
 public interface UserDao extends BaseDao<Integer, User> {
 
+    boolean downloadTableAsJSON() throws DaoException;
+
     boolean containsLogin(String username) throws DaoException;
 
     Optional<User> findUser(String login, String password) throws DaoException;

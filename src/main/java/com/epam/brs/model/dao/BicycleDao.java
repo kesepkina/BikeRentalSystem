@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface BicycleDao extends BaseDao<Integer, Bicycle> {
 
+    boolean downloadTableAsJSON() throws DaoException;
+
     boolean addBicycle(Bicycle bicycle) throws DaoException;
 
     List<Bicycle> findByFilters(BicycleType type) throws DaoException;

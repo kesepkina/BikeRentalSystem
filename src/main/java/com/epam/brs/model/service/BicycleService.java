@@ -8,6 +8,8 @@ import java.util.Optional;
 
 public interface BicycleService {
 
+    boolean downloadTableAsJSON() throws ServiceException;
+
     boolean addBicycle(Map<String, String> bicycleData) throws ServiceException;
 
     List<Bicycle> findAll(String bikeType) throws ServiceException;

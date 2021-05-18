@@ -22,6 +22,8 @@ public class UserDaoImpl implements UserDao {
 
     private static final UserDao instance = new UserDaoImpl();
 
+    private static final String FILE_PATH_BASE = "C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/users";
+
     @Language("MySQL")
     private static final String ADD_USER_SQL_QUERY = "INSERT INTO users(login, passwordHash, name, surname, email, role) VALUES (?, ?, ?, ?, ?, ?)";
     @Language("MySQL")
@@ -34,12 +36,45 @@ public class UserDaoImpl implements UserDao {
     private static final String UPDATE_PHOTO_SQL_QUERY = "UPDATE users SET photo_path=? WHERE login=?";
     @Language("MySQL")
     private static final String FIND_ALL_SQL_QUERY = "SELECT id_user, login, name, surname, email, role, is_blocked, registered_at FROM users";
+    @Language("MySQL")
+    private static final String DOWNLOAD_IN_JSON_SQL_QUERY = "SELECT\n" +
+            "    CONCAT('[',\n" +
+            "           GROUP_CONCAT(\n" +
+            "                   CONCAT(\"{id_user:'\",id_user,\"'\"),\n" +
+            "                   CONCAT(\",login:'\",login,\"'\"),\n" +
+            "                   CONCAT(\",passwordHash:'\",passwordHash,\"'\"),\n" +
+            "                   CONCAT(\",name:'\",name,\"'\"),\n" +
+            "                   CONCAT(\",surname:'\",surname,\"'\"),\n" +
+            "                   CONCAT(\",email:'\",email,\"'\"),\n" +
+            "                   CONCAT(\",phone:'\",phone,\"'\"),\n" +
+            "                   CONCAT(\",role:'\",role,\"'\"),\n" +
+            "                   CONCAT(\",is_blocked:'\",is_blocked,\"'\"),\n" +
+            "                   CONCAT(\",registered_at:'\",registered_at,\"'\"),\n" +
+            "                   CONCAT(\",photo_path:'\",photo_path,\"'}\")\n" +
+            "               )\n" +
+            "        ,\"]\")\n" +
+            "        " +
+            "AS json FROM users\n" +
+            "INTO OUTFILE ?";
 
     private UserDaoImpl() {
     }
 
     public static UserDao getInstance() {
         return instance;
+    }
+
+    @Override
+    public boolean downloadTableAsJSON() throws DaoException {
+        try (Connection connection = ConnectionPool.INSTANCE.getConnection();
+             PreparedStatement statement = connection.prepareStatement(DOWNLOAD_IN_JSON_SQL_QUERY)) {
+            String filePath = FILE_PATH_BASE + LocalDateTime.now().hashCode() + ".json";
+            statement.setString(1, filePath);
+            statement.executeQuery();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return true;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.epam.brs.model.service.impl;
 
 import com.epam.brs.model.dao.DaoException;
+import com.epam.brs.model.dao.impl.BicycleDaoImpl;
 import com.epam.brs.model.dao.impl.UserDaoImpl;
 import com.epam.brs.model.entity.User;
 import com.epam.brs.model.entity.enumType.UserRole;
@@ -26,6 +27,17 @@ public class UserServiceImpl implements UserService {
     private static final Logger logger = LogManager.getLogger();
 
     private static final String MAIL_PROPERTIES_PATH = "properties/config/mail.properties";
+
+    @Override
+    public boolean downloadTableAsJSON() throws ServiceException {
+        boolean downloaded;
+        try {
+            downloaded = BicycleDaoImpl.getInstance().downloadTableAsJSON();
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+        return downloaded;
+    }
 
     @Override
     public List<User> findAll() throws ServiceException {

@@ -3,6 +3,7 @@ package com.epam.brs.model.service.impl;
 import com.epam.brs.model.dao.DaoException;
 import com.epam.brs.model.dao.impl.BicycleDaoImpl;
 import com.epam.brs.model.dao.impl.PriceListDaoImpl;
+import com.epam.brs.model.dao.impl.ReservationDaoImpl;
 import com.epam.brs.model.dao.impl.UserDaoImpl;
 import com.epam.brs.model.entity.Bicycle;
 import com.epam.brs.model.entity.PriceList;
@@ -20,6 +21,17 @@ import java.util.Optional;
 import static com.epam.brs.command.BicycleDataMapKeyword.*;
 
 public class BicycleServiceImpl implements BicycleService {
+
+    @Override
+    public boolean downloadTableAsJSON() throws ServiceException {
+        boolean downloaded;
+        try {
+            downloaded = BicycleDaoImpl.getInstance().downloadTableAsJSON();
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+        return downloaded;
+    }
 
     @Override
     public boolean addBicycle(Map<String, String> bicycleData) throws ServiceException {
