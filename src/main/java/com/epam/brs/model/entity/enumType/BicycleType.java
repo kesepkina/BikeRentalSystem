@@ -1,4 +1,4 @@
-package com.epam.brs.model.entity;
+package com.epam.brs.model.entity.enumType;
 
 public enum BicycleType {
 

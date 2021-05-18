@@ -35,6 +35,7 @@ public class SignUpCommand implements Command {
         String loginValue = request.getParameter(RequestParameter.LOGIN);
         String passValue = request.getParameter(RequestParameter.PASSWORD);
         String passConfirmValue = request.getParameter(RequestParameter.PASSWORD_CONFIRMING);
+        String userRole = request.getParameter(RequestParameter.USER_ROLE);
         Map<String, String> userData = new HashMap<>();
         userData.put(NAME_KEY, nameValue);
         userData.put(SURNAME_KEY, surnameValue);
@@ -42,11 +43,16 @@ public class SignUpCommand implements Command {
         userData.put(LOGIN_KEY, loginValue);
         userData.put(PASSWORD_KEY, passValue);
         userData.put(CONFIRMING_PASSWORD_KEY, passConfirmValue);
+        userData.put(USER_ROLE, userRole);
         boolean signedUpSuccessfully;
         try {
             signedUpSuccessfully = service.signUp(userData);
             if (signedUpSuccessfully) {
-                page = LOGIN;
+                if(userRole=="ADMIN") {
+                    page=ADMIN_MAIN;
+                } else {
+                    page = LOGIN;
+                }
             } else {
                 emailValue = userData.get(EMAIL_KEY);
                 loginValue = userData.get(LOGIN_KEY);

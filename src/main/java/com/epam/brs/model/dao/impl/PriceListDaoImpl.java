@@ -1,11 +1,9 @@
 package com.epam.brs.model.dao.impl;
 
-import com.epam.brs.model.dao.BicycleDao;
 import com.epam.brs.model.dao.DaoException;
 import com.epam.brs.model.dao.PriceListDao;
-import com.epam.brs.model.entity.Bicycle;
-import com.epam.brs.model.entity.BicycleType;
 import com.epam.brs.model.entity.PriceList;
+import com.epam.brs.model.entity.enumType.UserRole;
 import com.epam.brs.model.pool.ConnectionPool;
 import org.intellij.lang.annotations.Language;
 
@@ -23,6 +21,10 @@ public class PriceListDaoImpl implements PriceListDao {
 
     @Language("MySQL")
     private static final String FIND_BY_ID_SQL_QUERY = "SELECT deposit, price_per_hour, price_per_day, price_per_week FROM price_list WHERE id_price_list=?";
+    @Language("MySQL")
+    private static final String ADD_LIST_SQL_QUERY = "INSERT INTO price_list(deposit, price_per_hour, price_per_day, price_per_week) VALUES (?, ?, ?, ?)";
+    @Language("MySQL")
+    private static final String FIND_ID_SQL_QUERY = "SELECT id_price_list from price_list WHERE deposit=? AND price_per_hour=? AND price_per_day=? AND price_per_week=?";
 
     private PriceListDaoImpl() {
     }
@@ -73,5 +75,54 @@ public class PriceListDaoImpl implements PriceListDao {
     @Override
     public PriceList update(PriceList entity) {
         return null;
+    }
+
+    @Override
+    public boolean add(PriceList priceList) throws DaoException {
+        boolean addedSuccessfully;
+        try (Connection connection = ConnectionPool.INSTANCE.getConnection();
+             PreparedStatement statement = connection.prepareStatement(ADD_LIST_SQL_QUERY)) {
+            BigDecimal deposit = priceList.getDeposit();
+            BigDecimal pricePerHour = priceList.getPricePerHour();
+            BigDecimal pricePerDay = priceList.getPricePerDay();
+            BigDecimal pricePerWeek = priceList.getPricePerWeek();
+            statement.setBigDecimal(1, deposit);
+            statement.setBigDecimal(2, pricePerHour);
+            statement.setBigDecimal(3, pricePerDay);
+            statement.setBigDecimal(4, pricePerWeek);
+            int rowCount = statement.executeUpdate();
+            if (rowCount != 0) {
+                addedSuccessfully = true;
+                logger.info("Price list added successfully");
+            } else {
+                logger.error("Price list {} wasn't added", priceList);
+                addedSuccessfully = false;
+            }
+        } catch (SQLException e) {
+            logger.error("Exception while adding new price list", e);
+            throw new DaoException("Exception while adding new price list", e);
+        }
+        return addedSuccessfully;
+    }
+
+    @Override
+    public boolean findId(PriceList priceList) throws DaoException {
+        boolean found = false;
+        try (Connection connection = ConnectionPool.INSTANCE.getConnection();
+             PreparedStatement statement = connection.prepareStatement(FIND_ID_SQL_QUERY)) {
+            statement.setBigDecimal(1, priceList.getDeposit());
+            statement.setBigDecimal(2, priceList.getPricePerHour());
+            statement.setBigDecimal(3, priceList.getPricePerDay());
+            statement.setBigDecimal(4, priceList.getPricePerWeek());
+            ResultSet priceListData = statement.executeQuery();
+            if (priceListData.next()) {
+                int priceListId = priceListData.getInt(1);
+                priceList.setPriceListId(priceListId);
+                found = true;
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return found;
     }
 }

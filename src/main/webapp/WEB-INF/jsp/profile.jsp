@@ -14,6 +14,32 @@
 <html>
 <head>
     <title><fmt:message key="profile.title"/></title>
+    <style>
+        th, td {
+            border-bottom: 1px solid #ddd;
+        }
+        .trdata:hover {background-color: #f5f5f5;}
+        tr {
+            height: 60px;
+        }
+        th {
+            background-color: #ded8ca4f;
+        }
+        td {
+            padding: 5px;
+        }
+        table {
+            margin: 20px;
+            width: 96%;
+        }
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px;
+            font-size: larger;
+        }
+    </style>
 </head>
 <body>
 <%@ include file="tiles/header.jsp"%>
@@ -22,6 +48,7 @@
             alert("Oops! Something went wrong, your photo wasn't uploaded.");
     </script>
 </c:if>
+<div class="main-content">
 <c:choose>
     <c:when test="${not empty sessionScope.user.photoName}" >
         <img alt="Profile photo" src="${pageContext.request.contextPath}/image/profiles/${sessionScope.user.photoName}" width="200px">
@@ -46,6 +73,50 @@
 <fmt:message key="profile.surname"/>: ${sessionScope.user.surname}
 <br>
 <fmt:message key="profile.email"/>: ${sessionScope.user.email}
+</div>
+<br/>
+<p style="text-align: center; font-size: x-large"><fmt:message key="profile.orders"/></p>
+<table>
+    <tr>
+        <th><fmt:message key="orders.bicycle_id"/></th>
+        <th><fmt:message key="orders.reserved_at"/></th>
+        <th><fmt:message key="orders.pick_up_time"/></th>
+        <th><fmt:message key="orders.return_time"/></th>
+        <th><fmt:message key="orders.price"/></th>
+        <th><fmt:message key="orders.status"/></th>
+        <th></th>
+    </tr>
+    <jsp:useBean id="orders" scope="session" type="java.util.List"/>
+    <c:forEach items="${orders}" var="order">
+        <tr class="trdata">
+            <td>
+                <c:out value="${order.bicycleId}" />
+            </td>
+            <td>
+                <c:out value="${order.reservedAt.getDayOfMonth()} ${order.reservedAt.getMonth()} ${order.reservedAt.getYear()} ${order.reservedAt.getHour()}:${order.reservedAt.getMinute()}" />
+            </td>
+            <td>
+                <c:out value="${order.pickUpTime.getDayOfMonth()} ${order.pickUpTime.getMonth()} ${order.pickUpTime.getYear()} ${order.pickUpTime.getHour()}:${order.pickUpTime.getMinute()}" />
+            </td>
+            <td>
+                <c:out value="${order.returnTime.getDayOfMonth()} ${order.returnTime.getMonth()} ${order.returnTime.getYear()} ${order.returnTime.getHour()}:${order.returnTime.getMinute()}" />
+            </td>
+            <td>
+                <c:out value="${order.countedPrice}" /> BYN
+            </td>
+            <td>
+                <c:out value="${order.status.getValue()}" />
+            </td>
+            <td>
+                <form name="deleteOrder" method="POST" action="controller">
+                    <input type="hidden" name="command" value="delete_order" />
+                    <input type="hidden" name="orderId" value="${order.reservationId}" />
+                    <input type="submit" value="<fmt:message key="profile.cancel"/>">
+                </form>
+            </td>
+        </tr>
+    </c:forEach>
+</table>
 <%@ include file="tiles/footer.jsp"%>
 </body>
 </html>

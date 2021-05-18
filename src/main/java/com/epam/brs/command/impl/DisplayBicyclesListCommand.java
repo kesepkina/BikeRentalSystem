@@ -2,8 +2,7 @@ package com.epam.brs.command.impl;
 
 import com.epam.brs.command.*;
 import com.epam.brs.model.entity.Bicycle;
-import com.epam.brs.model.entity.User;
-import com.epam.brs.model.entity.UserRole;
+import com.epam.brs.model.entity.enumType.UserRole;
 import com.epam.brs.model.service.BicycleService;
 import com.epam.brs.model.service.ServiceException;
 import org.apache.logging.log4j.LogManager;
@@ -24,7 +23,7 @@ public class DisplayBicyclesListCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
         String bikeType = request.getParameter(RequestParameter.BIKE_TYPE);
-        List<Bicycle> bicycleList = null;
+        List<Bicycle> bicycleList;
         try {
             bicycleList = service.findAll(bikeType);
         } catch (ServiceException e) {
@@ -32,9 +31,9 @@ public class DisplayBicyclesListCommand implements Command {
             throw new CommandException("Exception by getting list of bicycles", e);
         }
         request.getSession().setAttribute("bicyclesList", bicycleList);
-        User user = (User) request.getSession().getAttribute(SessionAttribute.USER);
+        UserRole role = UserRole.valueOf((String) request.getSession().getAttribute(SessionAttribute.USER_ROLE));
         String page;
-        if (user.getRole().equals(UserRole.ADMIN)) {
+        if (role.equals(UserRole.ADMIN)) {
             page = PagePath.BICYCLES;
         } else {
             page = PagePath.CATALOG;

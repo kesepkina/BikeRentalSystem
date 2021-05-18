@@ -2,7 +2,7 @@ package com.epam.brs.command.impl;
 
 import com.epam.brs.command.*;
 import com.epam.brs.model.entity.User;
-import com.epam.brs.model.entity.UserRole;
+import com.epam.brs.model.entity.enumType.UserRole;
 import com.epam.brs.model.service.ServiceException;
 import com.epam.brs.model.service.impl.UserServiceImpl;
 import org.apache.logging.log4j.LogManager;
@@ -37,11 +37,17 @@ public class LogInCommand implements Command {
         }
         if(optionalUser.isPresent()) {
             User user = optionalUser.get();
-            request.getSession().setAttribute(SessionAttribute.USER, user);
-            if (user.getRole().equals(UserRole.ADMIN)) {
-                page = ADMIN_MAIN;
+            if (user.isBlocked()) {
+                request.setAttribute("userIsBlocked", "true");
+                page = LOGIN;
             } else {
-                page = MAIN;
+                request.getSession().setAttribute(SessionAttribute.USER, user);
+                request.getSession().setAttribute(SessionAttribute.USER_ROLE, user.getRole().toString());
+                if (user.getRole().equals(UserRole.ADMIN)) {
+                    page = ADMIN_MAIN;
+                } else {
+                    page = MAIN;
+                }
             }
         } else {
             request.setAttribute("errorUserMessage", "Incorrect login or password");

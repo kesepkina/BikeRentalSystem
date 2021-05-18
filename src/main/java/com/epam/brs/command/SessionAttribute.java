@@ -13,6 +13,7 @@ public class SessionAttribute {
     public static final String USER = "user";
     public static final String CURRENT_PAGE = "current_page";
     public static final String CHOSEN_BICYCLE = "chosen_bicycle";
+    public static final String PRICE_LIST = "price_list";
 
     private SessionAttribute() {
     }

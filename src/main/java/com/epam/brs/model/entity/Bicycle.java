@@ -1,5 +1,7 @@
 package com.epam.brs.model.entity;
 
+import com.epam.brs.model.entity.enumType.BicycleType;
+
 import java.util.StringJoiner;
 
 public class Bicycle extends Entity {
@@ -44,6 +46,17 @@ public class Bicycle extends Entity {
         this.bicycleId = bicycleId;
         this.brand = brand;
         this.model = model;
+        this.type = type;
+        this.imagePath = imagePath;
+        this.priceListId = priceListId;
+    }
+
+    public Bicycle(String brand, String model, int releaseYear, int purchaseYear, String description, BicycleType type, String imagePath, int priceListId) {
+        this.brand = brand;
+        this.model = model;
+        this.releaseYear = releaseYear;
+        this.purchaseYear = purchaseYear;
+        this.description = description;
         this.type = type;
         this.imagePath = imagePath;
         this.priceListId = priceListId;
@@ -105,8 +118,8 @@ public class Bicycle extends Entity {
         this.description = description;
     }
 
-    public String getType() {
-        return type.getValue();
+    public BicycleType getType() {
+        return type;
     }
 
     public void setType(BicycleType type) {

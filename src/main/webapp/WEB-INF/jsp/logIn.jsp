@@ -55,6 +55,11 @@
 </head>
 <body>
 <%@ include file="tiles/header.jsp"%>
+<c:if test="${not empty userIsBlocked}">
+    <script type="text/javascript">
+        alert("Your account was blocked, you can't use our service.");
+    </script>
+</c:if>
     <div class="main-content">
         <form name="loginForm" method="POST" action="controller">
             <input type="hidden" name="command" value="login" />

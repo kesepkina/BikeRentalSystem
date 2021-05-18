@@ -2,19 +2,15 @@ package com.epam.brs.model.dao.impl;
 
 import com.epam.brs.model.dao.UserDao;
 import com.epam.brs.model.dao.DaoException;
-import com.epam.brs.model.entity.Reservation;
-import com.epam.brs.model.entity.ReservationStatus;
 import com.epam.brs.model.entity.User;
-import com.epam.brs.model.entity.UserRole;
+import com.epam.brs.model.entity.enumType.UserRole;
 import com.epam.brs.model.pool.ConnectionPool;
 import com.epam.brs.util.Encryptor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.intellij.lang.annotations.Language;
 
-import java.math.BigDecimal;
 import java.sql.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +23,7 @@ public class UserDaoImpl implements UserDao {
     private static final UserDao instance = new UserDaoImpl();
 
     @Language("MySQL")
-    private static final String ADD_USER_SQL_QUERY = "INSERT INTO users(login, passwordHash, name, surname, email) VALUES (?, ?, ?, ?, ?)";
+    private static final String ADD_USER_SQL_QUERY = "INSERT INTO users(login, passwordHash, name, surname, email, role) VALUES (?, ?, ?, ?, ?, ?)";
     @Language("MySQL")
     private static final String CONTAINS_LOGIN_SQL_QUERY = "SELECT 1 FROM users WHERE login=?";
     @Language("MySQL")
@@ -125,11 +121,13 @@ public class UserDaoImpl implements UserDao {
             String name = user.getName();
             String surname = user.getSurname();
             String email = user.getEmail();
+            UserRole userRole = user.getRole();
             statement.setString(1, login);
             statement.setString(2, hashedPassword);
             statement.setString(3, name);
             statement.setString(4, surname);
             statement.setString(5, email);
+            statement.setString(6, userRole.toString());
             int rowCount = statement.executeUpdate();
             if (rowCount != 0) {
                 addedSuccessfully = true;

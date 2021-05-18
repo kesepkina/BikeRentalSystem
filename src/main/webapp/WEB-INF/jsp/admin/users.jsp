@@ -30,6 +30,9 @@
             margin: 20px;
             width: 96%;
         }
+        td {
+            padding: 5px;
+        }
     </style>
 </head>
 <body>
@@ -81,7 +84,9 @@
                 </c:choose>
             </td>
             <td>
-                <button value="/controller?command=block_user&id=${user.userId}"><fmt:message key="users.block"/></button>
+                <c:if test='${user.role=="CLIENT"}'>
+                    <button value="/controller?command=block_user&id=${user.userId}"><fmt:message key="users.block"/></button>
+                </c:if>
             </td>
         </tr>
     </c:forEach>

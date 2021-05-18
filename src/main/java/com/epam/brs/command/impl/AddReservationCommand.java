@@ -5,8 +5,6 @@ import com.epam.brs.command.CommandException;
 import com.epam.brs.command.RequestParameter;
 import com.epam.brs.command.SessionAttribute;
 import com.epam.brs.model.entity.Bicycle;
-import com.epam.brs.model.entity.Reservation;
-import com.epam.brs.model.entity.ReservationStatus;
 import com.epam.brs.model.entity.User;
 import com.epam.brs.model.service.ReservationService;
 import com.epam.brs.model.service.ServiceException;
@@ -15,7 +13,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static com.epam.brs.command.PagePath.*;

@@ -3,10 +3,11 @@ package com.epam.brs.model.dao.impl;
 import com.epam.brs.model.dao.BicycleDao;
 import com.epam.brs.model.dao.DaoException;
 import com.epam.brs.model.entity.Bicycle;
-import com.epam.brs.model.entity.BicycleType;
+import com.epam.brs.model.entity.enumType.BicycleType;
 import com.epam.brs.model.pool.ConnectionPool;
 import org.intellij.lang.annotations.Language;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,8 @@ public class BicycleDaoImpl implements BicycleDao {
     private static final String FIND_BY_TYPE_SQL_QUERY = "SELECT id_bicycle, brand, model, type, image_path, id_price_list FROM bicycles WHERE type=?";
     @Language("MySQL")
     private static final String FIND_BY_ID_SQL_QUERY = "SELECT brand, model, release_year, purchase_year, description, type, image_path, id_price_list FROM bicycles WHERE id_bicycle=?";
-
+    @Language("MySQL")
+    private static final String ADD_BICYCLE_SQL_QUERY = "INSERT INTO bicycles(brand, model, release_year, purchase_year, description, id_price_list, image_path, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
     private BicycleDaoImpl() {
     }
@@ -42,6 +44,42 @@ public class BicycleDaoImpl implements BicycleDao {
             throw new DaoException(e);
         }
         return bicycleList;
+    }
+
+    @Override
+    public boolean addBicycle(Bicycle bicycle) throws DaoException {
+        boolean addedSuccessfully;
+        try (Connection connection = ConnectionPool.INSTANCE.getConnection();
+             PreparedStatement statement = connection.prepareStatement(ADD_BICYCLE_SQL_QUERY)) {
+            String brand = bicycle.getBrand();
+            String model = bicycle.getModel();
+            int releaseYear = bicycle.getReleaseYear();
+            int purchaseYear = bicycle.getPurchaseYear();
+            String description = bicycle.getDescription();
+            int priceListId = bicycle.getPriceListId();
+            String imagePath = bicycle.getImagePath();
+            BicycleType bicycleType = bicycle.getType();
+            statement.setString(1, brand);
+            statement.setString(2, model);
+            statement.setInt(3, releaseYear);
+            statement.setInt(4, purchaseYear);
+            statement.setString(5, description);
+            statement.setInt(6, priceListId);
+            statement.setString(7, imagePath);
+            statement.setString(8, bicycleType.toString());
+            int rowCount = statement.executeUpdate();
+            if (rowCount != 0) {
+                addedSuccessfully = true;
+                logger.info("Bicycle added successfully");
+            } else {
+                logger.error("Bicycle {} wasn't added", bicycle);
+                addedSuccessfully = false;
+            }
+        } catch (SQLException e) {
+            logger.error("Exception while adding new bicycle", e);
+            throw new DaoException("Exception while adding new bicycle", e);
+        }
+        return addedSuccessfully;
     }
 
     @Override

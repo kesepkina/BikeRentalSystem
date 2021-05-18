@@ -1,11 +1,11 @@
 package com.epam.brs.model.service.impl;
 
 import com.epam.brs.model.dao.DaoException;
-import com.epam.brs.model.dao.impl.BicycleDaoImpl;
 import com.epam.brs.model.dao.impl.PriceListDaoImpl;
 import com.epam.brs.model.dao.impl.ReservationDaoImpl;
 import com.epam.brs.model.dao.impl.UserDaoImpl;
 import com.epam.brs.model.entity.*;
+import com.epam.brs.model.entity.enumType.ReservationStatus;
 import com.epam.brs.model.service.ReservationService;
 import com.epam.brs.model.service.ServiceException;
 import org.apache.logging.log4j.LogManager;
@@ -19,6 +19,51 @@ import java.util.Optional;
 public class ReservationServiceImpl implements ReservationService {
 
     private static final Logger log = LogManager.getLogger();
+
+    @Override
+    public List<Reservation> findByUserId(int userId) throws ServiceException {
+        List<Reservation> reservationList;
+        try {
+            reservationList = ReservationDaoImpl.getInstance().findByUserId(userId);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+        return reservationList;
+    }
+
+    @Override
+    public boolean downloadTableAsJSON() throws ServiceException {
+        boolean downloaded;
+        try {
+            downloaded = ReservationDaoImpl.getInstance().downloadTableAsJSON();
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+        return downloaded;
+    }
+
+    @Override
+    public boolean updateReservationStatus(int reservationId, String newStatus) throws ServiceException {
+        boolean updatedSuccessfully;
+        ReservationStatus newReservationStatus = ReservationStatus.valueOf(newStatus);
+        try {
+            updatedSuccessfully = ReservationDaoImpl.getInstance().changeReservationStatus(reservationId, newReservationStatus);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+        return updatedSuccessfully;
+    }
+
+    @Override
+    public boolean delete(int reservationId) throws ServiceException {
+        boolean deletedSuccessfully;
+        try {
+            deletedSuccessfully = ReservationDaoImpl.getInstance().delete(reservationId);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+        return deletedSuccessfully;
+    }
 
     @Override
     public boolean addReservation(int userId, int bicycleId, LocalDateTime pickUpTime, int timeLength, String timeFormat, int priceListId) throws ServiceException {

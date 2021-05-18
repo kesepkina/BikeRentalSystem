@@ -26,9 +26,21 @@
         th {
             background-color: #ded8ca4f;
         }
+        td {
+            padding: 5px;
+        }
         table {
             margin: 20px;
             width: 96%;
+        }
+        .asButton {
+            background-color: antiquewhite;
+            color: #655142;
+            border-radius: 10px;
+            border-color: #655142;
+            height: 30px;
+            cursor: pointer;
+            padding-inline: 15px;
         }
     </style>
     <script>
@@ -39,6 +51,36 @@
 </head>
 <body>
 <%@ include file="../tiles/adminHeader.jsp"%>
+<c:if test='${success.equals("yes!")}'>
+<script type="text/javascript">
+    alert("Order was deleted successfully.");
+</script>
+</c:if>
+<c:if test='${success.equals("no")}'>
+<script type="text/javascript">
+    alert("Something went wrong, order wasn't deleted.");
+</script>
+</c:if>
+<c:if test='${successUpd.equals("yes!")}'>
+    <script type="text/javascript">
+        alert("Order status was updated successfully.");
+    </script>
+</c:if>
+<c:if test='${successUpd.equals("no")}'>
+    <script type="text/javascript">
+        alert("Something went wrong, order status wasn't updated.");
+    </script>
+</c:if>
+<c:if test='${successDownload.equals("yes!")}'>
+    <script type="text/javascript">
+        alert("File was downloaded successfully.");
+    </script>
+</c:if>
+<c:if test='${successDownload.equals("no")}'>
+    <script type="text/javascript">
+        alert("Something went wrong, file wasn't downloaded.");
+    </script>
+</c:if>
 <table>
     <tr>
         <th>ID</th>
@@ -47,8 +89,9 @@
         <th><fmt:message key="orders.pick_up_time"/></th>
         <th><fmt:message key="orders.return_time"/></th>
         <th><fmt:message key="orders.price"/></th>
-        <th><fmt:message key="orders.status"/></th>
         <th><fmt:message key="orders.user_email"/></th>
+        <th><fmt:message key="orders.status"/></th>
+        <th></th>
         <th></th>
     </tr>
     <jsp:useBean id="orders" scope="session" type="java.util.List"/>
@@ -73,17 +116,38 @@
                 <c:out value="${order.countedPrice}" /> BYN
             </td>
             <td>
-                <c:out value="${order.status}" />
-            </td>
-            <td>
                 <c:out value="${order.userEmail}" />
             </td>
             <td>
-                <button value="/controller?command=delete_order&id=${order.reservationId}"><fmt:message key="orders.delete"/></button>
+                <c:out value="${order.status.getValue()}" />
+            </td>
+            <td>
+                <form name="changeStatus" method="POST" action="controller">
+                        <select id="order-status" name="order-status">
+                            <option value="PENDING"><fmt:message key="orders.status.pending"/></option>
+                            <option value="CONFIRMED"><fmt:message key="orders.status.confirmed"/></option>
+                            <option value="CANCELLED_BY_LANDLORD"><fmt:message key="orders.status.cancelled"/></option>
+                            <option value="REFUSED"><fmt:message key="orders.status.refused"/></option>
+                        </select>
+                    <input type="hidden" name="command" value="change_order_status" />
+                    <input type="hidden" name="orderId" value="${order.reservationId}" />
+                    <input type="submit" value="<fmt:message key="orders.change_status"/>">
+                </form>
+            </td>
+            <td>
+                <form name="deleteOrder" method="POST" action="controller">
+                    <input type="hidden" name="command" value="delete_order" />
+                    <input type="hidden" name="orderId" value="${order.reservationId}" />
+                    <input type="submit" value="<fmt:message key="orders.delete"/>">
+                </form>
             </td>
         </tr>
     </c:forEach>
 </table>
+<form style="display: flex; justify-content: center; margin: 20px;" name="downloadTable" method="POST" action="controller">
+    <input type="hidden" name="command" value="download_orders" />
+    <input class="asButton" type="submit" value="<fmt:message key="orders.download"/>">
+</form>
 <%@ include file="../tiles/footer.jsp"%>
 </body>
 </html>

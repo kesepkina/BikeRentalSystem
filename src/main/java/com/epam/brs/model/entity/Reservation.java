@@ -1,5 +1,7 @@
 package com.epam.brs.model.entity;
 
+import com.epam.brs.model.entity.enumType.ReservationStatus;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.StringJoiner;

@@ -72,6 +72,13 @@
         .find-button:hover {
             cursor: pointer;
         }
+        .a1 {
+            background: hsl(25deg 17% 61% / 50%);
+            padding: 10px;
+            border-radius: 10px;
+            font-size: large;
+            margin: 10px;
+        }
     </style>
 </head>
 <body>
@@ -80,10 +87,9 @@
     <img src="${pageContext.request.contextPath}/images/home_background.jpg" alt="Background" width=100% >
     <div class="w3-display-topmiddle w3-margin-top w3-center">
         <h1>${sessionScope.user.name} ${sessionScope.user.surname}<fmt:message key="adminMain.welcomeInfo"/></h1>
-        <br>
-        <a href="${pageContext.request.contextPath}/controller?command=to_orders"><fmt:message key="adminMain.orders" /></a>
-        <a href="${pageContext.request.contextPath}/controller?command=to_bicycles"><fmt:message key="adminMain.bicycles" /></a>
-        <a href="${pageContext.request.contextPath}/controller?command=to_users"><fmt:message key="adminMain.users" /></a>
+        <br/>
+        <a class="a1" href="<c:url value="/controller?command=to_adminSignup"/>"><fmt:message key="adminMain.sign_up"/></a>
+        <a class="a1" href="<c:url value="/controller?command=TO_ADDING_BICYCLE"/>"><fmt:message key="adminMain.add_bicycle"/></a>
     </div>
 </div>
 <%@ include file="../tiles/footer.jsp"%>

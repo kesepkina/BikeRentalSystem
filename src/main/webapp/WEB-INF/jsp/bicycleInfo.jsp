@@ -58,10 +58,11 @@
         button, .rentInput {
             background-color: antiquewhite;
             color: #655142;
-            border-radius: 10px;
+            border-radius: 20px;
             border-color: #655142;
-            height: 30px;
+            height: 40px;
             cursor: pointer;
+            font-size: x-large;
             padding-inline: 15px;
         }
 
@@ -78,49 +79,117 @@
             justify-content: center;
             align-items: center;
         }
+        tr {
+            height: 50px;
+        }
+        td {
+            padding: 5px;
+            border-bottom: 1px solid #ddd;
+        }
+        table {
+            margin: 20px;
+            width: 300px;
+        }
+        .bcImg {
+            width: 400px;
+            margin: 20px;
+        }
+        .main-content {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-content: center;
+            align-items: flex-start;
+            justify-content: space-evenly;
+        }
+        .price-list {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            margin: 20px;
+        }
+        .price-list-title {
+            font-size: x-large;
+            margin-top: 10px;
+            font-weight: bold;
+            margin-bottom: 0;
+        }
+        .a1 {
+            color: #5b4636;
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
 <%@ include file="tiles/header.jsp"%>
+<c:if test="${not empty infoModal}">
+    <script type="text/javascript">
+        alert("Your order was added successfully.");
+    </script>
+</c:if>
+<div class="main-content">
 <c:choose>
     <c:when test="${not empty sessionScope.chosen_bicycle.imagePath}" >
-    <img alt="Bicycle photo" src="${pageContext.request.contextPath}/image/bicycles/${sessionScope.chosen_bicycle.imagePath}" width="200px">
+    <img class="bcImg" alt="Bicycle photo" src="${pageContext.request.contextPath}/image/bicycles/${sessionScope.chosen_bicycle.imagePath}">
     </c:when>
     <c:otherwise>
-    <img alt="Default profile photo" src="${pageContext.request.contextPath}/images/bicycle.png">
+    <img class="bcImg" alt="Default profile photo" src="${pageContext.request.contextPath}/images/bicycle.png">
     </c:otherwise>
 </c:choose>
 <br>
-<table>
+<table style="width: 500px">
     <tr>
-        <td><fmt:message key="bicycleInfo.brand"/></td>
-        <td>${sessionScope.chosen_bicycle.brand}</td>
+        <td style="color: #443427"><fmt:message key="bicycleInfo.brand"/></td>
+        <td style="width: 70%">${sessionScope.chosen_bicycle.brand}</td>
     </tr>
     <tr>
-        <td><fmt:message key="bicycleInfo.model"/></td>
-        <td>${sessionScope.chosen_bicycle.model}</td>
+        <td style="color: #443427"><fmt:message key="bicycleInfo.model"/></td>
+        <td style="width: 70%">${sessionScope.chosen_bicycle.model}</td>
     </tr>
     <tr>
-        <td><fmt:message key="bicycleInfo.type"/></td>
-        <td>${sessionScope.chosen_bicycle.type}</td>
+        <td style="color: #443427"><fmt:message key="bicycleInfo.type"/></td>
+        <td style="width: 70%">${sessionScope.chosen_bicycle.type.getValue()}</td>
     </tr>
     <tr>
-        <td><fmt:message key="bicycleInfo.description"/></td>
-        <td><c:choose><c:when test="${not empty sessionScope.chosen_bicycle.description}">${sessionScope.chosenBicycle.description}</c:when>
+        <td style="color: #443427"><fmt:message key="bicycleInfo.description"/></td>
+        <td style="width: 70%"><c:choose><c:when test="${not empty sessionScope.chosen_bicycle.description}">${sessionScope.chosenBicycle.description}</c:when>
         <c:otherwise> - </c:otherwise></c:choose></td>
     </tr>
 </table>
+    <div class="price-list">
+        <p class="price-list-title" ><fmt:message key="bicycleInfo.price_list"/></p>
+<table>
+    <tr>
+        <td><fmt:message key="bicycleInfo.deposit"/></td>
+        <td>${sessionScope.price_list.deposit} BYN</td>
+    </tr>
+    <tr>
+        <td><fmt:message key="bicycleInfo.price_per_hour"/></td>
+        <td>${sessionScope.price_list.pricePerHour} BYN</td>
+    </tr>
+    <tr>
+        <td><fmt:message key="bicycleInfo.price_per_day"/></td>
+        <td>${sessionScope.price_list.pricePerDay} BYN</td>
+    </tr>
+    <tr>
+        <td><fmt:message key="bicycleInfo.price_per_week"/></td>
+        <td>${sessionScope.price_list.pricePerWeek} BYN</td>
+    </tr>
+</table>
+    </div>
+    <div class="message" style="width: 500px; text-align: center; color: #ad998b;">
 <c:choose>
     <c:when test="${sessionScope.user.role == 'CLIENT'}" >
         <button id="openRentForm"><fmt:message key="bicycleInfo.rent"/></button>
     </c:when>
     <c:otherwise>
-        <a href="<c:url value="/controller?command=to_login" />"><fmt:message key="bicycleInfo.log_in"/></a>
+        <a class="a1" href="<c:url value="/controller?command=to_login" />"><fmt:message key="bicycleInfo.log_in"/></a>
         <fmt:message key="bicycleInfo.or"/>
-        <a href="<c:url value="/controller?command=to_signup"/>"><fmt:message key="bicycleInfo.sign_up"/></a>
+        <a class="a1" href="<c:url value="/controller?command=to_signup"/>"><fmt:message key="bicycleInfo.sign_up"/></a>
         <fmt:message key="bicycleInfo.to_rent"/>
     </c:otherwise>
 </c:choose>
+    </div>
 
 <div id="rentForm" class="modal">
 
@@ -145,7 +214,7 @@
             </div>
         </form>
     </div>
-
+</div>
 </div>
 <script>
     var today = new Date();

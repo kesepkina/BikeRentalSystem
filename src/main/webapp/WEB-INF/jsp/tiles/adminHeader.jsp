@@ -23,6 +23,7 @@
     <a href="<c:url value="/controller?command=to_admin_main"/>" class="logo">
         <img src="${pageContext.request.contextPath}/images/logo.png" alt="Logo" height="40px" >
     </a>
+    <a href="<c:url value="/controller?command=to_admin_main"/>" class="home"><fmt:message key="header.home" /></a>
     <a href="<c:url value="/controller?command=to_orders"/>" class="home"><fmt:message key="header.orders" /></a>
     <a href="<c:url value="/controller?command=to_bicycles&bike-type=all"/>" class="home"><fmt:message key="header.bicycles" /></a>
     <a href="<c:url value="/controller?command=to_users"/>" class="home"><fmt:message key="header.users" /></a>

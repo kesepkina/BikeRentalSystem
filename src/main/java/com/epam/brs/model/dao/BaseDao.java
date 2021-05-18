@@ -18,7 +18,7 @@ public interface BaseDao<K, T extends Entity> {
 
     Optional<T> find(K id) throws DaoException;
 
-    boolean delete(K id);
+    boolean delete(K id) throws DaoException;
 
     boolean delete(T entity);
 

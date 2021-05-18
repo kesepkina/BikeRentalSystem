@@ -3,6 +3,7 @@ package com.epam.brs.model.service.impl;
 import com.epam.brs.model.dao.DaoException;
 import com.epam.brs.model.dao.impl.UserDaoImpl;
 import com.epam.brs.model.entity.User;
+import com.epam.brs.model.entity.enumType.UserRole;
 import com.epam.brs.model.service.ServiceException;
 import com.epam.brs.model.service.UserService;
 import com.epam.brs.util.mail.MailSender;
@@ -59,7 +60,8 @@ public class UserServiceImpl implements UserService {
                 String nameValue = userData.get(NAME_KEY);
                 String surnameValue = userData.get(SURNAME_KEY);
                 String emailValue = userData.get(EMAIL_KEY);
-                User user = new User(loginValue, nameValue, surnameValue, emailValue);
+                UserRole userRole = UserRole.valueOf(userData.get(USER_ROLE));
+                User user = new User(loginValue, nameValue, surnameValue, emailValue, userRole);
                 String passwordValue = userData.get(PASSWORD_KEY);
                 String hashedPassword = Encryptor.encrypt(passwordValue);
                 successfullySignedUp = UserDaoImpl.getInstance().addUser(user, hashedPassword);

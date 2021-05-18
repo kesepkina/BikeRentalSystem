@@ -3,7 +3,7 @@ package com.epam.brs.model.dao.impl;
 import com.epam.brs.model.dao.DaoException;
 import com.epam.brs.model.dao.ReservationDao;
 import com.epam.brs.model.entity.Reservation;
-import com.epam.brs.model.entity.ReservationStatus;
+import com.epam.brs.model.entity.enumType.ReservationStatus;
 import com.epam.brs.model.pool.ConnectionPool;
 import org.intellij.lang.annotations.Language;
 
@@ -18,6 +18,8 @@ public class ReservationDaoImpl implements ReservationDao {
 
     private static final ReservationDao instance = new ReservationDaoImpl();
 
+    private static final String FILE_PATH_BASE = "C:/ProgramData/MySQL/MySQL Server 5.7/Uploads/orders";
+
     @Language("MySQL")
     private static final String FIND_ALL_SQL_QUERY = "SELECT id_reservation, id_user, id_bicycle, reserved_at, pick_up_time, return_time, counted_price, status FROM reservations";
     @Language("MySQL")
@@ -25,7 +27,30 @@ public class ReservationDaoImpl implements ReservationDao {
     @Language("MySQL")
     private static final String FIND_BY_ID_SQL_QUERY = "SELECT id_reservation, id_user, id_bicycle, reserved_at, pick_up_time, return_time, counted_price, status FROM reservations WHERE id_reservation=?";
     @Language("MySQL")
+    private static final String FIND_BY_USER_ID_SQL_QUERY = "SELECT id_reservation, id_user, id_bicycle, reserved_at, pick_up_time, return_time, counted_price, status FROM reservations WHERE id_user=?";
+    @Language("MySQL")
     private static final String ADD_RESERVATION_SQL_QUERY = "INSERT INTO reservations(id_user, id_bicycle, reserved_at, pick_up_time, return_time, counted_price, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    @Language("MySQL")
+    private static final String DELETE_BY_ID_SQL_QUERY = "DELETE FROM reservations WHERE id_reservation=?";
+    @Language("MySQL")
+    private static final String UPDATE_STATUS_SQL_QUERY = "UPDATE reservations SET status=? WHERE id_reservation=?";
+    @Language("MySQL")
+    private static final String DOWNLOAD_IN_JSON_SQL_QUERY = "SELECT\n" +
+            "    CONCAT('[',\n" +
+            "           GROUP_CONCAT(\n" +
+            "                   CONCAT(\"{id_reservation:'\",id_reservation,\"'\"),\n" +
+            "                   CONCAT(\",id_user:'\",id_user,\"'\"),\n" +
+            "                   CONCAT(\",id_bicycle:'\",id_bicycle,\"'}\"),\n" +
+            "                   CONCAT(\",reserved_at:'\",reserved_at,\"'\"),\n" +
+            "                   CONCAT(\",pick_up_time:'\",pick_up_time,\"'\"),\n" +
+            "                   CONCAT(\",return_time:'\",return_time,\"'\"),\n" +
+            "                   CONCAT(\",counted_price:'\",counted_price,\"'\"),\n" +
+            "                   CONCAT(\",status:'\",status,\"'\")\n" +
+            "               )\n" +
+            "        ,\"]\")\n" +
+            "        " +
+            "AS json FROM reservations\n" +
+            "INTO OUTFILE ?";
 
     private ReservationDaoImpl() {}
 
@@ -84,8 +109,23 @@ public class ReservationDaoImpl implements ReservationDao {
     }
 
     @Override
-    public boolean delete(Integer id) {
-        return false;
+    public boolean delete(Integer id) throws DaoException {
+        boolean deletedSuccessfully;
+        try (Connection connection = ConnectionPool.INSTANCE.getConnection();
+             PreparedStatement statement = connection.prepareStatement(DELETE_BY_ID_SQL_QUERY)) {
+            statement.setInt(1, id);
+            int rowCount = statement.executeUpdate();
+            if (rowCount != 0) {
+                deletedSuccessfully = true;
+                logger.info("Reservation deleted successfully");
+            } else {
+                logger.error("Reservation with id {} wasn't deleted", id);
+                deletedSuccessfully = false;
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return deletedSuccessfully;
     }
 
     @Override
@@ -96,6 +136,33 @@ public class ReservationDaoImpl implements ReservationDao {
     @Override
     public Reservation update(Reservation entity) {
         return null;
+    }
+
+    @Override
+    public List<Reservation> findByUserId(int userId) throws DaoException {
+        List<Reservation> reservationList;
+        try (Connection connection = ConnectionPool.INSTANCE.getConnection();
+             PreparedStatement statement = connection.prepareStatement(FIND_BY_USER_ID_SQL_QUERY)) {
+            statement.setInt(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            reservationList = completeList(resultSet);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return reservationList;
+    }
+
+    @Override
+    public boolean downloadTableAsJSON() throws DaoException {
+        try (Connection connection = ConnectionPool.INSTANCE.getConnection();
+             PreparedStatement statement = connection.prepareStatement(DOWNLOAD_IN_JSON_SQL_QUERY)) {
+            String filePath = FILE_PATH_BASE + LocalDateTime.now().hashCode() + ".json";
+            statement.setString(1, filePath);
+            statement.executeQuery();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return true;
     }
 
     @Override
@@ -133,8 +200,24 @@ public class ReservationDaoImpl implements ReservationDao {
     }
 
     @Override
-    public boolean changeReservationStatus(int reservationId, ReservationStatus newReservationStatus) {
-        return false;
+    public boolean changeReservationStatus(int reservationId, ReservationStatus newReservationStatus) throws DaoException {
+        boolean updatedSuccessfully;
+        try (Connection connection = ConnectionPool.INSTANCE.getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_STATUS_SQL_QUERY)) {
+            statement.setString(1, newReservationStatus.toString());
+            statement.setInt(2, reservationId);
+            int rowCount = statement.executeUpdate();
+            if (rowCount != 0) {
+                updatedSuccessfully = true;
+                logger.info("Reservation status updated successfully");
+            } else {
+                logger.error("Status or reservation with id {} wasn't updated", reservationId);
+                updatedSuccessfully = false;
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return updatedSuccessfully;
     }
 
 }

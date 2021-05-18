@@ -56,6 +56,7 @@
 <div class="main-content">
 <form name="signupForm" method="POST" action="controller">
     <input type="hidden" name="command" value="signup" />
+    <input type="hidden" name="userRole" value="CLIENT" />
     <br/><span class="required-field"><fmt:message key="signUp.name" /></span>
     <input type="text" name="name" value="" required pattern="[\p{Alpha}\s-]{0,30}"/>
     <br/><span class="required-field"><fmt:message key="signUp.surname" /></span>

@@ -23,6 +23,9 @@
         tr {
             height: 60px;
         }
+        td {
+            padding: 5px;
+        }
         th {
             background-color: #ded8ca4f;
         }
@@ -60,16 +63,30 @@
                 <c:out value="${bicycle.model}" />
             </td>
             <td>
-                <c:out value="${bicycle.releaseYear}" />
+                <c:choose>
+                    <c:when test="${bicycle.releaseYear!=0}">
+                        <c:out value="${bicycle.releaseYear}" />
+                    </c:when>
+                    <c:otherwise>
+                        -
+                    </c:otherwise>
+                </c:choose>
             </td>
             <td>
-                <c:out value="${bicycle.purchaseYear}" />
+                <c:choose>
+                    <c:when test="${bicycle.purchaseYear!=0}">
+                        <c:out value="${bicycle.purchaseYear}" />
+                    </c:when>
+                    <c:otherwise>
+                        -
+                    </c:otherwise>
+                </c:choose>
             </td>
             <td>
                 <c:out value="${bicycle.description}" />
             </td>
             <td>
-                <c:out value="${bicycle.type}" />
+                <c:out value="${bicycle.type.getValue()}" />
             </td>
             <td>
                 <c:out value="${bicycle.priceListId}" />
