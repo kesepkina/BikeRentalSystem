@@ -14,7 +14,7 @@ public enum CommandType {
     TO_LOGIN(new ToPageCommand(PagePath.LOGIN)),
     TO_SIGNUP(new ToPageCommand(PagePath.SIGNUP)),
     TO_PROFILE(new DisplayUserOrdersCommand(new ReservationServiceImpl())),
-    TO_BICYCLE(new ToBicycleInfoCommand(new BicycleServiceImpl(), new PriceListServiceImpl())),
+    TO_BICYCLE(new ToBicycleInfoCommand(new BicycleServiceImpl(), new PriceListServiceImpl(), new ReservationServiceImpl())),
     CHANGE_LOCALE(new ChangeLocaleCommand()),
     DISPLAY_BICYCLES(new DisplayBicyclesListCommand(new BicycleServiceImpl())),
     RENT(new AddReservationCommand(new ReservationServiceImpl())),
@@ -29,6 +29,8 @@ public enum CommandType {
     DOWNLOAD_USERS(new DownloadUsersInJsonCommand(new UserServiceImpl())),
     DOWNLOAD_BICYCLES(new DownloadBicyclesInJsonCommand(new BicycleServiceImpl())),
     TO_ADDING_BICYCLE(new ToPageCommand(PagePath.ADDING_BICYCLE)),
+//    CALC_PRICE(new CalculatePriceCommand(new ReservationServiceImpl())),
+    PRINT_ORDER(new PrintRentContractCommand(new ReservationServiceImpl())),
     ADD_BICYCLE(new AddBicycleCommand(new BicycleServiceImpl()));
 
     private final Command command;

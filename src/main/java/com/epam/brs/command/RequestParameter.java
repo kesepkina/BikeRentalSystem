@@ -10,7 +10,7 @@ public class RequestParameter {
     public static final String PASSWORD_CONFIRMING = "passwordConfirming";
     public static final String LOCALE = "locale";
     public static final String BIKE_TYPE = "bike-type";
-    public static final String PICK_UP_DATE = "from";
+    public static final String PICK_UP_DATE_RANGE = "date_range";
     public static final String AMOUNT = "amount";
     public static final String PRICE = "calculated_price";
     public static final String TIME_FORMAT = "time-format";

@@ -29,6 +29,8 @@ public class ReservationDaoImpl implements ReservationDao {
     @Language("MySQL")
     private static final String FIND_BY_USER_ID_SQL_QUERY = "SELECT id_reservation, id_user, id_bicycle, reserved_at, pick_up_time, return_time, counted_price, status FROM reservations WHERE id_user=?";
     @Language("MySQL")
+    private static final String FIND_BY_BICYCLE_ID_SQL_QUERY = "SELECT id_reservation, id_user, id_bicycle, reserved_at, pick_up_time, return_time, counted_price, status FROM reservations WHERE id_bicycle=?";
+    @Language("MySQL")
     private static final String ADD_RESERVATION_SQL_QUERY = "INSERT INTO reservations(id_user, id_bicycle, reserved_at, pick_up_time, return_time, counted_price, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
     @Language("MySQL")
     private static final String DELETE_BY_ID_SQL_QUERY = "DELETE FROM reservations WHERE id_reservation=?";
@@ -144,6 +146,20 @@ public class ReservationDaoImpl implements ReservationDao {
         try (Connection connection = ConnectionPool.INSTANCE.getConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_BY_USER_ID_SQL_QUERY)) {
             statement.setInt(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            reservationList = completeList(resultSet);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return reservationList;
+    }
+
+    @Override
+    public List<Reservation> findByBicycleId(int bicycleId) throws DaoException {
+        List<Reservation> reservationList;
+        try (Connection connection = ConnectionPool.INSTANCE.getConnection();
+             PreparedStatement statement = connection.prepareStatement(FIND_BY_BICYCLE_ID_SQL_QUERY)) {
+            statement.setInt(1, bicycleId);
             ResultSet resultSet = statement.executeQuery();
             reservationList = completeList(resultSet);
         } catch (SQLException e) {

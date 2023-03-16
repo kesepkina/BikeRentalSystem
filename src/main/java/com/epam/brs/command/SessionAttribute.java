@@ -14,6 +14,7 @@ public class SessionAttribute {
     public static final String CURRENT_PAGE = "current_page";
     public static final String CHOSEN_BICYCLE = "chosen_bicycle";
     public static final String PRICE_LIST = "price_list";
+    public static final String RESERVED_PERIODS = "reserved_periods";
 
     private SessionAttribute() {
     }

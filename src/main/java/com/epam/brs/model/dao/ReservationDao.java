@@ -9,6 +9,8 @@ public interface ReservationDao extends BaseDao<Integer, Reservation> {
 
     List<Reservation> findByUserId(int userId) throws DaoException;
 
+    List<Reservation> findByBicycleId(int userId) throws DaoException;
+
     boolean downloadTableAsJSON() throws DaoException;
 
     boolean addReservation(Reservation reservation) throws DaoException;

@@ -6,6 +6,7 @@ import com.epam.brs.model.dao.impl.ReservationDaoImpl;
 import com.epam.brs.model.dao.impl.UserDaoImpl;
 import com.epam.brs.model.entity.*;
 import com.epam.brs.model.entity.enumType.ReservationStatus;
+import com.epam.brs.model.service.BookingException;
 import com.epam.brs.model.service.ReservationService;
 import com.epam.brs.model.service.ServiceException;
 import org.apache.logging.log4j.LogManager;
@@ -13,8 +14,9 @@ import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 
 public class ReservationServiceImpl implements ReservationService {
 
@@ -29,6 +31,36 @@ public class ReservationServiceImpl implements ReservationService {
             throw new ServiceException(e);
         }
         return reservationList;
+    }
+
+    @Override
+    public List<Reservation> findByBicycleId(int bicycleId) throws ServiceException {
+        List<Reservation> reservationList;
+        try {
+            reservationList = ReservationDaoImpl.getInstance().findByBicycleId(bicycleId);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+        return reservationList;
+    }
+
+    @Override
+    public List<Map<String, String>> getReservationPeriods(int bicycleId) throws ServiceException {
+        List<Reservation> reservationList;
+        try {
+            reservationList = ReservationDaoImpl.getInstance().findByBicycleId(bicycleId);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+        List<Map<String,String>> dictonaries = new ArrayList<>();
+        DateTimeFormatter customFormat = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        for (Reservation reservation : reservationList) {
+            Map<String, String> dictonary = new HashMap<>();
+            dictonary.put("start", reservation.getPickUpTime().format(customFormat));
+            dictonary.put("end", reservation.getReturnTime().format(customFormat));
+            dictonaries.add(dictonary);
+        }
+        return dictonaries;
     }
 
     @Override
@@ -66,22 +98,44 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public boolean addReservation(int userId, int bicycleId, LocalDateTime pickUpTime, int timeLength, String timeFormat, int priceListId) throws ServiceException {
+    public BigDecimal addReservation(int userId, int bicycleId, String pickUpRange, int priceListId) throws ServiceException, BookingException {
         boolean successfullyAdded;
         BigDecimal pricePerUnit;
         LocalDateTime returnTime;
+        LocalDateTime pickUpTime;
+        BigDecimal calculatedCost = BigDecimal.valueOf(0.0);
         try {
             Optional<PriceList> optionalPriceList = PriceListDaoImpl.getInstance().find(priceListId);
             if (optionalPriceList.isPresent()) {
-                if (timeFormat.equals("hours")) {
-                    pricePerUnit = optionalPriceList.get().getPricePerHour();
-                    returnTime = pickUpTime.plusHours(timeLength);
-                } else if (timeFormat.equals("days")) {
-                    pricePerUnit = optionalPriceList.get().getPricePerDay();
-                    returnTime = pickUpTime.plusDays(timeLength);
-                } else {
+                String[] dateRange = pickUpRange.split(" - ");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy H:mm");
+                pickUpTime = LocalDateTime.parse(dateRange[0], formatter);
+                returnTime = LocalDateTime.parse(dateRange[1], formatter);
+
+                if (conflictsWithExistingReservations(bicycleId, pickUpTime, returnTime)) {
+                    throw new BookingException("Requested rent period conflicts with already existing reservations. " +
+                            "Please input another one.");
+                }
+                LocalDateTime tempDateTime = LocalDateTime.from( pickUpTime );
+
+                long weeks = tempDateTime.until( returnTime, ChronoUnit.WEEKS );
+                tempDateTime = tempDateTime.plusWeeks( weeks );
+                if (weeks > 0) {
                     pricePerUnit = optionalPriceList.get().getPricePerWeek();
-                    returnTime = pickUpTime.plusWeeks(timeLength);
+                    calculatedCost = calculatedCost.add(pricePerUnit.multiply(BigDecimal.valueOf(weeks)));
+                }
+
+                long days = tempDateTime.until( returnTime, ChronoUnit.DAYS );
+                tempDateTime = tempDateTime.plusDays( days );
+                if (days > 0) {
+                    pricePerUnit = optionalPriceList.get().getPricePerDay();
+                    calculatedCost = calculatedCost.add(pricePerUnit.multiply(BigDecimal.valueOf(days)));
+                }
+
+                long hours = tempDateTime.until( returnTime, ChronoUnit.HOURS );
+                if (hours > 0) {
+                    pricePerUnit = optionalPriceList.get().getPricePerHour();
+                    calculatedCost = calculatedCost.add(pricePerUnit.multiply(BigDecimal.valueOf(hours)));
                 }
             } else {
                 throw new ServiceException("Couldn't find price list");
@@ -89,16 +143,27 @@ public class ReservationServiceImpl implements ReservationService {
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
-        BigDecimal calculatedCost = pricePerUnit.multiply(BigDecimal.valueOf(timeLength));
         LocalDateTime currentTime = LocalDateTime.now();
         Reservation reservation = new Reservation(userId, bicycleId, currentTime, pickUpTime, returnTime, calculatedCost, ReservationStatus.TO_CONFIRM);
         try {
-            successfullyAdded = ReservationDaoImpl.getInstance().addReservation(reservation);
+            ReservationDaoImpl.getInstance().addReservation(reservation);
         } catch (DaoException e) {
             log.error(e);
             throw new ServiceException(e);
         }
-        return successfullyAdded;
+        return calculatedCost;
+    }
+
+    private boolean conflictsWithExistingReservations(int bicycleId, LocalDateTime pickUpTime, LocalDateTime returnTime) throws ServiceException {
+        List<Reservation> reservationList= findByBicycleId(bicycleId);
+        boolean overlaps = false;
+        for (Reservation reservation : reservationList) {
+            if (!(pickUpTime.isAfter(reservation.getReturnTime()) || returnTime.isBefore(reservation.getPickUpTime()))) {
+                overlaps = true;
+                break;
+            }
+        }
+        return overlaps;
     }
 
     @Override
@@ -125,5 +190,17 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public List<Reservation> findReservationsByStatus(ReservationStatus status) {
         return null;
+    }
+
+    @Override
+    public boolean downloadRentContract(int reservationId) {
+        try {
+            Reservation reservation = ReservationDaoImpl.getInstance().find(reservationId).orElseThrow();
+            User user = UserDaoImpl.getInstance().find(reservation.getUserId()).orElseThrow();
+            
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
